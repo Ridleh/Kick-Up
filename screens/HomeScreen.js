@@ -1,4 +1,5 @@
 import * as WebBrowser from 'expo-web-browser';
+
 import React from 'react';
 import {
   Image,
@@ -8,16 +9,128 @@ import {
   Text,
   TouchableOpacity,
   View,
+  SafeAreaView,
+  Dimensions
 } from 'react-native';
+import { Header, ListItem, Card, Button, Icon } from 'react-native-elements';
 
-import { MonoText } from '../components/StyledText';
+let devicewWidth = Dimensions.get('window').width;
+const list = [
+  {
+    title: 'Ultimate Frizbee In Clairmount Field',
+    icon: 'av-timer'
+  },
+  {
+    title: 'Swim Team Meet',
+    icon: 'flight-takeoff'
+  },
+];
+
+const users = [
+  {
+     name: 'brynn',
+     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+  },
+ ];
 
 export default function HomeScreen() {
   return (
+
+    <SafeAreaView style = {styles.SafeAreaView}>
+        <Header
+      leftComponent={{ icon: 'menu', color: '#fff' }}
+      centerComponent={{ text: 'KickUp', style: { color: '#fff' } }}
+      rightComponent={{ icon: 'home', color: '#fff' }}
+    />
+    <ScrollView style = {styles.ScrollView}>
+  <Card title="Events You're Participating In" style = {{width:devicewWidth}}>
+    {
+      list.map((item, i) => (
+        <ListItem
+          key={i}
+          title={item.title}
+          leftIcon={{ name: item.icon }}
+          bottomDivider
+          chevron
+        />
+      ))
+    }
+    </Card>
+
+    <Card title="Events Happening Today">
+    {
+      list.map((item, i) => (
+        <ListItem
+          key={i}
+          title={item.title}
+          leftIcon={{ name: item.icon }}
+          bottomDivider
+          chevron
+        />
+      ))
+    }
+    </Card>
+
+    <Card title="Events Happening Today">
+    {
+      list.map((item, i) => (
+        <ListItem
+          key={i}
+          title={item.title}
+          leftIcon={{ name: item.icon }}
+          bottomDivider
+          chevron
+        />
+      ))
+    }
+    </Card>
+
+    <Card title="Events Happening Today">
+    {
+      list.map((item, i) => (
+        <ListItem
+          key={i}
+          title={item.title}
+          leftIcon={{ name: item.icon }}
+          bottomDivider
+          chevron
+        />
+      ))
+    }
+    </Card>
+
+    <Card title="Events Happening At A Later Date">
+    {
+      list.map((item, i) => (
+        <ListItem
+          key={i}
+          title={item.title}
+          leftIcon={{ name: item.icon }}
+          bottomDivider
+          chevron
+        />
+      ))
+    }
+    </Card>
+    </ScrollView>
+    </SafeAreaView>
+
+
+  );
+  //return (
+    /*
     <View style={styles.container}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}>
+
+        <View style={styles.container}>
+          <Text style={styles.paragraph}>
+            Change code in the editor and watch it change on your phone!
+            Save to get a shareable url. You get a new url each time you save.
+        </Text>
+      </View>
+
         <View style={styles.welcomeContainer}>
           <Image
             source={
@@ -67,7 +180,8 @@ export default function HomeScreen() {
         </View>
       </View>
     </View>
-  );
+    */
+  //);
 }
 
 HomeScreen.navigationOptions = {
