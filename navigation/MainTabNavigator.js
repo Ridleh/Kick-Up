@@ -6,13 +6,16 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import CreateGameScreen from '../screens/CreateGame';
+import JoinGameScreen from '../screens/JoinGame';
+import ModalExampleScreen from '../screens/ModalExample';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
   default: {},
 });
 
-const HomeStack = createStackNavigator(
+const HomeStack = createStackNavigator( 
   {
     Home: HomeScreen,
   },
@@ -53,7 +56,7 @@ LinksStack.path = '';
 
 const SettingsStack = createStackNavigator(
   {
-    Settings: SettingsScreen,
+    Settings: SettingsScreen, 
   },
   config
 );
@@ -67,10 +70,59 @@ SettingsStack.navigationOptions = {
 
 SettingsStack.path = '';
 
+const CreateGameStack = createStackNavigator(
+  {
+    CreateGame: CreateGameScreen,
+  },
+  config
+);
+
+CreateGameStack.navigationOptions = {
+  tabBarLabel: 'Create Game',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+  ),
+};
+
+CreateGameStack.path = '';
+
+const JoinGameStack = createStackNavigator(
+  {
+    JoinGame: JoinGameScreen,
+  },
+  config
+);
+
+JoinGameStack.navigationOptions = {
+  tabBarLabel: 'Join Game',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+  ),
+};
+
+JoinGameStack.path = '';
+
+const ModalExampleStack = createStackNavigator(
+  {
+    ModalExample: ModalExampleScreen,
+  },
+  config
+);
+
+ModalExampleStack.navigationOptions = {
+  tabBarLabel: 'Join Game',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+  ),
+};
+
+ModalExampleStack.path = '';
+
+
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
-  LinksStack,
-  SettingsStack,
+  CreateGameStack,
+  ModalExampleStack,
 });
 
 tabNavigator.path = '';

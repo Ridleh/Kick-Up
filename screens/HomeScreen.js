@@ -8,9 +8,11 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableHighlight,
   View,
   SafeAreaView,
-  Dimensions
+  Dimensions,
+  Alert
 } from 'react-native';
 import { Header, ListItem, Card, Button, Icon } from 'react-native-elements';
 
@@ -48,13 +50,18 @@ export default function HomeScreen() {
   <Card title="Events You're Participating In" style = {{width:devicewWidth}}>
     {
       list.map((item, i) => (
-        <ListItem
-          key={i}
-          title={item.title}
-          leftIcon={{ name: item.icon }}
-          bottomDivider
-          chevron
-        />
+        <TouchableHighlight
+          onPress={() => {
+            Alert.alert('we have buttons now')
+          }}>
+          <ListItem
+            key={i}
+            title={item.title}
+            leftIcon={{ name: item.icon }}
+            bottomDivider
+            chevron
+          />
+        </TouchableHighlight>
       ))
     }
     </Card>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text,TextInput, TouchableOpacity } from 'react-native';
 
 export default class JoinGame extends Component {
+
   render() {
     return (
       <View style={styles.joinform}>
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 	},
 	text: {
-		alightSelf: 'stretch',
+		//alightSelf: 'stretch',
 		alignSelf:'center',
 		height: 40,
 		marginBottom: 30,
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
 	text_important: {
 		fontSize: 18,
 		fontWeight: 'bold',
-		alightSelf: 'stretch',
+		//alightSelf: 'stretch',
 		alignSelf:'center',
 		height: 40,
 		marginBottom: 30,
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
 	text_title: {
 		fontSize: 24,
 		fontWeight: 'bold',
-		alightSelf: 'stretch',
+		//alightSelf: 'stretch',
 		alignSelf:'center',
 		height: 40,
 		marginBottom: 30,
@@ -67,8 +68,8 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 	},
 	button: {
-		alightSelf:'stretch',
-		aignItems:'center',
+		//alightSelf:'stretch',
+		alignItems:'center',
 		padding:20,
 		backgroundColor:'#59cbbd',
 		marginTop:30,
