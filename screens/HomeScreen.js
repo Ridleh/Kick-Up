@@ -43,7 +43,7 @@ export default function HomeScreen() {
       containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
       statusBarProps={{ barStyle: 'light-content' }}
       leftComponent={{ icon: 'menu', color: '#fff' }}
-      centerComponent={{ text: 'Kick-Up', style: { color: '#fff' , fontSize: 20} }}
+      centerComponent={{ text: 'Home', style: { color: '#fff' , fontSize: 20} }}
       rightComponent={{ icon: 'home', color: '#fff' }}
     />
     <ScrollView style = {styles.ScrollView}>

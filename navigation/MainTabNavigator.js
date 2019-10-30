@@ -10,10 +10,12 @@ import CreateGameScreen from '../screens/CreateGame';
 import JoinGameScreen from '../screens/JoinGame';
 import ModalExampleScreen from '../screens/ModalExample';
 import LoginScreen from '../screens/LoginScreen';
+import ProfilePageScreen from '../screens/ProfilePage'
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
   default: {},
+  header: null
 });
 
 const HomeStack = createStackNavigator( 
@@ -135,12 +137,28 @@ LoginScreenStack.navigationOptions = {
 
 LoginScreenStack.path = '';
 
+const ProfilePageStack = createStackNavigator(
+  {
+    ProfilePage: ProfilePageScreen,
+  },
+  config
+);
+
+ProfilePageStack.navigationOptions ={
+  tabBarLabel: 'Profile',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+  ),
+};
+
+ProfilePageStack.path = '';
+
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   CreateGameStack,
   ModalExampleStack,
-  LoginScreenStack,
+  ProfilePageStack,
 });
 
 tabNavigator.path = '';
