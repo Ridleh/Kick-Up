@@ -1,35 +1,9 @@
 import * as firebase from 'firebase';
-
- var DBinitilized = false;
+import { getProvidesAudioData } from 'expo/build/AR';
 
 export const FBFunctions = {
 
- async initialize(){
-     if(!DBinitilized){
-     try{
-            await firebase.initializeApp({
-                apiKey: "AIzaSyDtkejkI80YPOD1IDOOBLuPV3XiZrXtnc0",
-                authDomain: "kick-up-598aa.firebaseapp.com",
-                databaseURL: "https://kick-up-598aa.firebaseio.com",
-                projectId: "kick-up-598aa",
-                storageBucket: "kick-up-598aa.appspot.com",
-                messagingSenderId: "259103815275",
-                appId: "1:259103815275:web:42b0386d2f506b8431a32e"
-        })
-     }
-     catch(err){
-        console.log(err);
-        if(err.message.includes("[DEFAULT]")){
-            DBinitilized = true;
-        }
-     }
-    }
-    else{
-        console.log("don't call this again");
-    }
- },
-
- async StoreData(data){
+ async storeData(data){
     await firebase.database().ref().set({ 
         sport: data.sport,
         participants: data.participants,
@@ -39,6 +13,12 @@ export const FBFunctions = {
         description: data.description,
     });
     console.log("success?");
+ },
+
+ async getData(){
+     await firebase.database().ref().once("value").then(snapshot =>{
+         console.log(snapshot);
+     });
  }
 
 }

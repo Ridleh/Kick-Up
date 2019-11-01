@@ -206,15 +206,15 @@ HomeScreen.navigationOptions = {
 };
 
 function DBTest(){
-  FBFunctions.initialize();
-  FBFunctions.StoreData({
+  FBFunctions.storeData({
     sport: "Soccer",
     participants: "5-10",
     name: "Soccer game at the quad",
     date: new Date(),
     location: "Clairmount field",
     description: "come have fun"
-  })
+  });
+  FBFunctions.getData();
 }
 
 function DevelopmentModeNotice() {
