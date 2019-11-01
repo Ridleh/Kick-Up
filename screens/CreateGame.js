@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
-import { KeyboardAvoidingView, Alert, Dimensions, Picker, StyleSheet, View, Text,TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
+import { KeyboardAvoidingView, Alert, Dimensions, Picker, StyleSheet, View, Text,TextInput, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Header, TouchableHighlight, Modal, Input, Button, Overlay, Card, Divider } from 'react-native-elements';
+import { tsConstructorType } from '@babel/types';
 
 let devicewWidth = Dimensions.get('window').width;
 
 
 
-export default function CreateGame(){
+export default class CreateGame extends Component{
+
+	state = {
+		sport : "Select a sport",
+		participants: "Select number of participants",
+		showOtherInput: false,
+		showConfirmationScreen: false,
+	};
+
+		render(){
 		return (
 			
-			<SafeAreaView>
-				<KeyboardAvoidingView keyboardVerticalOffset = {Header.HEIGHT + 20}>
+			<SafeAreaView style={{flex:1}}>
+				<KeyboardAvoidingView keyboardVerticalOffset = {Header.HEIGHT + 20}
+				>
 			<View style={styles.viewContainer}>
 				<Header
 					containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
@@ -20,23 +31,54 @@ export default function CreateGame(){
 					centerComponent={{ text: 'Create A Game', style: { color: '#fff' , fontSize: 20} }}
 					rightComponent={{ icon: 'home', color: '#fff' }}	
     			/>
+				<ScrollView>
 				<Card title={"Please complete this form"}
 					style = {{width:devicewWidth}}>
-						
-					<Picker
+
+						<Picker
 						prompt = {'Select Sport'}
 						style={styles.textInput}
-						selectedValue={this.state.language}
+						selectedValue={this.state && this.state.sport || 'default'}
+						onValueChange={(value) => {
+							this.setState({sport : value})
+						}}
 						//style={{height: 50, width: 100}}
-						onValueChange={(itemValue, itemIndex) =>
-							//setStateVars({language: itemValue})
-							Alert.alert("Value would be changed")
-						}>
-						<Picker.Item label="Soccer" value="java" />
-						<Picker.Item label="Football" value="js" />
-						<Picker.Item label="Frisbee" value="js" />
-						<Picker.Item label="Golf" value="js" />
-						<Picker.Item label="Other" value="js" />
+						>
+							
+						<Picker.Item label="Select a sport" value="default" />
+						<Picker.Item label="Soccer" value="Soccer" />
+						<Picker.Item label="Football" value="Football" />
+						<Picker.Item label="Frisbee" value="Frisbee" />
+						<Picker.Item label="Golf" value="Golf" />
+						<Picker.Item label="Other" value="Other" />
+						
+						</Picker>
+						{this.state.sport == "Other" &&
+							<TextInput 
+							style = {styles.textInput} 
+							placeholder="Enter custom sport"
+							placeholderTextColor={'#bfbfbf'}
+							placeholderStyle={styles.placeholderStyle}
+							underlineColorAndroid='transparent'
+						/>
+						}
+						<Divider/>
+						
+					<Picker
+						prompt = {'Select number of participants'}
+						style={styles.textInput}
+						selectedValue={this.state && this.state.participants || 'default'}
+						onValueChange={(value) => {
+							this.setState({participants : value})
+						}}
+						//style={{height: 50, width: 100}}
+						>
+						<Picker.Item label="Select number of players" value="default" />
+						<Picker.Item label="0-5" value="0" />
+						<Picker.Item label="5-10" value="1" />
+						<Picker.Item label="10-15" value="2" />
+						<Picker.Item label="15-20" value="3" />
+						<Picker.Item label="20+" value="4" />
 						
 					</Picker>
 					<Divider/>
@@ -79,31 +121,26 @@ export default function CreateGame(){
 						placeholderTextColor={'#bfbfbf'}
 						placeholderStyle={styles.placeholderStyle}
 						underlineColorAndroid='transparent'
+						multiline
 					/>
 					<Divider/>
       				<TouchableOpacity style = {styles.button}>
       					<Text style={styles.btntext}>Submit</Text>
       				</TouchableOpacity>
-
-					
-
-
 				</Card>
+				</ScrollView>
 
 	  		</View>
 			  </KeyboardAvoidingView>
+		
 			  </SafeAreaView>
 			 
 
-    	);
+    	)};
 }
 
 	CreateGame.navigationOptions = {
 		header: null
-	};
-
-	state = {
-		language : ""
 	};
 
 

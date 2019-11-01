@@ -1,4 +1,5 @@
 import * as WebBrowser from 'expo-web-browser';
+import {FBFunctions} from '../API/Firebase';
 
 import React from 'react';
 import {
@@ -17,6 +18,7 @@ import {
 import { Header, ListItem, Card, Button, Icon } from 'react-native-elements';
 
 let devicewWidth = Dimensions.get('window').width;
+
 const list = [
   {
     title: 'Ultimate Frizbee In Clairmount Field',
@@ -34,6 +36,7 @@ const users = [
      avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
   },
  ];
+
 
 export default function HomeScreen() {
   return (
@@ -69,6 +72,10 @@ export default function HomeScreen() {
     <Card title="Events Happening Today">
     {
       list.map((item, i) => (
+        <TouchableHighlight
+          onPress={() => {
+            DBTest();
+          }}>
         <ListItem
           key={i}
           title={item.title}
@@ -76,6 +83,7 @@ export default function HomeScreen() {
           bottomDivider
           chevron
         />
+        </TouchableHighlight>
       ))
     }
     </Card>
@@ -96,7 +104,7 @@ export default function HomeScreen() {
 
     <Card title="Events Happening Today">
     {
-      list.map((item, i) => (
+      list.map((item, i) => ( 
         <ListItem
           key={i}
           title={item.title}
@@ -196,6 +204,18 @@ export default function HomeScreen() {
 HomeScreen.navigationOptions = {
   header: null,
 };
+
+function DBTest(){
+  FBFunctions.initialize();
+  FBFunctions.StoreData({
+    sport: "Soccer",
+    participants: "5-10",
+    name: "Soccer game at the quad",
+    date: new Date(),
+    location: "Clairmount field",
+    description: "come have fun"
+  })
+}
 
 function DevelopmentModeNotice() {
   if (__DEV__) {
