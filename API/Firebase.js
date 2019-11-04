@@ -3,22 +3,32 @@ import { getProvidesAudioData } from 'expo/build/AR';
 
 export const FBFunctions = {
 
- async storeData(data){
-    await firebase.database().ref().set({ 
-        sport: data.sport,
-        participants: data.participants,
-        name: data.name,
-        date: data.date,
-        location: data.location,
-        description: data.description,
+  async storeData(data){
+    await firebase.database().ref("Events").push({ 
+      sport: data.sport,
+			participants: + data.participants,
+			gameName : data.gameName,
+			date:  data.date,
+			location : data.location,
+			description : data.description,
     });
-    console.log("success?");
+    console.log("success");
  },
 
- async getData(){
-     await firebase.database().ref().once("value").then(snapshot =>{
-         console.log(snapshot);
-     });
+  getData(){
+    var events = [];
+      firebase.database().ref("Events").on("value", function(snapshot){
+        snapshot.forEach(function(childSnapshot){
+          events.push(childSnapshot.val())
+        })
+      }, function(err){
+        console.log("The read failed: " + err);
+      })
+      console.log(events)
+    if(events.length == 0){
+      //return this.getData();
+    }
+    return events;
  }
 
 }

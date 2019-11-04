@@ -1,11 +1,14 @@
 import * as WebBrowser from 'expo-web-browser';
 import {FBFunctions} from '../API/Firebase';
+import { firebaseConfig } from '../config';
+import * as firebase from 'firebase';
 
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Image,
   Platform,
   ScrollView,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -15,7 +18,10 @@ import {
   Dimensions,
   Alert
 } from 'react-native';
+import Constants from 'expo-constants';
 import { Header, ListItem, Card, Button, Icon } from 'react-native-elements';
+import { fetchUpdateAsync } from 'expo/build/Updates/Updates';
+//import { watchFile } from 'fs';
 
 let devicewWidth = Dimensions.get('window').width;
 
@@ -30,18 +36,32 @@ const list = [
   },
 ];
 
-const users = [
-  {
-     name: 'brynn',
-     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-  },
- ];
+//FBFunctions.getData()
 
 
-export default function HomeScreen() {
-  return (
 
-    <SafeAreaView style = {styles.SafeAreaView}>
+
+export default class HomeScreen extends Component{
+
+  state = {
+    refresh : Date(Date.now()).toString(),
+    showEventsUserIn : true,
+    showEventsNearUser : true,
+    showEventsFriendsIn : true,
+    refreshing : false
+  };
+
+  onRefresh(){
+    
+    FBFunctions.getData()
+    this.setState({ showEvents : true});
+    //this.setState({refreshing : false});
+  }
+  
+  render(){
+  return(
+
+    <SafeAreaView style = {{flex: 1}}>
         <Header
       containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
       statusBarProps={{ barStyle: 'light-content' }}
@@ -49,32 +69,67 @@ export default function HomeScreen() {
       centerComponent={{ text: 'Home', style: { color: '#fff' , fontSize: 20} }}
       rightComponent={{ icon: 'home', color: '#fff' }}
     />
-    <ScrollView style = {styles.ScrollView}>
-  <Card title="Events You're Participating In" style = {{width:devicewWidth}}>
-    {
+    <ScrollView style = {styles.ScrollView}
+    refreshControl={
+      <RefreshControl refreshing={this.state.refreshing}
+        onRefresh={() =>
+          this.onRefresh()
+        }
+    />}>
+      <View style = {{flex : 1}}>
+
+    <Card title="Events You're Participating In"
+    onPress={() => {
+      //FBFunctions.getData() 
+      this.setState({showEventsUserIn  : !this.state.showEventsUserIn })
+    }}>
+    { this.state.showEventsUserIn &&
+      FBFunctions.getData().map((item, i) => (
+        <ListItem
+          key={i}
+          title={item.gameName}
+          leftIcon={{ name: 'flight-takeoff' }}
+          bottomDivider
+          chevron
+        />
+      ))
+    }
+    <Button
+					  title="Expand/Collapse"
+					  type="clear"
+					  onPress={() => {
+						  this.setState({showEventsUserIn  : !this.state.showEventsUserIn })
+					  }}
+					  />
+    </Card>
+
+    <Card title="Events Your Friends Are Participating In">
+    { this.state.showEventsFriendsIn &&
+      list.map((item, i) => (
+        <ListItem
+          key={i}
+          title={item.title}
+          leftIcon={{ name: item.icon }}
+          bottomDivider
+          chevron
+        />
+      ))
+    }
+    <Button
+					  title="Expand/Collapse"
+					  type="clear"
+					  onPress={() => {
+						  this.setState({showEventsFriendsIn  : !this.state.showEventsFriendsIn })
+					  }}
+					  />
+    </Card>
+
+    <Card title="Events Happening In your Area">
+    { this.state.showEventsNearUser &&
       list.map((item, i) => (
         <TouchableHighlight
           onPress={() => {
-            Alert.alert('we have buttons now')
-          }}>
-          <ListItem
-            key={i}
-            title={item.title}
-            leftIcon={{ name: item.icon }}
-            bottomDivider
-            chevron
-          />
-        </TouchableHighlight>
-      ))
-    }
-    </Card>
-
-    <Card title="Events Happening Today">
-    {
-      list.map((item, i) => (
-        <TouchableHighlight
-          onPress={() => {
-            DBTest();
+            this.setState({showEventsNearUser : !this.state.showEventsNearUser})
           }}>
         <ListItem
           key={i}
@@ -86,54 +141,21 @@ export default function HomeScreen() {
         </TouchableHighlight>
       ))
     }
+    <Button
+					  title="Expand/Collapse"
+					  type="clear"
+					  onPress={() => {
+						  this.setState({showEventsNearUser : !this.state.showEventsNearUser})
+					  }}
+					  />
     </Card>
-
-    <Card title="Events Happening Today">
-    {
-      list.map((item, i) => (
-        <ListItem
-          key={i}
-          title={item.title}
-          leftIcon={{ name: item.icon }}
-          bottomDivider
-          chevron
-        />
-      ))
-    }
-    </Card>
-
-    <Card title="Events Happening Today">
-    {
-      list.map((item, i) => ( 
-        <ListItem
-          key={i}
-          title={item.title}
-          leftIcon={{ name: item.icon }}
-          bottomDivider
-          chevron
-        />
-      ))
-    }
-    </Card>
-
-    <Card title="Events Happening At A Later Date">
-    {
-      list.map((item, i) => (
-        <ListItem
-          key={i}
-          title={item.title}
-          leftIcon={{ name: item.icon }}
-          bottomDivider
-          chevron
-        />
-      ))
-    }
-    </Card>
+    </View>
     </ScrollView>
     </SafeAreaView>
 
 
-  );
+  )
+  };
   //return (
     /*
     <View style={styles.container}>
@@ -206,6 +228,7 @@ HomeScreen.navigationOptions = {
 };
 
 function DBTest(){
+  /*
   FBFunctions.storeData({
     sport: "Soccer",
     participants: "5-10",
@@ -214,6 +237,7 @@ function DBTest(){
     location: "Clairmount field",
     description: "come have fun"
   });
+  */
   FBFunctions.getData();
 }
 

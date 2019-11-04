@@ -3,6 +3,7 @@ import { KeyboardAvoidingView, Alert, Dimensions, Picker, StyleSheet, View, Text
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Header, TouchableHighlight, Modal, Input, Button, Overlay, Card, Divider } from 'react-native-elements';
 import { tsConstructorType } from '@babel/types';
+import {FBFunctions} from '../API/Firebase';
 
 let devicewWidth = Dimensions.get('window').width;
 
@@ -10,11 +11,43 @@ let devicewWidth = Dimensions.get('window').width;
 
 export default class CreateGame extends Component{
 
+	printEvent(){
+		console.log(this.state.sport + '\n'
+			+ this.state.participants + '\n'
+			+ this.state.gameName + '\n'
+			+ this.state.date + '\n'
+			+ this.state.location + '\n'
+			+ this.state.description + '\n')
+	}
+
+	async submitEvent(){
+		var event = {
+			sport: this.state.sport,
+			participants: + this.state.participants,
+			gameName : this.state.gameName,
+			date:  this.state.date,
+			location : this.state.location,
+			description : this.state.description,
+		}
+		if( JSON.parse( JSON.stringify(event)) ){
+			FBFunctions.storeData(event)	
+		}
+		else{
+			console.log(" : ( ");
+		}
+		//FBFunctions.storeData(event)
+		//console.log("done")
+	}
+
 	state = {
 		sport : "Select a sport",
 		participants: "Select number of participants",
 		showOtherInput: false,
 		showConfirmationScreen: false,
+		gameName: "blank",
+		date: "blank",
+		location: "blank",
+		description: "blank"
 	};
 
 		render(){
@@ -89,6 +122,9 @@ export default class CreateGame extends Component{
 						placeholderTextColor={'#bfbfbf'}
 						placeholderStyle={styles.placeholderStyle}
 						underlineColorAndroid='transparent'
+						onEndEditing={(text) => {
+							this.setState({gameName : text.nativeEvent.text})
+						}}
 					/>
 					<Divider/>
 					<TextInput 
@@ -97,6 +133,9 @@ export default class CreateGame extends Component{
 						placeholderTextColor={'#bfbfbf'}
 						placeholderStyle={styles.placeholderStyle}
 						underlineColorAndroid='transparent'
+						onEndEditing={(text) => {
+							this.setState({date : text.nativeEvent.text})
+						}}
 					/>
 					<Divider/>
 					<TextInput 
@@ -105,14 +144,9 @@ export default class CreateGame extends Component{
 						placeholderTextColor={'#bfbfbf'}
 						placeholderStyle={styles.placeholderStyle}
 						underlineColorAndroid='transparent'
-					/>
-					<Divider/>
-					<TextInput 
-						style = {styles.textInput} 
-						placeholder="Number of Players"
-						placeholderTextColor={'#bfbfbf'}
-						placeholderStyle={styles.placeholderStyle}
-						underlineColorAndroid='transparent'
+						onEndEditing={(text) => {
+							this.setState({location : text.nativeEvent.text})
+						}}
 					/>
 					<Divider/>
 					<TextInput 
@@ -122,11 +156,19 @@ export default class CreateGame extends Component{
 						placeholderStyle={styles.placeholderStyle}
 						underlineColorAndroid='transparent'
 						multiline
+						onEndEditing={(text) => {
+							this.setState({description : text.nativeEvent.text})
+						}}
 					/>
 					<Divider/>
-      				<TouchableOpacity style = {styles.button}>
-      					<Text style={styles.btntext}>Submit</Text>
-      				</TouchableOpacity>
+      				<Button
+					  title="Submit"
+					  type="solid"
+					  onPress={() => {
+						  this.printEvent()
+						  this.submitEvent()
+					  }}
+					  />
 				</Card>
 				</ScrollView>
 
@@ -139,10 +181,9 @@ export default class CreateGame extends Component{
     	)};
 }
 
-	CreateGame.navigationOptions = {
-		header: null
-	};
-
+CreateGame.navigationOptions = {
+	header: null
+};
 
 const styles = StyleSheet.create({
 	viewContainer: {
