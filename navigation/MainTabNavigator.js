@@ -10,7 +10,7 @@ import CreateGameScreen from '../screens/CreateGame';
 import JoinGameScreen from '../screens/JoinGame';
 import ModalExampleScreen from '../screens/ModalExample';
 import LoginScreen from '../screens/LoginScreen';
-import ProfilePageScreen from '../screens/ProfilePage'
+import ProfilePageScreen from '../screens/ProfilePage';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -158,7 +158,7 @@ const tabNavigator = createBottomTabNavigator({
   HomeStack,
   CreateGameStack,
   ModalExampleStack,
-  ProfilePageStack,
+  LoginScreenStack,
 });
 
 tabNavigator.path = '';
