@@ -157,7 +157,7 @@ ProfilePageStack.path = '';
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   CreateGameStack,
-  ModalExampleStack,
+  JoinGameStack,
   LoginScreenStack,
 });
 
