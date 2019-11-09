@@ -19,7 +19,7 @@ import {
   Alert
 } from 'react-native';
 import Constants from 'expo-constants';
-import { Header, ListItem, Card, Button, Icon } from 'react-native-elements';
+import { Avatar, Header, ListItem, Card, Button, Icon } from 'react-native-elements';
 import { fetchUpdateAsync } from 'expo/build/Updates/Updates';
 //import { watchFile } from 'fs';
 
@@ -59,6 +59,7 @@ export default class HomeScreen extends Component{
   }
   
   render(){
+    //const {navigate} = this.props.navigation
   return(
 
     <SafeAreaView style = {{flex: 1}}>
@@ -67,7 +68,19 @@ export default class HomeScreen extends Component{
       statusBarProps={{ barStyle: 'light-content' }}
       leftComponent={{ icon: 'menu', color: '#fff' }}
       centerComponent={{ text: 'Home', style: { color: '#fff' , fontSize: 20} }}
-      rightComponent={{ icon: 'home', color: '#fff' }}
+      rightComponent={
+        <Avatar
+        onPress={() => {
+          console.log("touched registered")
+          this.props.navigation.navigate('Profile')
+        }}
+  rounded
+  source={{
+    uri:
+      'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+  }}
+/>
+      }
     />
     <ScrollView style = {styles.ScrollView}
     refreshControl={
@@ -85,13 +98,18 @@ export default class HomeScreen extends Component{
     }}>
     { this.state.showEventsUserIn &&
       FBFunctions.getData().map((item, i) => (
+        <TouchableHighlight
+          onPress={() => {
+            this.props.navigation.navigate('Details', {gameName: item.gameName})
+          }}>
         <ListItem
           key={i}
           title={item.gameName}
-          leftIcon={{ name: 'flight-takeoff' }}
+          leftIcon={{ name: item.icon }}
           bottomDivider
           chevron
         />
+        </TouchableHighlight>
       ))
     }
     <Button

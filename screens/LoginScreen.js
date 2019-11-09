@@ -80,7 +80,8 @@ export default class LoginScreen extends Component {
 	    });
 
 	    if (result.type === 'success') {
-	    	this.onSignIn(result);
+			this.onSignIn(result);
+			this.props.navigation.navigate('Profile')
 	      	return result.accessToken;
 	    } else {
 	      	return { cancelled: true };
@@ -107,12 +108,18 @@ export default class LoginScreen extends Component {
       	>
       		<Text style={styles.btntext}>Sign out</Text>
       	</TouchableOpacity>
+		  <TouchableOpacity 
+      		style = {styles.button}
+      		onPress={() => this.props.navigation.navigate('Home')}
+      	>
+      		<Text style={styles.btntext}>Skip Sign In</Text>
+      	</TouchableOpacity>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ 
 	joinform: {
 		alignSelf: 'stretch',
 	},
