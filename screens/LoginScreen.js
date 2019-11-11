@@ -3,7 +3,6 @@ import { StyleSheet, View, Text,TextInput, TouchableOpacity } from 'react-native
 import * as Google from 'expo-google-app-auth';
 import firebase from 'firebase';
 
-
 export default class LoginScreen extends Component {
 	isUserEqual = (googleUser, firebaseUser) => {
 	    if (firebaseUser) {
@@ -99,7 +98,7 @@ export default class LoginScreen extends Component {
       		style = {styles.button}
       		onPress={() => this.signInWithGoogleAsync()}
       	>
-      		<Text style={styles.btntext}>Sign In</Text>
+      		<Text style={styles.btntext}>Sign In With Google</Text>
       	</TouchableOpacity>
       	<TouchableOpacity 
       		style = {styles.button}
