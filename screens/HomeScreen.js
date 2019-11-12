@@ -66,8 +66,25 @@ export default class HomeScreen extends Component{
       containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
       statusBarProps={{ barStyle: 'light-content' }}
       leftComponent={{ icon: 'menu', color: '#fff' }}
+<<<<<<< Updated upstream
       centerComponent={{ text: 'Home', style: { color: '#fff' , fontSize: 20} }}
       rightComponent={{ icon: 'home', color: '#fff' }}
+=======
+      centerComponent={{ text: 'Kick-Up', style: { color: '#fff' , fontSize: 20} }}
+      rightComponent={
+        <Avatar
+        onPress={() => {
+          console.log("touched registered")
+          this.props.navigation.navigate('NewProfilePage')
+        }}
+  rounded
+  source={{
+    uri:
+      'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+  }}
+/>
+      }
+>>>>>>> Stashed changes
     />
     <ScrollView style = {styles.ScrollView}
     refreshControl={

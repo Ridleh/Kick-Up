@@ -11,6 +11,11 @@ import JoinGameScreen from '../screens/JoinGame';
 import ModalExampleScreen from '../screens/ModalExample';
 import LoginScreen from '../screens/LoginScreen';
 import ProfilePageScreen from '../screens/ProfilePage';
+<<<<<<< Updated upstream
+=======
+import DetailsScreen from '../screens/DetailsScreen';
+import NewProfilePage from '../screens/NewProfilePage';
+>>>>>>> Stashed changes
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
