@@ -4,7 +4,6 @@ import * as Google from 'expo-google-app-auth';
 import firebase from 'firebase';
 import { Image } from 'react-native';
 
-
 export default class LoginScreen extends Component {
   isUserEqual = (googleUser, firebaseUser) => {
       if (firebaseUser) {
@@ -93,19 +92,18 @@ export default class LoginScreen extends Component {
   }
 
   render() {
-    //SAVE FOR LATER: onPress={() => this.signInWithGoogleAsync()}
     return (
+      //SAVE FOR LATER: onPress={() => this.signInWithGoogleAsync()}
       <React.Fragment>
+
         <Image
          source={require('./LoginPicture.png')} style={styles.image}
         />
         <View style={styles.joinform}>
-
           <Text style={styles.header}> Login </Text>
 
           <TouchableOpacity 
             style = {styles.button}
-            
             onPress={() => this.props.navigation.navigate('Profile')}
           >
             <Text style={styles.btntext}>Sign In</Text>
