@@ -12,6 +12,7 @@ import ModalExampleScreen from '../screens/ModalExample';
 import LoginScreen from '../screens/LoginScreen';
 import ProfilePageScreen from '../screens/ProfilePage';
 import DetailsScreen from '../screens/DetailsScreen';
+import NewProfilePage from '../screens/NewProfilePage';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -22,8 +23,9 @@ const config = Platform.select({
 const HomeStack = createStackNavigator( 
   {
     Home: HomeScreen,
-    Profile: ProfilePageScreen,
-    Details: DetailsScreen
+    Profile: NewProfilePage,
+    Details: DetailsScreen,
+    Login: LoginScreen,
   },
   config
 );
@@ -156,12 +158,27 @@ ProfilePageStack.navigationOptions ={
 
 ProfilePageStack.path = '';
 
+const NewProfilePageStack = createStackNavigator(
+  {
+    NewProfilePage: NewProfilePage,
+  },
+  config
+);
+
+NewProfilePage.navigationOptions ={
+  tabBarLabel: 'NewProfilePage',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+  ),
+};
+
+NewProfilePage.path = '';
+
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   CreateGameStack,
   JoinGameStack,
-  ProfilePageStack,
 });
 
 tabNavigator.path = '';

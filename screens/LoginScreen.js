@@ -81,7 +81,7 @@ export default class LoginScreen extends Component {
 
 	    if (result.type === 'success') {
 			this.onSignIn(result);
-			this.props.navigation.navigate('Profile')
+			this.props.navigation.navigate('Home')
 	      	return result.accessToken;
 	    } else {
 	      	return { cancelled: true };
@@ -93,32 +93,16 @@ export default class LoginScreen extends Component {
 
   render() {
     return (
-    	//SAVE FOR LATER: onPress={() => this.signInWithGoogleAsync()}
       <React.Fragment>
-
       	<Image
          source={require('./LoginPicture.png')} style={styles.image}
         />
       	<View style={styles.joinform}>
-      		<Text style={styles.header}> Login </Text>
-
       		<TouchableOpacity 
       			style = {styles.button}
-      			onPress={() => this.props.navigation.navigate('Profile')}
+      			onPress={() => this.signInWithGoogleAsync()}
       		>
       			<Text style={styles.btntext}>Sign In</Text>
-      		</TouchableOpacity>
-      		<TouchableOpacity 
-      			style = {styles.button}
-      			onPress={() => firebase.auth().signOut()}
-      		>
-      			<Text style={styles.btntext}>Sign out</Text>
-      		</TouchableOpacity>
-		  	<TouchableOpacity 
-      			style = {styles.button}
-      			onPress={() => this.props.navigation.navigate('Home')}
-      		>
-      			<Text style={styles.btntext}>Skip Sign In</Text>
       		</TouchableOpacity>
       	</View>
       </React.Fragment>
@@ -189,12 +173,11 @@ const styles = StyleSheet.create({
         color: '#000',
     },
     image: {
-      flex: 1,
-      alignItems: 'center',
-      height: 200,
+      alignSelf: 'center',
+      height: 400,
       width: 400,
 
-      marginTop: 50, 
+      marginTop: 100, 
 
     }
 });
