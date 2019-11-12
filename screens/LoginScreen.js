@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text,TextInput, TouchableOpacity } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import firebase from 'firebase';
-
+import { Image } from 'react-native';
 
 export default class LoginScreen extends Component {
 	isUserEqual = (googleUser, firebaseUser) => {
@@ -93,91 +93,108 @@ export default class LoginScreen extends Component {
 
   render() {
     return (
-      <View style={styles.joinform}>
-      	<Text style={styles.header}> Login </Text>
+    	//SAVE FOR LATER: onPress={() => this.signInWithGoogleAsync()}
+      <React.Fragment>
 
-      	<TouchableOpacity 
-      		style = {styles.button}
-      		onPress={() => this.signInWithGoogleAsync()}
-      	>
-      		<Text style={styles.btntext}>Sign In</Text>
-      	</TouchableOpacity>
-      	<TouchableOpacity 
-      		style = {styles.button}
-      		onPress={() => firebase.auth().signOut()}
-      	>
-      		<Text style={styles.btntext}>Sign out</Text>
-      	</TouchableOpacity>
-		  <TouchableOpacity 
-      		style = {styles.button}
-      		onPress={() => this.props.navigation.navigate('Home')}
-      	>
-      		<Text style={styles.btntext}>Skip Sign In</Text>
-      	</TouchableOpacity>
-      </View>
+      	<Image
+         source={require('./LoginPicture.png')} style={styles.image}
+        />
+      	<View style={styles.joinform}>
+      		<Text style={styles.header}> Login </Text>
+
+      		<TouchableOpacity 
+      			style = {styles.button}
+      			onPress={() => this.props.navigation.navigate('Profile')}
+      		>
+      			<Text style={styles.btntext}>Sign In</Text>
+      		</TouchableOpacity>
+      		<TouchableOpacity 
+      			style = {styles.button}
+      			onPress={() => firebase.auth().signOut()}
+      		>
+      			<Text style={styles.btntext}>Sign out</Text>
+      		</TouchableOpacity>
+		  	<TouchableOpacity 
+      			style = {styles.button}
+      			onPress={() => this.props.navigation.navigate('Home')}
+      		>
+      			<Text style={styles.btntext}>Skip Sign In</Text>
+      		</TouchableOpacity>
+      	</View>
+      </React.Fragment>
     );
   }
 }
 
 const styles = StyleSheet.create({ 
-	joinform: {
-		alignSelf: 'stretch',
-	},
-	header: {
-		fontSize: 36,
-		alignSelf:'center',
-		fontWeight: 'bold',
-		color: '#000000',
-		paddingBottom: 10,
-		marginBottom: 40,
-		borderBottomColor: '#199187',
-		borderBottomWidth: 1,
-	},
-	text: {
-		//alightSelf: 'stretch',
-		alignSelf:'center',
-		height: 40,
-		marginBottom: 30,
-		color: '#000000',
-		borderBottomColor: '#f8f8f8',
-		borderBottomWidth: 1,
-	},
-	text_important: {
-		fontSize: 18,
-		fontWeight: 'bold',
-		//alightSelf: 'stretch',
-		alignSelf:'center',
-		height: 40,
-		marginBottom: 30,
-		color: '#000000',
-		borderBottomColor: '#f8f8f8',
-		borderBottomWidth: 1,
-	},
-	text_title: {
-		fontSize: 24,
-		fontWeight: 'bold',
-		//alightSelf: 'stretch',
-		alignSelf:'center',
-		height: 40,
-		marginBottom: 30,
-		color: '#000000',
-		borderBottomColor: '#f8f8f8',
-		borderBottomWidth: 1,
-	},
-	button: {
-		//alightSelf:'stretch',
-		alignItems:'center',
-		padding:20,
-		backgroundColor:'#59cbbd',
-		marginTop:30,
-	},
-	btntext: {
-		fontSize: 24,
-		alignSelf:'center',
-		color: '#000000',
-	},
-	placeholderStyle: {
-        fontSize: 14,
+  joinform: {
+    alignSelf: 'center',
+
+  },
+  header: {
+    fontSize: 36,
+    alignSelf:'center',
+    fontWeight: 'bold',
+    color: '#000000',
+    paddingBottom: 10,
+    marginBottom: 50,
+    borderBottomColor: '#199187',
+    borderBottomWidth: 1,
+  },
+  text: {
+    //alightSelf: 'stretch',
+    alignSelf:'center',
+    height: 40,
+    marginBottom: 30,
+    color: '#000000',
+    borderBottomColor: '#f8f8f8',
+    borderBottomWidth: 1,
+  },
+  text_important: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    //alightSelf: 'stretch',
+    alignSelf:'center',
+    height: 40,
+    marginBottom: 30,
+    color: '#000000',
+    borderBottomColor: '#f8f8f8',
+    borderBottomWidth: 1,
+  },
+  text_title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    //alightSelf: 'stretch',
+    alignSelf:'center',
+    height: 40,
+    marginBottom: 30,
+    color: '#000000',
+    borderBottomColor: '#f8f8f8',
+    borderBottomWidth: 1,
+  },
+  button: {
+    //alightSelf:'stretch',
+    alignItems:'center',
+    padding:20,
+    backgroundColor:'#4caf50',
+    marginTop:20,
+  },
+  btntext: {
+    fontSize: 24,
+    alignSelf:'center',
+    color: '#fff',
+  },
+  placeholderStyle: {
+        fontSize: 10,
         color: '#000',
     },
+    image: {
+      flex: 1,
+      alignItems: 'center',
+      height: 200,
+      width: 400,
+
+      marginTop: 50, 
+
+    }
 });
