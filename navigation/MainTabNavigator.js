@@ -161,6 +161,7 @@ ProfilePageStack.path = '';
 const NewProfilePageStack = createStackNavigator(
   {
     NewProfilePage: NewProfilePage,
+    Login: LoginScreen,
   },
   config
 );

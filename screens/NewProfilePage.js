@@ -15,8 +15,9 @@ import * as Google from 'expo-google-app-auth';
 
 export default class NewProfilePage extends Component {
 	signOut = async () => {
-		firebase.auth().signOut()
-		this.props.navigation.navigate('Login')
+		console.log("logout registered")
+		this.props.navigation.navigate('Auth')
+		// firebase.auth().signOut()
   	}
 	render() {
 	    return (
