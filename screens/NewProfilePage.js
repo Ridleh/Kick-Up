@@ -4,13 +4,21 @@ import Expo from "expo"
 
 export default class NewProfilePage extends React.Component {
   constructor(props) {
+<<<<<<< Updated upstream
+=======
+    super(props)
+>>>>>>> Stashed changes
     this.state = {
       signedIn: false,
       name: "",
       photoUrl: ""
     }
   }
+<<<<<<< Updated upstream
 
+=======
+  
+>>>>>>> Stashed changes
   signIn = async () => {
     try {
       const result = await Expo.Google.logInAsync({
