@@ -4,7 +4,7 @@ import { getProvidesAudioData } from 'expo/build/AR';
 export const FBFunctions = {
 
   async storeData(data){
-    await firebase.database().ref("Test Arrays").push({ 
+    await firebase.database().ref("Events").push({ 
       sport: data.sport,
 			participants: + data.participants,
 			gameName : data.gameName,
