@@ -20,7 +20,7 @@ const screenStack = createStackNavigator({
     JoinGame: JoinGameScreen,
     Loading: LoadingScreen,
     Login: LoginScreen,
-    Profile: ProfilePageScreen
+    Profile: ProfilePageScreen,
     Maps: MapScreen
 });
 
