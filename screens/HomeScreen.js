@@ -27,7 +27,7 @@ let devicewWidth = Dimensions.get('window').width;
 
 const list = [
   {
-    title: 'Ultimate Frizbee In Clairmount Field',
+    title: 'Ultimate Frizbee In Clairmont Field',
     icon: 'av-timer'
   },
   {

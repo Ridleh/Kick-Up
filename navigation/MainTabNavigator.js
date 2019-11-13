@@ -12,6 +12,7 @@ import ModalExampleScreen from '../screens/ModalExample';
 import LoginScreen from '../screens/LoginScreen';
 import ProfilePageScreen from '../screens/ProfilePage';
 import DetailsScreen from '../screens/DetailsScreen';
+import NewProfilePage from '../screens/NewProfilePage';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -157,12 +158,28 @@ ProfilePageStack.navigationOptions ={
 
 ProfilePageStack.path = '';
 
+const NewProfilePageStack = createStackNavigator(
+  {
+    NewProfilePage: NewProfilePage,
+    Login: LoginScreen,
+  },
+  config
+);
+
+NewProfilePage.navigationOptions ={
+  tabBarLabel: 'NewProfilePage',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+  ),
+};
+
+NewProfilePage.path = '';
+
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   CreateGameStack,
   JoinGameStack,
-  ProfilePageStack,
 });
 
 tabNavigator.path = '';

@@ -9,6 +9,18 @@
       "android",
       "web"
     ],
+    "android": {
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCSOCajuVL4jR_ijBm8elfCWD91bYpeK0k"
+        }
+      }
+    },
+    "ios": {
+      "config": {
+        "googleMapsApiKey": "AIzaSyCSOCajuVL4jR_ijBm8elfCWD91bYpeK0k"
+      }
+    },
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/kickup.png",
