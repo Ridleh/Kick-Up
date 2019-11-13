@@ -37,12 +37,13 @@ const list = [
   },
 ];
 
-//FBFunctions.getData()
-
-
-
-
 export default class HomeScreen extends Component{
+
+  constructor(){
+    super()
+    //this.getUserInfo()
+    //this.getGames()
+  }
 
   state = {
     refresh : Date(Date.now()).toString(),
@@ -52,6 +53,35 @@ export default class HomeScreen extends Component{
     refreshing : false,
   };
 
+  userID = " "
+  allGames = []
+  participatingGames = []
+  friendsGames = []
+
+  async componentDidMount(){
+    console.log("called")
+    this.getGames()
+  }
+
+  async getGames(){
+    this.participatingGames = []
+    this.allGames = await FBFunctions.getData()
+    this.userID = JSON.parse( await AsyncStorage.getItem("userID"));
+    console.log()
+    for(game of this.allGames){
+      for(player of game.players){
+        if(player.ID === this.userID){
+          //console.log(game)
+          if(this.participatingGames.indexOf(game) == -1){
+            console.log("added")
+            this.participatingGames.push(game)
+          }
+        }
+      } 
+    }
+    console.log(this.participatingGames.length)
+  }
+ 
   getPhotoUrl(){
     try {
       AsyncStorage.getItem('photoUrl').then((keyValue) => {
@@ -64,14 +94,14 @@ export default class HomeScreen extends Component{
 
   onRefresh(){
     
-    FBFunctions.getData()
-    this.setState({ showEvents : true});
+    //FBFunctions.getData()
+    this.getGames()
+    this.setState();
     //this.setState({refreshing : false});
   }
   
   render(){
-    //const {navigate} = this.props.navigation
-  return(
+  return( 
 
     <SafeAreaView style = {{flex: 1}}>
         <Header
@@ -107,7 +137,7 @@ export default class HomeScreen extends Component{
       this.setState({showEventsUserIn  : !this.state.showEventsUserIn })
     }}>
     { this.state.showEventsUserIn &&
-      FBFunctions.getData().map((item, i) => (
+      this.participatingGames.map((item, i) => (
         <TouchableHighlight
           onPress={() => {
             //console.log(this.getPhotoUrl())
@@ -134,7 +164,7 @@ export default class HomeScreen extends Component{
 
     <Card title="Events Your Friends Are Participating In">
     { this.state.showEventsFriendsIn &&
-      list.map((item, i) => (
+      this.friendsGames.map((item, i) => (
         <ListItem
           key={i}
           title={item.title}
@@ -151,18 +181,23 @@ export default class HomeScreen extends Component{
 						  this.setState({showEventsFriendsIn  : !this.state.showEventsFriendsIn })
 					  }}
 					  />
-    </Card>
+    </Card> 
 
-    <Card title="Events Happening In your Area">
+    <Card title="Events Happening In Your Area"
+    onPress={() => {
+      //FBFunctions.getData() 
+      this.setState({showEventsNearUser  : !this.state.showEventsNearUser })
+    }}>
     { this.state.showEventsNearUser &&
-      list.map((item, i) => (
+      this.allGames.map((item, i) => (
         <TouchableHighlight
           onPress={() => {
-            this.setState({showEventsNearUser : !this.state.showEventsNearUser})
+            //console.log(this.getPhotoUrl())
+            this.props.navigation.navigate('JoinGame', {gameName: item})
           }}>
         <ListItem
           key={i}
-          title={item.title}
+          title={item.gameName}
           leftIcon={{ name: item.icon }}
           bottomDivider
           chevron
@@ -174,10 +209,11 @@ export default class HomeScreen extends Component{
 					  title="Expand/Collapse"
 					  type="clear"
 					  onPress={() => {
-						  this.setState({showEventsNearUser : !this.state.showEventsNearUser})
+						  this.setState({showEventsNearUser  : !this.state.showEventsNearUser })
 					  }}
 					  />
     </Card>
+
     </View>
     </ScrollView>
     </SafeAreaView>

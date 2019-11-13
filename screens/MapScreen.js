@@ -99,7 +99,7 @@ export default class Maps extends React.Component {
           </MapView.Marker>
         </MapView>
       </View>
-    );
+    ); 
   }
 }
 

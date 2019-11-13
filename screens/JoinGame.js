@@ -32,7 +32,7 @@ export default class JoinGame extends Component {
 		var listOfPlayers = []
 		for(player of this.gameInfo.players){
 				listOfPlayers.push(player.name)
-			if(player.ID == localUserID ){
+			if(player.ID === localUserID ){
 				console.log("we got false")
 				this.setState({showJoinGameButton : false})
 			}
