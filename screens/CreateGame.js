@@ -138,15 +138,13 @@ export default class CreateGame extends Component{
 						}}
 					/>
 					<Divider/>
-					<TextInput 
-						style = {styles.textInput} 
-						placeholder="Location"
-						placeholderTextColor={'#bfbfbf'}
-						placeholderStyle={styles.placeholderStyle}
-						underlineColorAndroid='transparent'
-						onEndEditing={(text) => {
-							this.setState({location : text.nativeEvent.text})
-						}}
+					<Button
+					  title="Location"
+					  type="solid"
+					  onPress={() => 
+					  		this.props.navigation.navigate('Maps')
+
+					  }
 					/>
 					<Divider/>
 					<TextInput 
