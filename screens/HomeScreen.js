@@ -100,7 +100,7 @@ export default class HomeScreen extends Component{
       FBFunctions.getData().map((item, i) => (
         <TouchableHighlight
           onPress={() => {
-            this.props.navigation.navigate('Details', {gameName: item.gameName})
+            this.props.navigation.navigate('JoinGame', {gameName: item})
           }}>
         <ListItem
           key={i}

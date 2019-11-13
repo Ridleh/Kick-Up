@@ -23,7 +23,8 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
     Profile: ProfilePageScreen,
-    Details: DetailsScreen
+    Details: DetailsScreen,
+    JoinGame: JoinGameScreen
   },
   config
 );

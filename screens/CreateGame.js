@@ -20,6 +20,14 @@ export default class CreateGame extends Component{
 			+ this.state.description + '\n')
 	}
 
+	//either this or import uuid library 
+	createID(){
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+			var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+			return v.toString(16);
+		  });
+	}
+
 	async submitEvent(){
 		var event = {
 			sport: this.state.sport,
@@ -28,6 +36,8 @@ export default class CreateGame extends Component{
 			date:  this.state.date,
 			location : this.state.location,
 			description : this.state.description,
+			players: [{name: "john doe", ID: -1}],
+			ID: "null"
 		}
 		if( JSON.parse( JSON.stringify(event)) ){
 			FBFunctions.storeData(event)	
@@ -38,6 +48,8 @@ export default class CreateGame extends Component{
 		//FBFunctions.storeData(event)
 		//console.log("done")
 	}
+
+	
 
 	state = {
 		sport : "Select a sport",

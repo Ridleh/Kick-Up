@@ -1,23 +1,101 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text,TextInput, TouchableOpacity } from 'react-native';
+import {FBFunctions} from '../API/Firebase'
+import { SafeAreaView, StyleSheet, View, Text,TextInput, TouchableOpacity } from 'react-native';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 export default class JoinGame extends Component {
+	gameInfo = this.props.navigation.getParam("gameName");
+	state = {
+		showJoinGameButton : this.isUserInGame(),
+		date : this.gameInfo.date,
+		description : this.gameInfo.description,
+		name : this.gameInfo.gameName,
+		location : this.gameInfo.location,
+		participants : this.gameInfo.participants,
+		sport : this.gameInfo.sport,
+		players : this.gameInfo.players,
+		ID : this.gameInfo.ID
+	}
+
+	isUserInGame(){
+		for(player of this.gameInfo.players){
+			if(player.ID == -13 ){
+				return false
+			}
+		}
+		return true
+	}
+
+	determinePlayerSize(){
+		var currentNumPlayers = this.state.players.length;
+		var participantValue = this.state.participants;
+		if(participantValue == 0){
+			return currentNumPlayers + "/5"; 
+		}
+		else if(participantValue == 1){
+			return currentNumPlayers + "/10"
+		}
+		else if(participantValue == 2){
+			return currentNumPlayers + "/15"
+		}
+		else if(participantValue == 3){
+			return currentNumPlayers + "/20"
+		}
+		else if(participantValue == 4){
+			return currentNumPlayers + "/20+"
+		}
+	}
+
+	async addPlayerToGame(){
+		//console.log(this.gameInfo); 
+		player = {name: "not john doe", ID: -13};
+		newPlayerList = this.state.players
+		newPlayerList.push(player)
+		this.setState({players : newPlayerList})
+		//FBFunctions.storeData(this.state); 
+
+		var event = {
+			sport: this.state.sport,
+			participants: + this.state.participants,
+			gameName : this.state.name,
+			date:  this.state.date,
+			location : this.state.location,
+			description : this.state.description,
+			players : this.state.players,
+			ID : this.state.ID
+		}
+		if( JSON.parse( JSON.stringify(event)) ){
+			FBFunctions.updateData(event)
+			this.setState({showJoinGameButton : false})	
+		}
+		else{
+			console.log(" : ( ");
+		}
+	}
 
   render() {
     return (
+		<SafeAreaView style = {{flex: 1}}>
       <View style={styles.joinform}>
-      	<Text style={styles.header}> Join a Game </Text>
+      	<Text style={styles.header}> Join {this.state.name} </Text>
       	<Text style={styles.text_title}> Quick pickup anyone?</Text>
       	<Text style={styles.text_important}> 10/23/2019, 4:00pm </Text>
       	<Text style={styles.text}> Created by: Ronald Dough </Text>
-      	<Text style={styles.text}> Description: Join if you are good. </Text>
-      	<Text style={styles.text}> Location: Socker Field </Text>
-      	<Text style={styles.text}> Number of Players: 3/16 </Text>
-
-      	<TouchableOpacity style = {styles.button}>
-      		<Text style={styles.btntext}>Join</Text>
+		<Text style={styles.text}> Description: {this.state.description}</Text>
+      	<Text style={styles.text}> Location: {this.state.location} </Text>
+      	<Text style={styles.text}> Number of Players: {this.determinePlayerSize()} </Text>
+		{ this.state.showJoinGameButton &&
+		<TouchableOpacity 
+      		style = {styles.button}
+			  onPress={() => 
+				this.addPlayerToGame()
+			}
+      	>
+      		<Text style={styles.btntext}>Join Game</Text>
       	</TouchableOpacity>
+  }
       </View>
+	  </SafeAreaView>
     );
   }
 }
