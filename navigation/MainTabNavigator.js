@@ -144,7 +144,8 @@ LoginScreenStack.path = '';
 
 const ProfilePageStack = createStackNavigator(
   {
-    ProfilePage: ProfilePageScreen,
+    NewProfilePage: NewProfilePage,
+    Login: LoginScreen,
   },
   config
 );
@@ -179,7 +180,7 @@ NewProfilePage.path = '';
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   CreateGameStack,
-  JoinGameStack,
+  ProfilePageStack,
 });
 
 tabNavigator.path = '';

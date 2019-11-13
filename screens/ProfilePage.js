@@ -6,7 +6,8 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
-  TextInput
+  TextInput,
+  AsyncStorage
 } from 'react-native';
 
 import { Input, Header, ListItem, Card, Button, Icon } from 'react-native-elements';
@@ -32,12 +33,27 @@ export default class Profile extends Component{
       }
   }
 
-  changeStateVar(status){
-    this.setState({loggedIn : status});
+  async changeStateVar(status){
+    //prop bad idea but im tired
+    await AsyncStorage.clear();
+    //this.props.navigation.navigate("Login")
+    this.props.navigation.navigate('Auth')
+   //this.setState({loggedIn : status});
+  }
+
+  getPhotoUrl(){
+    try {
+      AsyncStorage.getItem('photoUrl').then((keyValue) => {
+        console.log(keyValue)
+        return keyValue;
+      });
+    } catch (error) {
+      console.log("Something went wrong: " + error)
+    }
   }
 
   state = {
-    loggedIn : false
+    loggedIn : true
   };
 
 	render(){
@@ -53,7 +69,7 @@ export default class Profile extends Component{
     />
 		        <View style={styles.header}></View>
             <Image
-            style={styles.avatar} source={{uri: this.state.loggedIn == true ? 'https://bootdey.com/img/Content/avatar/avatar6.png' : 'https://i0.wp.com/bsnl.ch/wp-content/uploads/2019/03/avatar-default-circle.png'}}/>
+            style={styles.avatar} source={{uri: this.state.loggedIn == true ? this.getPhotoUrl() : 'https://i0.wp.com/bsnl.ch/wp-content/uploads/2019/03/avatar-default-circle.png'}}/>
 		        <View style={styles.body}>
               {this.state.loggedIn &&
 		            <View style={styles.bodyContent}>
@@ -66,9 +82,6 @@ export default class Profile extends Component{
                     style={styles.buttonContainer}>
 		                <Text>Sign Out</Text>  
 		              </TouchableOpacity>              
-		              <TouchableOpacity style={styles.buttonContainer}>
-		                <Text>Opcion 2</Text> 
-		              </TouchableOpacity>
 		            </View>
                 }
                 

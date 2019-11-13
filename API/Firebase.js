@@ -55,7 +55,7 @@ export const FBFunctions = {
       }, function(err){
         console.log("The read failed: " + err);
       })
-      console.log(events)
+      //console.log(events)
     if(events.length == 0){
       //return this.getData();
     }

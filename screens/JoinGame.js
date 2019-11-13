@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import {FBFunctions} from '../API/Firebase'
-import { SafeAreaView, StyleSheet, View, Text,TextInput, TouchableOpacity } from 'react-native';
+import { AsyncStorage, SafeAreaView, StyleSheet, View, Text,TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
+import { Card, ListItem } from 'react-native-elements';
 
 export default class JoinGame extends Component {
+
+
 	gameInfo = this.props.navigation.getParam("gameName");
+	run = this.isUserInGame()
 	state = {
-		showJoinGameButton : this.isUserInGame(),
+		showJoinGameButton : true,
 		date : this.gameInfo.date,
 		description : this.gameInfo.description,
 		name : this.gameInfo.gameName,
@@ -14,21 +18,35 @@ export default class JoinGame extends Component {
 		participants : this.gameInfo.participants,
 		sport : this.gameInfo.sport,
 		players : this.gameInfo.players,
-		ID : this.gameInfo.ID
+		ID : this.gameInfo.ID,
+		playersList : [],
+		userID: " ",
+		userName: " "
 	}
 
-	isUserInGame(){
+	async isUserInGame(){
+		console.log(this.gameInfo)
+		const localUserID = JSON.parse( await AsyncStorage.getItem("userID"));
+		const localUserName = JSON.parse( await AsyncStorage.getItem("userName"));
+		console.log(localUserID)
+		var listOfPlayers = []
 		for(player of this.gameInfo.players){
-			if(player.ID == -13 ){
-				return false
+				listOfPlayers.push(player.name)
+			if(player.ID == localUserID ){
+				console.log("we got false")
+				this.setState({showJoinGameButton : false})
 			}
 		}
-		return true
+		this.setState({playersList : listOfPlayers})
+		this.setState({userID : localUserID})
+		this.setState({userName : localUserName})
 	}
 
 	determinePlayerSize(){
 		var currentNumPlayers = this.state.players.length;
+		console.log("good")
 		var participantValue = this.state.participants;
+		console.log("also good")
 		if(participantValue == 0){
 			return currentNumPlayers + "/5"; 
 		}
@@ -48,7 +66,7 @@ export default class JoinGame extends Component {
 
 	async addPlayerToGame(){
 		//console.log(this.gameInfo); 
-		player = {name: "not john doe", ID: -13};
+		player = {name: this.state.userName, ID: this.state.userID};
 		newPlayerList = this.state.players
 		newPlayerList.push(player)
 		this.setState({players : newPlayerList})
@@ -65,7 +83,7 @@ export default class JoinGame extends Component {
 			ID : this.state.ID
 		}
 		if( JSON.parse( JSON.stringify(event)) ){
-			FBFunctions.updateData(event)
+			await FBFunctions.updateData(event)
 			this.setState({showJoinGameButton : false})	
 		}
 		else{
@@ -76,6 +94,7 @@ export default class JoinGame extends Component {
   render() {
     return (
 		<SafeAreaView style = {{flex: 1}}>
+			<ScrollView style = {{flex: 1}}>
       <View style={styles.joinform}>
       	<Text style={styles.header}> Join {this.state.name} </Text>
       	<Text style={styles.text_title}> Quick pickup anyone?</Text>
@@ -84,6 +103,17 @@ export default class JoinGame extends Component {
 		<Text style={styles.text}> Description: {this.state.description}</Text>
       	<Text style={styles.text}> Location: {this.state.location} </Text>
       	<Text style={styles.text}> Number of Players: {this.determinePlayerSize()} </Text>
+		  <Card title="Players In This Event">
+      		{this.state.playersList.map((item, i) => (
+        	<ListItem
+          key={i}
+          title={item}
+          bottomDivider
+          chevron
+        />
+			  
+      ))}
+    </Card>
 		{ this.state.showJoinGameButton &&
 		<TouchableOpacity 
       		style = {styles.button}
@@ -95,6 +125,7 @@ export default class JoinGame extends Component {
       	</TouchableOpacity>
   }
       </View>
+	  </ScrollView>
 	  </SafeAreaView>
     );
   }

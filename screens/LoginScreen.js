@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text,TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text,TextInput, TouchableOpacity, Alert } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import firebase from 'firebase';
-import { Image } from 'react-native';
+import { Image, AsyncStorage } from 'react-native';
 
 export default class LoginScreen extends Component {
 	isUserEqual = (googleUser, firebaseUser) => {
@@ -20,8 +20,9 @@ export default class LoginScreen extends Component {
 	    }
     	return false;
   };
-    onSignIn = googleUser => {
-	    console.log('Google Auth Response', googleUser);
+     onSignIn = googleUser => {
+		console.log('Google Auth Response', googleUser);
+		this.saveUserID(googleUser)
 	    // We need to register an Observer on Firebase Auth to make sure auth is initialized.
 	    var unsubscribe = firebase.auth().onAuthStateChanged(
 	      function(firebaseUser) {
@@ -38,7 +39,8 @@ export default class LoginScreen extends Component {
 	            .auth()
 	            .signInAndRetrieveDataWithCredential(credential)
 	            .then(function(result) {
-	              console.log('user signed in ');
+				  console.log('user signed in ');
+				  console.log(result);
 	              if (result.additionalUserInfo.isNewUser) {
 	                firebase
 	                  .database()
@@ -70,6 +72,25 @@ export default class LoginScreen extends Component {
 	      }.bind(this)
 	    );
 	  };
+
+	async saveUserID(user){
+		console.log("called?")
+		console.log("look at meeeeeeee " , user)
+		console.log(user.user.photoUrl)
+		console.log(user.user.id)
+		console.log(user.user.name)
+
+			try{
+				await AsyncStorage.setItem("userID", JSON.stringify(user.user.id));
+				await AsyncStorage.setItem("photoUrl", JSON.stringify(user.user.photoUrl));
+				await AsyncStorage.setItem("userName", JSON.stringify(user.user.name));
+			}
+			catch(error){
+				Alert.alert("something went wrong: " + error)
+			}
+	}
+
+
 	signInWithGoogleAsync = async () => {
 	  try {
 	    const result = await Google.logInAsync({
