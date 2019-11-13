@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { KeyboardAvoidingView, Alert, Dimensions, Picker, StyleSheet, View, Text,TextInput, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { AsyncStorage, KeyboardAvoidingView, Alert, Dimensions, Picker, StyleSheet, View, Text,TextInput, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Header, TouchableHighlight, Modal, Input, Button, Overlay, Card, Divider } from 'react-native-elements';
 import { tsConstructorType } from '@babel/types';
@@ -20,7 +20,29 @@ export default class CreateGame extends Component{
 			+ this.state.description + '\n')
 	}
 
+	//either this or import uuid library 
+	createID(){
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+			var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+			return v.toString(16);
+		  });
+	}
+
+	async getUserName(){
+		const value = await AsyncStorage.getItem("userName");
+		//console.log(value);
+		this.setState({name: JSON.parse(value)});
+	}
+
+	async getUserID(){
+		const value = await AsyncStorage.getItem("userID");
+		//console.log(value)
+		this.setState({ ID: JSON.parse(value) })
+	}
+
 	async submitEvent(){
+		await this.getUserID()
+		await this.getUserName()
 		var event = {
 			sport: this.state.sport,
 			participants: + this.state.participants,
@@ -28,7 +50,10 @@ export default class CreateGame extends Component{
 			date:  this.state.date,
 			location : this.state.location,
 			description : this.state.description,
+			players: [{name: this.state.name, ID: this.state.ID }],
+			ID: "null"
 		}
+		console.log(event)
 		if( JSON.parse( JSON.stringify(event)) ){
 			FBFunctions.storeData(event)	
 		}
@@ -39,6 +64,8 @@ export default class CreateGame extends Component{
 		//console.log("done")
 	}
 
+	
+
 	state = {
 		sport : "Select a sport",
 		participants: "Select number of participants",
@@ -47,7 +74,9 @@ export default class CreateGame extends Component{
 		gameName: "blank",
 		date: "blank",
 		location: "blank",
-		description: "blank"
+		description: "blank",
+		name: " ",
+		ID: " "
 	};
 
 		render(){

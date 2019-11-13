@@ -4,27 +4,58 @@ import { getProvidesAudioData } from 'expo/build/AR';
 export const FBFunctions = {
 
   async storeData(data){
-    await firebase.database().ref("Events").push({ 
+    console.log("calling FB push")
+    dataReference = await firebase.database().ref("/Events/").push();
+    dataReference.set({ 
+
       sport: data.sport,
-			participants: + data.participants,
+			participants: data.participants,
 			gameName : data.gameName,
 			date:  data.date,
 			location : data.location,
-			description : data.description,
+      description : data.description, 
+      players: data.players,
+      ID: dataReference.toString().slice(-20)
+      
+    })
+    console.log("success");
+ },
+
+ async updateData(data){
+  console.log("calling FB update")
+    await firebase.database().ref("/Events/" + data.ID).update({ 
+
+      /*
+      sport: this.state.sport,
+			participants: + this.state.participants,
+			gameName : this.state.name,
+			date:  this.state.date,
+			location : this.state.location,
+			description : this.state.description,
+			players : this.state.players
+      */
+
+      sport: data.sport,
+			participants: data.participants,
+			gameName : data.gameName,
+			date:  data.date,
+			location : data.location,
+      description : data.description, 
+      players: data.players
     });
     console.log("success");
  },
 
   getData(){
     var events = [];
-      firebase.database().ref("Events").on("value", function(snapshot){
+      firebase.database().ref("/Events").on("value", function(snapshot){
         snapshot.forEach(function(childSnapshot){
           events.push(childSnapshot.val())
         })
       }, function(err){
         console.log("The read failed: " + err);
       })
-      console.log(events)
+      //console.log(events)
     if(events.length == 0){
       //return this.getData();
     }

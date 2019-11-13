@@ -16,7 +16,8 @@ import {
   View,
   SafeAreaView,
   Dimensions,
-  Alert
+  Alert,
+  AsyncStorage
 } from 'react-native';
 import Constants from 'expo-constants';
 import { Avatar, Header, ListItem, Card, Button, Icon } from 'react-native-elements';
@@ -48,8 +49,18 @@ export default class HomeScreen extends Component{
     showEventsUserIn : true,
     showEventsNearUser : true,
     showEventsFriendsIn : true,
-    refreshing : false
+    refreshing : false,
   };
+
+  getPhotoUrl(){
+    try {
+      AsyncStorage.getItem('photoUrl').then((keyValue) => {
+        return JSON.parse(keyValue);
+      });
+    } catch (error) {
+      Alert.alert("Something went wrong: " + error)
+    }
+  }
 
   onRefresh(){
     
@@ -75,9 +86,8 @@ export default class HomeScreen extends Component{
           this.props.navigation.navigate('Profile')
         }}
   rounded
-  source={{
-    uri:
-      'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+  source={{ 
+    uri: this.getPhotoUrl()
   }}
 />
       }
@@ -100,7 +110,8 @@ export default class HomeScreen extends Component{
       FBFunctions.getData().map((item, i) => (
         <TouchableHighlight
           onPress={() => {
-            this.props.navigation.navigate('Details', {gameName: item.gameName})
+            //console.log(this.getPhotoUrl())
+            this.props.navigation.navigate('JoinGame', {gameName: item})
           }}>
         <ListItem
           key={i}
