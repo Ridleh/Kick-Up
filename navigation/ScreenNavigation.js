@@ -11,7 +11,6 @@ import ProfilePageScreen from '../screens/ProfilePage';
 import MainTabNavigator from '../navigation/MainTabNavigator';
 import MapScreen from '../screens/MapScreen';
 
-
 //not used
 const screenStack = createStackNavigator({
     MainTab: MainTabNavigator,
