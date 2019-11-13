@@ -9,6 +9,7 @@ import LoadingScreen from '../screens/LoadingScreen'
 import LoginScreen from '../screens/LoginScreen'
 import ProfilePageScreen from '../screens/ProfilePage'
 import MainTabNavigator from '../navigation/MainTabNavigator'
+import MapScreen from '../screens/MapScreen';
 
 
 //not used
@@ -20,6 +21,7 @@ const screenStack = createStackNavigator({
     Loading: LoadingScreen,
     Login: LoginScreen,
     Profile: ProfilePageScreen
+    Maps: MapScreen
 });
 
 export default screenStack

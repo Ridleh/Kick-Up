@@ -13,6 +13,7 @@ import LoginScreen from '../screens/LoginScreen';
 import ProfilePageScreen from '../screens/ProfilePage';
 import DetailsScreen from '../screens/DetailsScreen';
 import NewProfilePage from '../screens/NewProfilePage';
+import MapScreen from '../screens/MapScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -81,6 +82,7 @@ SettingsStack.path = '';
 const CreateGameStack = createStackNavigator(
   {
     CreateGame: CreateGameScreen,
+    Maps: MapScreen
   },
   config
 );
