@@ -73,9 +73,9 @@ export default class Profile extends Component{
 		        <View style={styles.body}>
               {this.state.loggedIn &&
 		            <View style={styles.bodyContent}>
-		              <Text style={styles.name}>John Doe</Text>
+		              <Text style={styles.name}>Kevin Chao</Text>
 		              <Text style={styles.info}>UX Designer / Mobile developer</Text>
-		              <Text style={styles.description}>Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum electram expetendis, omittam deseruisse consequuntur ius an,</Text>
+		              <Text style={styles.description}>Student</Text>
 		              
                   <TouchableOpacity
                     onPress={() => this.changeStateVar(false)} 
