@@ -99,6 +99,7 @@ CreateGameStack.path = '';
 const JoinGameStack = createStackNavigator(
   {
     JoinGame: JoinGameScreen,
+    Home: HomeScreen
   },
   config
 );
@@ -140,7 +141,7 @@ LoginScreenStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
   ),
-};
+}; 
 
 LoginScreenStack.path = '';
 
@@ -180,7 +181,7 @@ NewProfilePage.path = '';
 
 
 const tabNavigator = createBottomTabNavigator({
-  HomeStack,
+  HomeStack, 
   CreateGameStack,
   ProfilePageStack,
 });

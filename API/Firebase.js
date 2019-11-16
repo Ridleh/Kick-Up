@@ -8,10 +8,12 @@ export const FBFunctions = {
     dataReference = await firebase.database().ref("/Events/").push();
     dataReference.set({ 
 
+      
       sport: data.sport,
 			participants: data.participants,
 			gameName : data.gameName,
-			date:  data.date,
+      date:  data.date,
+      //dateFormatted: data.DateFormatted,
 			location : data.location,
       description : data.description, 
       players: data.players,
