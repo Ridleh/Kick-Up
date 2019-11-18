@@ -62,7 +62,26 @@ export const FBFunctions = {
       //return this.getData();
     }
     return events;
+ },
+
+ async getFriendQuery(){
+  var events = [];
+  await firebase.database().ref("/users").on("value", function(snapshot){
+    snapshot.forEach(function(childSnapshot){
+      events.push(childSnapshot.val())
+    })
+    
+  }, function(err){
+    console.log("The read failed: " + err);
+  })
+  //console.log(events)
+if(events.length == 0){
+  //return this.getData();
+}
+//console.log('bum', events)
+return events;
  }
+
 
 }
 

@@ -14,6 +14,7 @@ import ProfilePageScreen from '../screens/ProfilePage';
 import DetailsScreen from '../screens/DetailsScreen';
 import NewProfilePage from '../screens/NewProfilePage';
 import MapScreen from '../screens/MapScreen';
+import FriendsScreen from '../screens/FriendsScreen'
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -36,11 +37,7 @@ HomeStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
+      name={'ios-home'}
     />
   ),
 };
@@ -70,6 +67,7 @@ const SettingsStack = createStackNavigator(
   config
 );
 
+
 SettingsStack.navigationOptions = {
   tabBarLabel: 'Settings',
   tabBarIcon: ({ focused }) => (
@@ -82,7 +80,8 @@ SettingsStack.path = '';
 const CreateGameStack = createStackNavigator(
   {
     CreateGame: CreateGameScreen,
-    Maps: MapScreen
+    Maps: MapScreen,
+    Home: HomeScreen
   },
   config
 );
@@ -90,7 +89,7 @@ const CreateGameStack = createStackNavigator(
 CreateGameStack.navigationOptions = {
   tabBarLabel: 'Create Game',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+    <TabBarIcon focused={focused} name={'md-create'} />
   ),
 };
 
@@ -179,11 +178,28 @@ NewProfilePage.navigationOptions ={
 
 NewProfilePage.path = '';
 
+const FriendsScreenStack = createStackNavigator(
+  {
+    Friends : FriendsScreen
+  },
+  config
+);
+
+FriendsScreenStack.navigationOptions ={
+  tabBarLabel: 'Friends',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={'ios-people'} />
+  ),
+};
+
+FriendsScreenStack.path = '';
+
+
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack, 
   CreateGameStack,
-  ProfilePageStack,
+  FriendsScreenStack,
 });
 
 tabNavigator.path = '';

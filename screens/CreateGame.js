@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AsyncStorage, KeyboardAvoidingView, Alert, Dimensions, Picker, StyleSheet, View, Text,TextInput, TouchableOpacity, SafeAreaView, ScrollView, Platform, StatusBar, DatePickerAndroid, TimePickerAndroid, DatePickerIOS } from 'react-native';
 //import Icon from 'react-native-vector-icons/FontAwesome';
-import { CheckBox, Icon, Header, TouchableHighlight, Modal, Input, Button, Overlay, Card, Divider } from 'react-native-elements';
+import { Avatar, CheckBox, Icon, Header, TouchableHighlight, Modal, Input, Button, Overlay, Card, Divider } from 'react-native-elements';
 import { tsConstructorType } from '@babel/types';
 import {FBFunctions} from '../API/Firebase';
 import * as Calendar from 'expo-calendar'
@@ -99,6 +99,16 @@ export default class CreateGame extends Component{
 		  });
 	}
 
+	getPhotoUrl(){
+		try {
+		  AsyncStorage.getItem('photoUrl').then((keyValue) => {
+			return JSON.parse(keyValue);
+		  });
+		} catch (error) {
+		  Alert.alert("Something went wrong: " + error)
+		}
+	  }
+
 	async getUserName(){
 		const value = await AsyncStorage.getItem("userName");
 		//console.log(value);
@@ -180,9 +190,19 @@ export default class CreateGame extends Component{
 				<Header
 					containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
 					statusBarProps={{ barStyle: 'light-content' }}
-					leftComponent={{ icon: 'menu', color: '#fff' }}
 					centerComponent={{ text: 'Create A Game', style: { color: '#fff' , fontSize: 20} }}
-					rightComponent={{ icon: 'home', color: '#fff' }}	
+					rightComponent={
+						<Avatar
+						onPress={() => {
+						  console.log("touched registered")
+						  this.props.navigation.navigate('Profile')
+						}}
+				  rounded
+				  source={{ 
+					uri: this.getPhotoUrl()
+				  }}
+				/>
+					  }	
     			/>
 				<ScrollView>
 				<Card title={"Please complete this form"}
