@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {FBFunctions} from '../API/Firebase';
 import { Dimensions, AsyncStorage, View, Text, SafeAreaView } from 'react-native';
-import {Card, Header, Avatar, Button, Icon, Overlay, SearchBar, ListItem} from 'react-native-elements'
+import {Card, Header, Avatar, Button, Icon, Overlay, SearchBar, ListItem, Input} from 'react-native-elements'
 
 let devicewWidth = Dimensions.get('window').width;
 
@@ -14,6 +14,7 @@ export default class Friends extends Component{
     state = {
         FriendsListSearch : [],
         FriendsList : [],
+        pendingFriends : [],
         showSearchFriends: false,
         search: ' '
     }
@@ -50,6 +51,33 @@ export default class Friends extends Component{
             this.setState({ FriendsListSearch : friendFilter  });
         })
         
+    }
+
+    createFriendRequest = (friend, FriendsListSearch) => {
+        const currentRequests = this.state.pendingFriends;
+        if(currentRequests.indexOf(friend) == -1){
+            currentRequests.push(friend)
+            
+
+            const index = FriendsListSearch.indexOf(friend);
+            FriendsListSearch.splice(index,1);
+            this.setState({pendingFriends : currentRequests})
+        }
+        else{
+            console.log('something went wrong')
+        }
+    }
+
+    removeFriendRequest = (friend) => {
+        const pendingList = this.state.pendingFriends
+        const index = pendingList.indexOf(friend)
+        if(index != -1){
+            pendingList.splice(index,1)
+            this.setState({pendingFriends : pendingList})
+        }
+        else{
+            console.log('something went wrong :(')
+        }
     }
  
     render(){
@@ -108,13 +136,34 @@ export default class Friends extends Component{
                                 title={item.first_name + " " + item.last_name}
                                 //leftIcon={{ name: item.icon }}
                                 bottomDivider
-                                chevron
+                                rightIcon= {<Icon
+                                name='add' />}
+                                onPress={() => this.createFriendRequest(item, this.state.FriendsListSearch)}
                                 />
                             ))
                             }
+                            {this.state.FriendsListSearch.length != 0 && <Input placeholder='Enter an invite message'/>}
                         </Card>
                     </View>
                 </Overlay>
+                        {
+                            this.state.pendingFriends.length != 0 &&
+                            <Card
+                            title='Pending Friend Requests'>
+                                {this.state.pendingFriends.map((item,i) => (
+                                    <ListItem
+                                    key={i}
+                                    title={item.first_name + " " + item.last_name}
+                                    //leftIcon={{ name: item.icon }}
+                                    bottomDivider
+                                    rightIcon= {<Icon
+                                        onPress={() => this.removeFriendRequest(item)}
+                                    
+                                    name='clear' />}
+                                    />
+                                ))}
+                            </Card>
+                        }
                 <Card title={"Friends List"}
 					style = {{width:devicewWidth}}>
                         {

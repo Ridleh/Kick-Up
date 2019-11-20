@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {FBFunctions} from '../API/Firebase'
-import { AsyncStorage, SafeAreaView, StyleSheet, View, Text,TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { Share, AsyncStorage, SafeAreaView, StyleSheet, View, Text,TextInput, TouchableOpacity, ScrollView, Button } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import { Card, ListItem } from 'react-native-elements';
+import { Card, ListItem, Icon } from 'react-native-elements';
 
 export default class JoinGame extends Component {
 
@@ -91,15 +91,34 @@ export default class JoinGame extends Component {
 		}
 	}
 
+	shareGame = async() =>{
+		try{
+			const result = await Share.share({
+				message: `come join ${this.state.name} | ${this.state.description}`,
+			});
+
+			if(result.action === Share.sharedAction){
+				if(result.activityType){
+					console.log('success')
+				}
+				else{
+					console.log('oh no')
+				}
+			}
+		}
+		catch(error){
+			console.log('something went wrong: ' + error)
+		}
+	}
+
   render() {
     return (
 		<SafeAreaView style = {{flex: 1}}>
 			<ScrollView style = {{flex: 1}}>
       <View style={styles.joinform}>
       	<Text style={styles.header}> Join {this.state.name} </Text>
-      	<Text style={styles.text_title}> Quick pickup anyone?</Text>
       	<Text style={styles.text_important}> 10/23/2019, 4:00pm </Text>
-      	<Text style={styles.text}> Created by: Ronald Dough </Text>
+      	<Text style={styles.text}> Created by: {this.state.userName} </Text>
 		<Text style={styles.text}> Description: {this.state.description}</Text>
       	<Text style={styles.text}> Location: {this.state.location} </Text>
       	<Text style={styles.text}> Number of Players: {this.determinePlayerSize()} </Text>
@@ -124,6 +143,11 @@ export default class JoinGame extends Component {
       		<Text style={styles.btntext}>Join Game</Text>
       	</TouchableOpacity>
   }
+		<Button
+		title='share this game'
+		onPress={() => this.shareGame()}>
+
+		</Button>
       </View>
 	  </ScrollView>
 	  </SafeAreaView>
