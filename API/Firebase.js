@@ -48,6 +48,16 @@ export const FBFunctions = {
     console.log("success");
  },
 
+ async updateFriendsList(userID, friend){
+    dataReference =  await firebase.database().ref("/Friends Lists/" + userID).push();
+    dataReference.set({
+        personsName: friend.personsName,
+        personsEmail: friend.personsEmail,
+        refID: dataReference.toString().slice(-20),
+        userID: userID
+    })
+ },
+
   getData(){
     var events = [];
       firebase.database().ref("/Events").on("value", function(snapshot){
@@ -62,6 +72,17 @@ export const FBFunctions = {
       //return this.getData();
     }
     return events;
+ },
+
+ async getFriends(userID){
+   friendsList = []
+    var ref = firebase.database().ref("/Friends Lists/" + userID);
+    await ref.orderByChild('userID').equalTo(userID).on('value', function(snapshots){
+      snapshots.forEach(function(childSnapshot){
+        friendsList.push(childSnapshot.val())
+      })
+    });
+    return friendsList;
  },
 
  async getFriendQuery(){
@@ -80,9 +101,59 @@ if(events.length == 0){
 }
 //console.log('bum', events)
 return events;
- }
+ },
 
+async createFriendRequest(request){
+  console.log(request)
+  dataReference = await firebase.database().ref("/Friend Requests/").push();
+  dataReference.set({
+    requestFromID: request.requestFromID,
+    requestFromName: request.requestFromName,
+    requestToEmail: request.requestToEmail,
+    first_name: request.first_name,
+    last_name : request.last_name,
+    refID: dataReference.toString().slice(-20),
+  })
+},
 
+async getPendingFriendRequestsForUser(userID){
+  const pendingRequests = [];
+  var ref = firebase.database().ref("Friend Requests");
+  await ref.orderByChild("requestFromID").equalTo(userID).on("value", function(snapshots) {
+    snapshots.forEach(function(childSnapshot){
+      pendingRequests.push(childSnapshot.val())
+    })
+    //console.log(pendingRequests)
+    
+  });
+  return pendingRequests;
+},
+
+async getUserInfo(userGmail){
+  const ref = firebase.database().ref("/users");
+  await ref.orderByChild('gmail').equalTo(userGmail).on('value', function(snapshots){
+    return snapshots.val()
+  })
+},
+
+async getIncomingFriendRequestsForUser(userGmail){
+  const incomingRequests = [];
+  var ref = firebase.database().ref("Friend Requests");
+  await ref.orderByChild("requestToEmail").equalTo(userGmail).on("value", function(snapshots) {
+    snapshots.forEach(function(childSnapshot){
+      incomingRequests.push(childSnapshot.val())
+    })
+    //console.log(pendingRequests)
+    
+  });
+  return incomingRequests;
+},
+
+deleteFriendRequest(ID){
+  firebase.database().ref("/Friend Requests/" + ID).remove();
+
+}
+ 
 }
 
 /*

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {FBFunctions} from '../API/Firebase';
-import { Dimensions, AsyncStorage, View, Text, SafeAreaView } from 'react-native';
+import { Dimensions, AsyncStorage, View, Text, SafeAreaView, ScrollView } from 'react-native';
 import {Card, Header, Avatar, Button, Icon, Overlay, SearchBar, ListItem, Input} from 'react-native-elements'
+import { tsThisType } from '@babel/types';
 
 let devicewWidth = Dimensions.get('window').width;
 
@@ -16,12 +17,28 @@ export default class Friends extends Component{
         FriendsList : [],
         pendingFriends : [],
         showSearchFriends: false,
+        incomingFriendRequests: [],
         search: ' '
     }
 
-    async componentDidMount(){
+    componentDidMount(){
+        /*
         const users = await FBFunctions.getFriendQuery('test')
         console.log('am i sad?', users)
+        this.getPendingFriendRequests()
+        this.getIncomingFriendRequests()
+        this.getFriends()
+        */
+       this.getAllData()
+    }
+
+    async getAllData(){
+        const users = await FBFunctions.getFriendQuery('test')
+        console.log('am i sad?', users)
+        this.getPendingFriendRequests()
+        this.getIncomingFriendRequests()
+        this.getFriends()
+        this.setState()
     }
 
     getPhotoUrl(){
@@ -33,7 +50,43 @@ export default class Friends extends Component{
 		  Alert.alert("Something went wrong: " + error)
 		}
       }
-      
+
+    async getFriends(){
+        const userID = await this.getUserID();
+        const freinds = await FBFunctions.getFriends(userID)
+        this.setState({FriendsList : freinds})
+    }
+
+    async getUserName(){
+        const userName = await AsyncStorage.getItem('userName')
+        return JSON.parse(userName)
+    }
+
+    async getUserID(){
+        const userID = await AsyncStorage.getItem('userID')
+        return JSON.parse(userID);
+    }
+
+    async getUserGmail(){
+        const userGmail = await AsyncStorage.getItem('gmail')
+        return JSON.parse(userGmail);
+    }
+
+    async getPendingFriendRequests(){
+        const userID = await this.getUserID()
+        console.log('object?',userID)
+        const result = await FBFunctions.getPendingFriendRequestsForUser(userID)
+        this.setState({pendingFriends : result})
+    }
+
+    async getIncomingFriendRequests(){
+        const userGmail = await this.getUserGmail()
+        console.log('object?',userGmail)
+        const result = await FBFunctions.getIncomingFriendRequestsForUser(userGmail)
+        console.log(result)
+        this.setState({incomingFriendRequests : result})
+    }
+
     async findFriends(searchValue){
 
         var friendFilter = [];
@@ -53,7 +106,8 @@ export default class Friends extends Component{
         
     }
 
-    createFriendRequest = (friend, FriendsListSearch) => {
+    createFriendRequest = async (friend, FriendsListSearch) => {
+        /*
         const currentRequests = this.state.pendingFriends;
         if(currentRequests.indexOf(friend) == -1){
             currentRequests.push(friend)
@@ -66,9 +120,27 @@ export default class Friends extends Component{
         else{
             console.log('something went wrong')
         }
+        console.log(friend);
+        */
+
+        request = {
+            requestFromName : await this.getUserName(),
+            requestFromID : await this.getUserID(), 
+            requestToEmail : friend.gmail,
+            first_name : friend.first_name,
+            last_name : friend.last_name
+        } 
+
+        FBFunctions.createFriendRequest(request)
+        this.getPendingFriendRequests()
     }
 
-    removeFriendRequest = (friend) => {
+    removeFriendRequest = (request) => {
+        FBFunctions.deleteFriendRequest(request)
+        this.setState()
+        this.getAllData()
+
+        /*
         const pendingList = this.state.pendingFriends
         const index = pendingList.indexOf(friend)
         if(index != -1){
@@ -78,12 +150,26 @@ export default class Friends extends Component{
         else{
             console.log('something went wrong :(')
         }
+        */
+    } 
+
+    async acceptFriendRequest(request){
+        const userID = await this.getUserID();
+        console.log(request)
+        const newFriend = {
+            personsName : request.first_name + " " + request.last_name,
+            personsEmail : request.requestToEmail,
+        }
+        FBFunctions.updateFriendsList(userID,newFriend)
+        this.removeFriendRequest(request.refID);
+
     }
  
     render(){
         return(
             <SafeAreaView>
             <View>
+            <ScrollView>
                 <Header
 					containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
 					statusBarProps={{ barStyle: 'light-content' }}
@@ -157,7 +243,29 @@ export default class Friends extends Component{
                                     //leftIcon={{ name: item.icon }}
                                     bottomDivider
                                     rightIcon= {<Icon
-                                        onPress={() => this.removeFriendRequest(item)}
+                                        onPress={() => this.removeFriendRequest(item.refID)}
+                                    
+                                    name='clear' />}
+                                    />
+                                ))}
+                            </Card>
+                        }
+                        {
+                            this.state.incomingFriendRequests.length != 0 &&
+                            <Card
+                            title='Incoming Friend Requests'>
+                                {this.state.incomingFriendRequests.map((item,i) => (
+                                    <ListItem
+                                    key={i}
+                                    title={item.first_name + " " + item.last_name}
+                                    //leftIcon={{ name: item.icon }}
+                                    bottomDivider
+                                    leftIcon= {<Icon
+                                        onPress={() => this.acceptFriendRequest(item)}
+                                    
+                                    name='check' />}
+                                    rightIcon= {<Icon
+                                        onPress={() => this.removeFriendRequest(item.refID)}
                                     
                                     name='clear' />}
                                     />
@@ -167,12 +275,27 @@ export default class Friends extends Component{
                 <Card title={"Friends List"}
 					style = {{width:devicewWidth}}>
                         {
-                            this.state.FriendsList.length == 0 ?
-                            <Text>You have no friends! Add some using the button above</Text>
-                            : 
-                            <Card></Card>
+                            this.state.FriendsList.length != 0 &&
+                                this.state.FriendsList.map((item,i) => (
+                                    <ListItem
+                                    key={i}
+                                    title={item.personsName}
+                                    //leftIcon={{ name: item.icon }}
+                                    bottomDivider
+                                    leftIcon= {<Icon
+                                        onPress={() => this.props.navigation.navigate('profile')}
+                                    
+                                    name='person' />}
+                                    rightIcon= {<Icon
+                                        onPress={() => this.removeFriendRequest(item)}
+                                    
+                                    name='chat' />}
+                                    />
+                                ))
                         }
+                        
                     </Card>
+                    </ScrollView> 
             </View>
             </SafeAreaView>
         );

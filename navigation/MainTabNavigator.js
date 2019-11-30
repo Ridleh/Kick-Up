@@ -180,7 +180,8 @@ NewProfilePage.path = '';
 
 const FriendsScreenStack = createStackNavigator(
   {
-    Friends : FriendsScreen
+    Friends : FriendsScreen,
+    profile : ProfilePageScreen
   },
   config
 );
