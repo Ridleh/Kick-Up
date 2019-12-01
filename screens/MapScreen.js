@@ -1,9 +1,11 @@
 import React from 'react';
 import MapView from 'react-native-maps';
-import {Header } from 'react-native-elements';
-import { AppRegistry, StyleSheet, Text, View, Dimensions } from 'react-native';
+import {Header, Button } from 'react-native-elements';
+import { AppRegistry, StyleSheet, Text, View, Dimensions, Image } from 'react-native';
 
 import { SearchButton } from '../components/SearchButton';
+
+import markerImage from "../assets/current_location.png";
 
 const {width, height} = Dimensions.get('window')
 
@@ -19,7 +21,7 @@ export default class Maps extends React.Component {
     super(props)
 
     this.state = {
-      initialPosition: {
+      region: {
         latitude: 0,
         longitude: 0,
         latitudeDelta: 0,
@@ -29,12 +31,13 @@ export default class Maps extends React.Component {
         latitude: 0,
         longitude: 0
       }
+      
     }
     this.watchID = null
 
 
   }
-
+  
 
   watchID: ?number = null
 
@@ -50,7 +53,7 @@ export default class Maps extends React.Component {
         longitudeDelta: LONGITUDE_DELTA
       }
 
-      this.setState({initialPosition: initialRegion})
+      this.setState({region: initialRegion})
       this.setState({markerPosition: initialRegion})
     }, (error) => alert(JSON.stringify(error)),
     {enableHighAccuracy: true, timeout: 20000, maximumAge: 20000})
@@ -66,7 +69,7 @@ export default class Maps extends React.Component {
         longitudeDelta: LONGITUDE_DELTA
       } 
 
-      this.setState({initialPosition: lastRegion})
+      this.setState({region: lastRegion})
       this.setState({markerPosition: lastRegion})
     })
   }
@@ -75,50 +78,70 @@ export default class Maps extends React.Component {
     navigator.geolocation.clearWatch(this.watchID)
   }
 
+  onMapRegionChange(region) {
+    this.setState({region});
+  }
+
+  getCoordsFromName(loc) {
+    this.setState({
+      region: {
+        latitude: loc.lat,
+        longitude: loc.lng,
+        latitudeDelta: LATTITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      }
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <SearchButton />
-        <Header
-          containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
-          statusBarProps={{ barStyle: 'light-content' }}
-          leftComponent={{ icon: 'menu', color: '#fff' }}
-          centerComponent={{ text: 'Create A Game', style: { color: '#fff' , fontSize: 20} }}
-          rightComponent={{ icon: 'home', color: '#fff' }}  
-        />
+
+        
         
         <MapView
-          region={this.state.initialPosition}
+          region={this.state.region}
+          //onRegionChange = {(reg) => this.props.onMapRegionChange(reg)}
           style={styles.mapStyle}>
           <MapView.Marker
-            coordinate = {this.state.markerPosition}>
+            coordinate = {this.state.region}>
+            <Image source={require('../assets/current_location.png')} style={{height: 35, width:35 }} />
+            
             <View style = {styles.radius}>
               <View style = {styles.marker}>
+
               </View>
+
             </View>
           </MapView.Marker>
+
+          
         </MapView>
+
+        <SearchButton notifyChange = {(loc) => this.getCoordsFromName(loc)}/>
+        <Button
+            title="->"
+            type="solid"
+            onPress={() => {
+                this.props.navigation.navigate('CreateGame', {
+                 loc_lat : this.state.region.latitude,
+                 loc_long : this.state.region.longitude,
+               })
+
+            }}
+          />
       </View>
-    ); 
+    );
   }
 }
 
-Maps.navigationOptions = {
-  header: null
-};
+////Maps.navigationOptions = {
+  //header: null
+//};
 
 
 const styles = StyleSheet.create({
-  header: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: '#000000',
-    paddingBottom: 10,
-    marginBottom: 40,
-    borderBottomColor: '#199187',
-    borderBottomWidth: 1,
-    
-  },
+  
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -128,5 +151,12 @@ const styles = StyleSheet.create({
   mapStyle: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height - 129,
+  },
+  button: {
+    alignSelf:'stretch',
+    alignItems:'center',
+    padding:20,
+    backgroundColor:'#4caf50',
+    marginTop:30,
   },
 });

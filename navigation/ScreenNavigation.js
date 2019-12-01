@@ -10,6 +10,7 @@ import LoginScreen from '../screens/LoginScreen';
 import ProfilePageScreen from '../screens/ProfilePage';
 import MainTabNavigator from '../navigation/MainTabNavigator';
 import MapScreen from '../screens/MapScreen';
+import SearchButton from '../screens/SearchButton';
 
 //not used
 const screenStack = createStackNavigator({
@@ -21,6 +22,7 @@ const screenStack = createStackNavigator({
     Login: LoginScreen,
     Profile: ProfilePageScreen,
     Maps: MapScreen
+
 });
 
 export default screenStack
