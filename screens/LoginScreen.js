@@ -87,6 +87,7 @@ export default class LoginScreen extends Component {
 				await AsyncStorage.setItem("userName", JSON.stringify(user.user.name));
 				await AsyncStorage.setItem("email", JSON.stringify(user.user.email));
 				await AsyncStorage.setItem("id", JSON.stringify(user.user.id));
+				await AsyncStorage.setItem("gmail", JSON.stringify(user.user.email));
 			}
 			catch(error){
 				Alert.alert("something went wrong: " + error)

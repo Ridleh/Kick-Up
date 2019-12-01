@@ -14,7 +14,8 @@ import ProfilePageScreen from '../screens/ProfilePage';
 import DetailsScreen from '../screens/DetailsScreen';
 import NewProfilePage from '../screens/NewProfilePage';
 import MapScreen from '../screens/MapScreen';
-import FriendsScreen from '../screens/FriendsScreen'
+import FriendsScreen from '../screens/FriendsScreen';
+import ChatScreen from '../screens/ChatScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -180,7 +181,9 @@ NewProfilePage.path = '';
 
 const FriendsScreenStack = createStackNavigator(
   {
-    Friends : FriendsScreen
+    Friends : FriendsScreen,
+    profile : ProfilePageScreen,
+    chat : ChatScreen
   },
   config
 );
@@ -193,6 +196,7 @@ FriendsScreenStack.navigationOptions ={
 };
 
 FriendsScreenStack.path = '';
+
 
 
 
