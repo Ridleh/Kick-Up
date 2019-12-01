@@ -287,7 +287,7 @@ export default class Friends extends Component{
                                     
                                     name='person' />}
                                     rightIcon= {<Icon
-                                        onPress={() => this.removeFriendRequest(item)}
+                                        onPress={() => this.props.navigation.navigate('chat')}
                                     
                                     name='chat' />}
                                     />
