@@ -190,19 +190,7 @@ export default class CreateGame extends Component{
 				<Header
 					containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
 					statusBarProps={{ barStyle: 'light-content' }}
-					centerComponent={{ text: 'Create A Game', style: { color: '#fff' , fontSize: 20} }}
-					rightComponent={
-						<Avatar
-						onPress={() => {
-						  console.log("touched registered")
-						  this.props.navigation.navigate('Profile')
-						}}
-				  rounded
-				  source={{ 
-					uri: this.getPhotoUrl()
-				  }}
-				/>
-					  }	
+					centerComponent={{ text: 'Create A Game', style: { color: '#fff' , fontSize: 20} }}	
     			/>
 				<ScrollView>
 				<Card title={"Please complete this form"}

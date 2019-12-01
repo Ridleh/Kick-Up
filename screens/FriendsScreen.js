@@ -8,8 +8,8 @@ let devicewWidth = Dimensions.get('window').width;
 
 export default class Friends extends Component{
 
-    constructor(){
-        super()
+  constructor() {
+    super()
     }
 
     state = {
@@ -40,16 +40,6 @@ export default class Friends extends Component{
         this.getFriends()
         this.setState()
     }
-
-    getPhotoUrl(){
-		try {
-		  AsyncStorage.getItem('photoUrl').then((keyValue) => {
-			return JSON.parse(keyValue);
-		  });
-		} catch (error) {
-		  Alert.alert("Something went wrong: " + error)
-		}
-      }
 
     async getFriends(){
         const userID = await this.getUserID();
@@ -166,6 +156,7 @@ export default class Friends extends Component{
     }
  
     render(){
+        const photo = this.state.photo
         return(
             <SafeAreaView>
             <View>
@@ -174,18 +165,6 @@ export default class Friends extends Component{
 					containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
 					statusBarProps={{ barStyle: 'light-content' }}
 					centerComponent={{ text: 'Friends', style: { color: '#fff' , fontSize: 20} }}
-					rightComponent={
-						<Avatar
-						onPress={() => {
-						  console.log("touched registered")
-						  this.props.navigation.navigate('Profile')
-						}}
-				  rounded
-				  source={{ 
-					uri: this.getPhotoUrl()
-				  }}
-				/>
-					  }	
     			/>
                 <View>      
                     <Button
