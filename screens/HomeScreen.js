@@ -39,8 +39,10 @@ const list = [
 
 export default class HomeScreen extends Component{
 
-  constructor(){
-    super()
+  constructor(props) {
+      super(props);
+      this.state = {photo: 'https://icon-library.net/images/default-profile-icon/default-profile-icon-16.jpg', };
+      this.getPhotoUrl();
     //this.getUserInfo()
     //this.getGames()
   }
@@ -83,16 +85,16 @@ export default class HomeScreen extends Component{
     console.log(this.participatingGames.length)
   }
  
-  getPhotoUrl(){
+  getPhotoUrl = async () => {
     try {
-      AsyncStorage.getItem('photoUrl').then((keyValue) => {
-        this.state.photoUrl = keyValue
-        //return keyValue;
-      });
-    } catch (error) {
-      Alert.alert("Something went wrong: " + error)
+        const photoUrl = await AsyncStorage.getItem('photoUrl');
+        const photo = JSON.parse(photoUrl)
+        this.setState({photo: photo});
     }
-  }
+    catch (error) {
+        // Manage error handling
+    }
+  } 
 
   onRefresh(){
     
@@ -105,6 +107,7 @@ export default class HomeScreen extends Component{
   }
   
   render(){
+    const photo = this.state.photo
   return( 
 
     <SafeAreaView style = {{flex: 1}}>
@@ -121,7 +124,7 @@ export default class HomeScreen extends Component{
         }}
   rounded
   source={{ 
-    uri: this.state.photoUrl
+    uri: photo
   }}
 />
       }
