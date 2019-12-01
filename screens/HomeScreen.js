@@ -51,6 +51,7 @@ export default class HomeScreen extends Component{
     showEventsNearUser : true,
     showEventsFriendsIn : true,
     refreshing : false,
+    photoUrl: '',
   };
 
   userID = " "
@@ -60,6 +61,7 @@ export default class HomeScreen extends Component{
 
   async componentDidMount(){
     console.log("called")
+    this.getPhotoUrl()
     this.getGames()
   }
 
@@ -67,7 +69,6 @@ export default class HomeScreen extends Component{
     this.participatingGames = []
     this.allGames = await FBFunctions.getData()
     this.userID = JSON.parse( await AsyncStorage.getItem("userID"));
-    console.log()
     for(game of this.allGames){
       for(player of game.players){
         if(player.ID === this.userID){
@@ -85,7 +86,8 @@ export default class HomeScreen extends Component{
   getPhotoUrl(){
     try {
       AsyncStorage.getItem('photoUrl').then((keyValue) => {
-        return JSON.parse(keyValue);
+        this.state.photoUrl = keyValue
+        //return keyValue;
       });
     } catch (error) {
       Alert.alert("Something went wrong: " + error)
@@ -95,8 +97,10 @@ export default class HomeScreen extends Component{
   onRefresh(){
     
     //FBFunctions.getData()
-    this.getGames()
+    this.getPhotoUrl();
+    this.getGames();
     this.setState();
+
     //this.setState({refreshing : false});
   }
   
@@ -117,7 +121,7 @@ export default class HomeScreen extends Component{
         }}
   rounded
   source={{ 
-    uri: this.getPhotoUrl()
+    uri: this.state.photoUrl
   }}
 />
       }

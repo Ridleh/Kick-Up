@@ -10,12 +10,26 @@ import {
   AsyncStorage
 } from 'react-native';
 
+import { WebView } from 'react-native-webview';
 import { Input, Header, ListItem, Card, Button, Icon } from 'react-native-elements';
 import * as Google from 'expo-google-app-auth';
 
 
 
 export default class Profile extends Component{
+
+  constructor(props) {
+      super(props);
+      this.state = {userName: null, 
+                    id: null, 
+                    photo: 'https://icon-library.net/images/default-profile-icon/default-profile-icon-16.jpg',
+                    email : null,
+                    loggedIn: true};
+      this.getUserName();
+      this.getPhotoUrl();
+      this.getEmail();
+      this.getID();
+  }
 
   signInWithGoogleAsync = async () => {
       const result = await Google.logInAsync({
@@ -41,22 +55,56 @@ export default class Profile extends Component{
    //this.setState({loggedIn : status});
   }
 
-  getPhotoUrl(){
+  getPhotoUrl = async () => {
     try {
-      AsyncStorage.getItem('photoUrl').then((keyValue) => {
-        console.log(keyValue)
-        return keyValue;
-      });
-    } catch (error) {
-      console.log("Something went wrong: " + error)
+        const photoUrl = await AsyncStorage.getItem('photoUrl');
+        const photo = JSON.parse(photoUrl)
+        this.setState({photo: photo});
+    }
+    catch (error) {
+        // Manage error handling
+    }
+}
+  getEmail = async () => {
+    try {
+        const email = await AsyncStorage.getItem('email');
+        this.setState({email: email});
+        console.log(email)
+    }
+    catch (error) {
+        // Manage error handling
+    }
+}
+
+  getUserName = async () => {
+    try {
+        const userName = await AsyncStorage.getItem('userName');
+        this.setState({userName: userName});
+    }
+    catch (error) {
+        // Manage error handling
     }
   }
 
-  state = {
-    loggedIn : true
-  };
+  getID = async () => {
+    try {
+        const id = await AsyncStorage.getItem('id');
+        this.setState({id: id});
+    }
+    catch (error) {
+        // Manage error handling
+    }
+  }
+  //state = {
+  //  loggedIn : true
+  //};
 
 	render(){
+    const username = JSON.parse(this.state.userName)
+    const photo = this.state.photo
+    const user_email = JSON.parse(this.state.email)
+    const user_id = JSON.parse(this.state.id)
+    console.log(user_id)
 		return(
       <SafeAreaView>
 			<View style={styles.container}>
@@ -68,23 +116,20 @@ export default class Profile extends Component{
       rightComponent={{ icon: 'home', color: '#fff' }}
     />
 		        <View style={styles.header}></View>
-            <Image
-            style={styles.avatar} source={{uri: this.state.loggedIn == true ? this.getPhotoUrl() : 'https://i0.wp.com/bsnl.ch/wp-content/uploads/2019/03/avatar-default-circle.png'}}/>
+            <Image style={styles.avatar} source={{uri: photo}} />
 		        <View style={styles.body}>
               {this.state.loggedIn &&
 		            <View style={styles.bodyContent}>
-		              <Text style={styles.name}>Kevin Chao</Text>
-		              <Text style={styles.info}>UX Designer / Mobile developer</Text>
-		              <Text style={styles.description}>Student</Text>
+		              <Text style={styles.name}> {username} </Text>
+                  <Text style={styles.info}>ID: {user_id}</Text>
+		              <Text style={styles.description}> {user_email} </Text>
 		              
                   <TouchableOpacity
                     onPress={() => this.changeStateVar(false)} 
                     style={styles.buttonContainer}>
 		                <Text>Sign Out</Text>  
 		              </TouchableOpacity>              
-		            </View>
-                }
-                
+		            </View> } 
 		        </View>
             {!this.state.loggedIn &&
               <View>
@@ -124,7 +169,7 @@ Profile.navigationOptions = {
 }
 
 function changeStateVar(status){
-  console.log('called');
+  console.log('called??');
   changeStateOnLogIn(status);
 }
 

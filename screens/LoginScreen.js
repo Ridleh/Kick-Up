@@ -75,15 +75,18 @@ export default class LoginScreen extends Component {
 
 	async saveUserID(user){
 		console.log("called?")
-		console.log("look at meeeeeeee " , user)
 		console.log(user.user.photoUrl)
 		console.log(user.user.id)
 		console.log(user.user.name)
+		console.log(user.user.email)
+		console.log(user.user.id)
 
 			try{
 				await AsyncStorage.setItem("userID", JSON.stringify(user.user.id));
 				await AsyncStorage.setItem("photoUrl", JSON.stringify(user.user.photoUrl));
 				await AsyncStorage.setItem("userName", JSON.stringify(user.user.name));
+				await AsyncStorage.setItem("email", JSON.stringify(user.user.email));
+				await AsyncStorage.setItem("id", JSON.stringify(user.user.id));
 			}
 			catch(error){
 				Alert.alert("something went wrong: " + error)
