@@ -37,10 +37,11 @@ export default class LoginScreen extends Component {
 	          // Sign in with credential from the Google user.
 	          firebase
 	            .auth()
-	            .signInAndRetrieveDataWithCredential(credential)
+	            .signInWithCredential(credential)
 	            .then(function(result) {
 				  console.log('user signed in ');
 				  console.log(result);
+				  console.log("YOOOOOO " + result.user.providerData[0].uid)
 	              if (result.additionalUserInfo.isNewUser) {
 	                firebase
 	                  .database()
@@ -48,6 +49,7 @@ export default class LoginScreen extends Component {
 	                  .set({
 	                  	profile_picture: result.additionalUserInfo.profile.picture,
 	                    gmail: result.user.email,
+	                    id: result.user.providerData[0].uid,
 	                    first_name: result.additionalUserInfo.profile.given_name,
 	                    last_name: result.additionalUserInfo.profile.family_name,
 	                  })
@@ -74,13 +76,6 @@ export default class LoginScreen extends Component {
 	  };
 
 	async saveUserID(user){
-		console.log("called?")
-		console.log(user.user.photoUrl)
-		console.log(user.user.id)
-		console.log(user.user.name)
-		console.log(user.user.email)
-		console.log(user.user.id)
-
 			try{
 				await AsyncStorage.setItem("userID", JSON.stringify(user.user.id));
 				await AsyncStorage.setItem("photoUrl", JSON.stringify(user.user.photoUrl));
