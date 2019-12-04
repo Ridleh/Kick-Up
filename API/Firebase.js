@@ -1,7 +1,24 @@
 import * as firebase from 'firebase';
 import { getProvidesAudioData } from 'expo/build/AR';
+import {AsyncStorage} from 'react-native'
 
 export const FBFunctions = {
+
+  chatIDGlobal : -1,
+
+  init(){
+    console.log('a')
+    /*
+    AsyncStorage.getItem('userID').then(userID =>{
+      console.log('b',userID)
+      this.userIDGlobal = JSON.parse(userID)
+      //return JSON.parse(userID);
+      console.log('c')
+    })
+    */
+    //AsyncStorage.getItem('userID')
+    //this.observeAuth();
+  },
 
   async storeData(data){
     console.log("calling FB push")
@@ -24,6 +41,7 @@ export const FBFunctions = {
  },
 
  async updateData(data){
+   //firebase.firestore().collection().doc()
   console.log("calling FB update")
     await firebase.database().ref("/Events/" + data.ID).update({ 
 
@@ -48,6 +66,7 @@ export const FBFunctions = {
     console.log("success");
  },
 
+
  async removeData(data){
   console.log("calling FB remove")
 
@@ -56,6 +75,24 @@ export const FBFunctions = {
  },
 
 
+ async updateFriendsList(userID, friend){
+
+    dataReference =  await firebase.database().ref("/Friends Lists/" + userID).push();
+    dataReference.set({
+      /*
+        personsName: friend.personsName,
+        personsEmail: friend.personsEmail,
+        refID: dataReference.toString().slice(-20),
+        userID: userID
+        */
+       friendsID: friend.friendsID,
+       friendsName: friend.friendsName,
+       chatID: friend.chatID,
+       refID: dataReference.toString().slice(-20),
+    })
+ },
+
+>>>>>>> ecd691aa16e0d0c4ea87a8f801845689f2f9f4d0
   getData(){
     var events = [];
       firebase.database().ref("/Events").on("value", function(snapshot){
@@ -70,6 +107,17 @@ export const FBFunctions = {
       //return this.getData();
     }
     return events;
+ },
+
+ async getFriends(userID){
+   friendsList = []
+    var ref = firebase.database().ref("/Friends Lists/" + userID);
+    await ref.orderByChild('friendsID').on('value', function(snapshots){
+      snapshots.forEach(function(childSnapshot){
+        friendsList.push(childSnapshot.val())
+      })
+    });
+    return friendsList;
  },
 
  async getFriendQuery(){
@@ -88,8 +136,129 @@ if(events.length == 0){
 }
 //console.log('bum', events)
 return events;
- }
+ },
 
+async createFriendRequest(request){
+  //console.log(request)
+  dataReference = await firebase.database().ref("/Friend Requests/").push();
+  dataReference.set({
+    requestFromID: request.requestFromID,
+    requestFromName: request.requestFromName,
+    requestToID: request.requestToID,
+    chatID: request.chatID,
+    refID: dataReference.toString().slice(-20),
+  })
+},
+
+async getPendingFriendRequestsForUser(userID){
+  const pendingRequests = [];
+  var ref = firebase.database().ref("Friend Requests");
+  await ref.orderByChild("requestFromID").equalTo(userID).on("value", function(snapshots) {
+    snapshots.forEach(function(childSnapshot){
+      pendingRequests.push(childSnapshot.val())
+    })
+    //console.log(pendingRequests)
+    
+  });
+  return pendingRequests;
+},
+
+async getUserInfo(userGmail){
+  const ref = firebase.database().ref("/users");
+  await ref.orderByChild('gmail').equalTo(userGmail).on('value', function(snapshots){
+    return snapshots.val()
+  })
+},
+
+async getIncomingFriendRequestsForUser(userID){
+  const incomingRequests = [];
+  var ref = firebase.database().ref("Friend Requests");
+  await ref.orderByChild("requestToID").equalTo(userID).on("value", function(snapshots) {
+    snapshots.forEach(function(childSnapshot){
+      incomingRequests.push(childSnapshot.val())
+    })
+    //console.log(pendingRequests)
+    
+  });
+  return incomingRequests;
+},
+
+deleteFriendRequest(ID){
+  firebase.database().ref("/Friend Requests/" + ID).remove();
+
+},
+
+observeAuth(){
+  firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
+},
+
+onAuthStateChanged(user){
+  if (!user) {
+    try {
+      // 4.
+      firebase.auth().signInAnonymously();
+    } 
+    catch ({ message }) {
+      //alert(message);
+      console.log(message)
+    }
+  }
+},
+
+setref(ref){
+  this.chatIDGlobal = ref
+},
+
+get ref(){
+  return firebase.database().ref('/messages/' + this.chatIDGlobal);
+},
+
+on(callback){
+    this.ref.limitToLast(20).on('child_added', snapshot => callback(this.parse(snapshot)))
+},
+
+parse(snapshot){
+  // 1.
+  const { timestamp: numberStamp, text, user } = snapshot.val();
+  const { key: _id } = snapshot;  // 2.
+  const timestamp = new Date(numberStamp);  // 3.
+  const message = {
+    _id,
+    timestamp,
+    text,
+    user,
+  };
+ return message;
+},
+
+off() {
+  this.ref.off();
+},
+
+get uid() {
+  return this.userIDGlobal;
+},
+
+get timestamp() {
+  return firebase.database.ServerValue.TIMESTAMP;
+},
+
+send(messages){
+  console.log(messages)
+  for (let i = 0; i < messages.length; i++) {
+    const { text, user } = messages[i];    // 4.
+    const message = {
+      text,
+      user,
+      timestamp: this.timestamp,
+    };
+    this.append(message);
+  }
+},
+
+append(message){
+  this.ref.push(message)
+},
 
 }
 
