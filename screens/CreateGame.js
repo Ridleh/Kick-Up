@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { AsyncStorage, KeyboardAvoidingView, Alert, Dimensions, Picker, StyleSheet, View, Text,TextInput, TouchableOpacity, SafeAreaView, ScrollView, Platform, StatusBar, DatePickerAndroid, TimePickerAndroid, DatePickerIOS } from 'react-native';
 //import Icon from 'react-native-vector-icons/FontAwesome';
 import { Avatar, CheckBox, Icon, Header, TouchableHighlight, Modal, Input, Button, Overlay, Card, Divider } from 'react-native-elements';
-import { tsConstructorType } from '@babel/types';
+import { tsConstructorType, tsBooleanKeyword } from '@babel/types';
 import {FBFunctions} from '../API/Firebase';
 import * as Calendar from 'expo-calendar'
 import * as Permissions from 'expo-permissions'
@@ -114,28 +114,32 @@ export default class CreateGame extends Component{
 	async getUserName(){
 		const value = await AsyncStorage.getItem("userName");
 		//console.log(value);
-		this.setState({name: JSON.parse(value)});
+		return JSON.parse(value);
 	}
 
 	async getUserID(){
 		const value = await AsyncStorage.getItem("userID");
 		//console.log(value)
-		this.setState({ ID: JSON.parse(value) })
+		return JSON.parse(value)
 	}
 
 	async submitEvent(){
-		await this.getUserID()
-		await this.getUserName()
+		var userID = await this.getUserID()
+		var userName = await this.getUserName()
 		var event = {
 			sport: this.state.sport,
 			participants: + this.state.participants,
+			createdBy: userName,
+			
 			gameName : this.state.gameName,
 			date:  this.state.androidDate.toUTCString(),
 			dateFormatted: this.state.androidDateFormatted,
+			location: this.state.location,
 			location_lat : this.state.location_lat/*this.props.navigation.state.params.loc_lat*/,
 			location_long : this.state.location_long/*this.props.navigation.state.params.loc_long*/,
 			description : this.state.description,
-			players: [{name: this.state.name, ID: this.state.ID }],
+			players: [{name: userName, ID: userID }],
+			createdByID: userID,
 			ID: "null",
 			chatID: this.createChatID()
 			
@@ -171,6 +175,7 @@ export default class CreateGame extends Component{
 		showConfirmationScreen: false,
 		gameName: "blank",
 		date: "blank",
+		location : 'blank',
 		location_lat: "blank",
 		location_long: "blank",
 		description: "blank",

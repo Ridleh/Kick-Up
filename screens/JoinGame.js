@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {FBFunctions} from '../API/Firebase'
 import { Share, AsyncStorage, Alert, SafeAreaView, StyleSheet, View, Text,TextInput, TouchableOpacity, ScrollView, Button } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import { Card, ListItem, Icon } from 'react-native-elements';
+import { Card, ListItem, Icon, Overlay, Divider } from 'react-native-elements';
 
 export default class JoinGame extends Component {
 
@@ -15,6 +15,7 @@ export default class JoinGame extends Component {
 		date : this.gameInfo.date,
 		description : this.gameInfo.description,
 		name : this.gameInfo.gameName,
+		location: this.gameInfo.location,
 		location_lat : this.gameInfo.location_lat,
 		location_long : this.gameInfo.location_long,
 		participants : this.gameInfo.participants,
@@ -23,8 +24,12 @@ export default class JoinGame extends Component {
 		ID : this.gameInfo.ID,
 		chatID: this.gameInfo.chatID,
 		playersList : [],
+		createdBy: this.gameInfo.createdBy,
+		createdByID: this.gameInfo.createdByID,
 		userID: " ",
-		userName: " "
+		userName: " ",
+		showEditGameButton: false,
+		showEditGameOverlay : false
 	}
 
 	async isUserInGame(){
@@ -40,6 +45,9 @@ export default class JoinGame extends Component {
 				this.setState({showJoinGameButton : false})
 				this.setState({showLeaveGameButton : true})
 			}
+		}
+		if(localUserID === this.gameInfo.createdByID){
+			this.setState({showEditGameButton : true})
 		}
 		this.setState({playersList : listOfPlayers})
 		this.setState({userID : localUserID})
@@ -81,6 +89,7 @@ export default class JoinGame extends Component {
 			participants: + this.state.participants,
 			gameName : this.state.name,
 			date:  this.state.date,
+			location : this.state.location,
 			location_lat : this.state.location_lat,
 			location_long : this.state.location_long,
 			description : this.state.description,
@@ -183,15 +192,98 @@ export default class JoinGame extends Component {
 		this.props.navigation.navigate('chat', {friend : chatData})
 	}
 
+	showEditGameScreen(){
+		this.setState({showEditGameOverlay : true})
+	}
+
+	updateGameInfo(){
+		try{
+			var event = {
+				sport: this.state.sport,
+				participants: this.state.participants,
+      			gameName : this.state.name,
+      			createdBy: this.state.createdBy,
+      			date:  this.state.date,
+      			location : this.state.location,
+				location_lat : this.state.location_lat,
+		  		location_long : this.state.location_long,
+      			description : this.state.description, 
+      			players: this.state.players,ID : this.state.ID
+			}
+			FBFunctions.updateData(event)
+			Alert.alert('Event has been successfully edited')
+			this.setState({showEditGameOverlay : false})
+		}
+		catch(error){
+			Alert.alert("Something went wrong:", error.message)
+			console.log(error);
+		}
+	}
+
   render() {
     return (
     	//<ImageBackground source={} style={{width: '100%', height: '100%'}}>
 		<SafeAreaView style = {{flex: 1}}>
 			<ScrollView style = {{flex: 1}}>
       <View style={styles.joinform}>
+		  	{this.state.showEditGameButton && 
+		  		<Button
+			  	title='edit game'
+			  	onPress={() => this.showEditGameScreen()}
+				/>
+			}
+			<Overlay
+				isVisible ={this.state.showEditGameOverlay}
+				onBackdropPress={() => this.setState({showEditGameOverlay : false})} 
+			>
+				<Card
+				title='Edit Game'
+				>
+					<TextInput 
+						style = {styles.textInput} 
+						placeholder="Game Name"
+						placeholderTextColor={'#bfbfbf'}
+						placeholderStyle={styles.placeholderStyle}
+						underlineColorAndroid='transparent'
+						multiline
+						onEndEditing={(text) => {
+							this.setState({name : text.nativeEvent.text})
+						}}
+					/>
+					 <Divider/>
+					<TextInput 
+						style = {styles.textInput} 
+						placeholder="Description"
+						placeholderTextColor={'#bfbfbf'}
+						placeholderStyle={styles.placeholderStyle}
+						underlineColorAndroid='transparent'
+						multiline
+						onEndEditing={(text) => {
+							this.setState({description : text.nativeEvent.text})
+						}}
+					/>
+					<Divider/>
+					<TextInput 
+						style = {styles.textInput} 
+						placeholder="Location"
+						placeholderTextColor={'#bfbfbf'}
+						placeholderStyle={styles.placeholderStyle}
+						underlineColorAndroid='transparent'
+						multiline
+						onEndEditing={(text) => {
+							this.setState({location : text.nativeEvent.text})
+						}}
+					/>
+					<Divider/>
+					<Button
+						title='Save Changes'
+						onPress={() => this.updateGameInfo()}
+					/>
+				</Card>
+			</Overlay>
       	<Text style={styles.header}>{this.state.name} </Text>
       	<Text style={styles.text_important}> 10/23/2019, 4:00pm </Text>
-      	<Text style={styles.text}> Created by: {this.state.userName} </Text>
+      	<Text style={styles.text}> Created by: {this.state.createdBy} </Text>
 		<Text style={styles.text}> Description: {this.state.description}</Text>
       	<Text style={styles.text}> Location: {this.state.location} </Text>
       	<Text style={styles.text}> Number of Players: {this.determinePlayerSize()} </Text>
@@ -276,6 +368,15 @@ const styles = StyleSheet.create({
 		borderBottomColor: '#f8f8f8',
 		borderBottomWidth: 1,
 	},
+	textInput: {
+		height: 40,
+		borderWidth: 1,
+		borderColor: 'black',
+		paddingLeft: 20,
+		margin: 10,
+		borderRadius: 20,
+		//underlineColorAndroid: 'transparent'
+	  },
 	text_important: {
 		fontSize: 18,
 		fontWeight: 'bold',
@@ -324,3 +425,4 @@ const styles = StyleSheet.create({
         color: '#000',
     },
 });
+

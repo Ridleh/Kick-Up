@@ -30,10 +30,13 @@ export const FBFunctions = {
 			participants: data.participants,
 			gameName : data.gameName,
       date:  data.date,
+      createdBy: data.createdBy,
+      createdByID: data.createdByID,
       //dateFormatted: data.DateFormatted,
       //location : data.location,
       location_lat : data.location_lat,
-			location_long : data.location_long,
+      location_long : data.location_long,
+      location : data.location,
       description : data.description, 
       players: data.players,
       ID: dataReference.toString().slice(-20),
@@ -57,11 +60,13 @@ export const FBFunctions = {
 			description : this.state.description,
 			players : this.state.players
       */
-
+      
       sport: data.sport,
 			participants: data.participants,
-			gameName : data.gameName,
-			date:  data.date,
+      gameName : data.gameName,
+      createdBy: data.createdBy,
+      date:  data.date,
+      location : data.location,
 			location_lat : data.location_lat,
 		  location_long : data.location_long,
       description : data.description, 
