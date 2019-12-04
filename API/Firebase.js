@@ -48,6 +48,14 @@ export const FBFunctions = {
     console.log("success");
  },
 
+ async removeData(data){
+  console.log("calling FB remove")
+
+    await firebase.database().ref("/Events/" + data.ID).remove();
+    console.log("removed");
+ },
+
+
   getData(){
     var events = [];
       firebase.database().ref("/Events").on("value", function(snapshot){

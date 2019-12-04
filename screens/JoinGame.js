@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {FBFunctions} from '../API/Firebase'
-import { Share, AsyncStorage, SafeAreaView, StyleSheet, View, Text,TextInput, TouchableOpacity, ScrollView, Button } from 'react-native';
+import { Share, AsyncStorage, Alert, SafeAreaView, StyleSheet, View, Text,TextInput, TouchableOpacity, ScrollView, Button } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { Card, ListItem, Icon } from 'react-native-elements';
 
@@ -11,6 +11,7 @@ export default class JoinGame extends Component {
 	run = this.isUserInGame()
 	state = {
 		showJoinGameButton : true,
+		showLeaveGameButton : false,
 		date : this.gameInfo.date,
 		description : this.gameInfo.description,
 		name : this.gameInfo.gameName,
@@ -35,6 +36,7 @@ export default class JoinGame extends Component {
 			if(player.ID === localUserID ){
 				console.log("we got false")
 				this.setState({showJoinGameButton : false})
+				this.setState({showLeaveGameButton : true})
 			}
 		}
 		this.setState({playersList : listOfPlayers})
@@ -85,9 +87,68 @@ export default class JoinGame extends Component {
 		if( JSON.parse( JSON.stringify(event)) ){
 			await FBFunctions.updateData(event)
 			this.setState({showJoinGameButton : false})	
+			this.setState({showLeaveGameButton : true})
 		}
 		else{
 			console.log(" : ( ");
+		}
+	}
+	async removePlayerFromGame(){ 
+		//console.log(this.gameInfo); 
+		var event = {
+			sport: this.state.sport,
+			participants: this.state.participants,
+			gameName : this.state.name,
+			date:  this.state.date,
+			location : this.state.location,
+			description : this.state.description,
+			players : this.state.players,
+			ID : this.state.ID}
+
+		if(this.state.players.length == 1){
+			await FBFunctions.removeData(event)
+			Alert.alert("Event Deleted",
+					`The event has been deleted`,
+					[
+						{text: 'OK', onPress: () => this.props.navigation.navigate('Home')}
+					]);
+		} else {
+			player = {name: this.state.userName, ID: this.state.userID};
+			newPlayerList = this.state.players
+			console.log("leaving game")
+			for (var i = 0; i < newPlayerList.length; i++) {
+				if (newPlayerList[i].ID == this.state.userID) {
+					newPlayerList.splice(i, 1)
+				}
+			}
+			console.log(newPlayerList)
+			//newPlayerList.splice(player_removed, 1)
+			this.setState({players : newPlayerList})
+			//FBFunctions.storeData(this.state); 
+
+			var event = {
+				sport: this.state.sport,
+				participants: this.state.participants,
+				gameName : this.state.name,
+				date:  this.state.date,
+				location : this.state.location,
+				description : this.state.description,
+				players : this.state.players,
+				ID : this.state.ID
+			}
+			if( JSON.parse( JSON.stringify(event)) ){
+				await FBFunctions.updateData(event)
+				this.setState({showJoinGameButton : true})	
+				this.setState({showLeaveGameButton : false})
+				Alert.alert("Event Left",
+					`You have left the game`,
+					[
+						{text: 'OK', onPress: () => this.props.navigation.navigate('Home')}
+					]);
+			}
+			else{
+				console.log(" : ( ");
+			}
 		}
 	}
 
@@ -113,15 +174,17 @@ export default class JoinGame extends Component {
 
   render() {
     return (
+    	//<ImageBackground source={} style={{width: '100%', height: '100%'}}>
 		<SafeAreaView style = {{flex: 1}}>
 			<ScrollView style = {{flex: 1}}>
       <View style={styles.joinform}>
-      	<Text style={styles.header}> Join {this.state.name} </Text>
+      	<Text style={styles.header}>{this.state.name} </Text>
       	<Text style={styles.text_important}> 10/23/2019, 4:00pm </Text>
       	<Text style={styles.text}> Created by: {this.state.userName} </Text>
 		<Text style={styles.text}> Description: {this.state.description}</Text>
       	<Text style={styles.text}> Location: {this.state.location} </Text>
       	<Text style={styles.text}> Number of Players: {this.determinePlayerSize()} </Text>
+
 		  <Card title="Players In This Event">
       		{this.state.playersList.map((item, i) => (
         	<ListItem
@@ -142,7 +205,22 @@ export default class JoinGame extends Component {
       	>
       		<Text style={styles.btntext}>Join Game</Text>
       	</TouchableOpacity>
-  }
+      }
+
+
+      	{ this.state.showLeaveGameButton &&
+		<TouchableOpacity 
+      		style = {styles.button2}
+			  onPress={() => 
+				this.removePlayerFromGame()
+			}
+      	>
+      		<Text style={styles.btntext}>Leave Game</Text>
+      	</TouchableOpacity>
+		}
+
+
+  
 		<Button
 		title='share this game'
 		onPress={() => this.shareGame()}>
@@ -158,11 +236,15 @@ export default class JoinGame extends Component {
 const styles = StyleSheet.create({
 	joinform: {
 		alignSelf: 'stretch',
+		backgroundColor: '#fff',
 	},
 	header: {
-		fontSize: 36,
+		flex: 1,
+		fontSize: 30,
+		fontFamily: 'Roboto', //useless
 		alignSelf:'center',
 		fontWeight: 'bold',
+
 		color: '#000000',
 		paddingBottom: 10,
 		marginBottom: 40,
@@ -196,7 +278,8 @@ const styles = StyleSheet.create({
 		alignSelf:'center',
 		height: 40,
 		marginBottom: 30,
-		color: '#000000',
+		color: '#4caf50',
+		backgroundColor: '#4caf50',
 		borderBottomColor: '#f8f8f8',
 		borderBottomWidth: 1,
 	},
@@ -207,10 +290,18 @@ const styles = StyleSheet.create({
 		backgroundColor:'#59cbbd',
 		marginTop:30,
 	},
+	button2: {
+		//alightSelf:'stretch',
+		alignItems:'center',
+		padding:20,
+		backgroundColor:'#FF9597',
+		marginTop:30,
+	},
 	btntext: {
 		fontSize: 24,
 		alignSelf:'center',
 		color: '#000000',
+
 	},
 	placeholderStyle: {
         fontSize: 14,
