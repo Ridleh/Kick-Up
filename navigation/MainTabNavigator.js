@@ -99,7 +99,8 @@ CreateGameStack.path = '';
 const JoinGameStack = createStackNavigator(
   {
     JoinGame: JoinGameScreen,
-    Home: HomeScreen
+    Home: HomeScreen,
+    chat: ChatScreen,
   },
   config
 );

@@ -7,13 +7,16 @@ export default class ChatScreen extends Component {
 
 
   static navigationOptions = ({ navigation }) => ({
-    title: (navigation.state.params || {}).friend.friendsName || 'Chat!',
+    title: (navigation.state.params || {}).friend.friendsName || 'Group Chat',
   });
 
   state = {
     messages: [],
     friend: this.props.navigation.state.params.friend,
     chatID: -1,
+    userName : 'test',
+    userID : 'test'
+
   }
 
   componentWillMount() {
@@ -21,15 +24,22 @@ export default class ChatScreen extends Component {
   }
 
   // 1.
-  componentDidMount() {
+  async componentDidMount() {
+    const uuserID = await this.getUserID()
+    const uuserName = await this.getUserName() 
     console.log('chat id is', this.props.navigation.state.params.friend.chatID)
     FBFunctions.setref(this.props.navigation.state.params.friend.chatID)
     FBFunctions.on(message =>
       this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, message),
         chatID: this.props.navigation.state.params.friend.chatID,
+        userName: uuserName,
+        userID: uuserID
       }))
+      
     );
+    this.setState({userName : uuserName})
+    this.setState({userID : uuserID})
   }// 2.
 
   componentWillUnmount() {
@@ -45,8 +55,8 @@ export default class ChatScreen extends Component {
 
   get user() {  // Return our name and our UID for GiftedChat to parse
     return {
-      name: this.props.navigation.state.params.friend.friendsName,
-      _id: this.props.navigation.state.params.friend.friendsID
+      name: this.state.userName,
+      _id: this.state.userID
     };
   }
 

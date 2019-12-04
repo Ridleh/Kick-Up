@@ -15,11 +15,13 @@ export default class JoinGame extends Component {
 		date : this.gameInfo.date,
 		description : this.gameInfo.description,
 		name : this.gameInfo.gameName,
-		location : this.gameInfo.location,
+		location_lat : this.gameInfo.location_lat,
+		location_long : this.gameInfo.location_long,
 		participants : this.gameInfo.participants,
 		sport : this.gameInfo.sport,
 		players : this.gameInfo.players,
 		ID : this.gameInfo.ID,
+		chatID: this.gameInfo.chatID,
 		playersList : [],
 		userID: " ",
 		userName: " "
@@ -79,7 +81,8 @@ export default class JoinGame extends Component {
 			participants: + this.state.participants,
 			gameName : this.state.name,
 			date:  this.state.date,
-			location : this.state.location,
+			location_lat : this.state.location_lat,
+			location_long : this.state.location_long,
 			description : this.state.description,
 			players : this.state.players,
 			ID : this.state.ID
@@ -172,6 +175,14 @@ export default class JoinGame extends Component {
 		}
 	}
 
+	handleChatNavigation(){
+		chatData = {
+			friendsName: 'Group Chat For ' + this.state.name,
+			chatID: this.state.chatID,
+		}
+		this.props.navigation.navigate('chat', {friend : chatData})
+	}
+
   render() {
     return (
     	//<ImageBackground source={} style={{width: '100%', height: '100%'}}>
@@ -184,7 +195,12 @@ export default class JoinGame extends Component {
 		<Text style={styles.text}> Description: {this.state.description}</Text>
       	<Text style={styles.text}> Location: {this.state.location} </Text>
       	<Text style={styles.text}> Number of Players: {this.determinePlayerSize()} </Text>
-
+		{ this.state.showLeaveGameButton &&
+		<Button
+			title='open group chat'
+			onPress={() => this.handleChatNavigation()}
+				/>
+		}
 		  <Card title="Players In This Event">
       		{this.state.playersList.map((item, i) => (
         	<ListItem

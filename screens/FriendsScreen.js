@@ -33,9 +33,9 @@ export default class Friends extends Component{
     }
 
     async getAllData(){
-        const users = await FBFunctions.getFriendQuery('test')
-        console.log('am i sad?', users)
-        this.getPendingFriendRequests()
+        //const users = await FBFunctions.getFriendQuery('test')
+        //console.log('am i sad?', users)
+        //this.getPendingFriendRequests()
         this.getIncomingFriendRequests()
         this.getFriends()
         this.setState()
@@ -44,6 +44,7 @@ export default class Friends extends Component{
     async getFriends(){
         const userID = await this.getUserID();
         const freinds = await FBFunctions.getFriends(userID)
+        console.log(freinds)
         this.setState({FriendsList : freinds})
     }
 
@@ -73,7 +74,7 @@ export default class Friends extends Component{
         const userID = await this.getUserID()
         //console.log('object?',userGmail)
         const result = await FBFunctions.getIncomingFriendRequestsForUser(userID)
-        console.log(result)
+        //console.log(result)
         this.setState({incomingFriendRequests : result})
     }
 
@@ -231,24 +232,6 @@ export default class Friends extends Component{
                     </View>
                 </Overlay>
                         {
-                            this.state.pendingFriends.length != 0 &&
-                            <Card
-                            title='Pending Friend Requests'>
-                                {this.state.pendingFriends.map((item,i) => (
-                                    <ListItem
-                                    key={i}
-                                    title={item.first_name + " " + item.last_name}
-                                    //leftIcon={{ name: item.icon }}
-                                    bottomDivider
-                                    rightIcon= {<Icon
-                                        onPress={() => this.removeFriendRequest(item.refID)}
-                                    
-                                    name='clear' />}
-                                    />
-                                ))}
-                            </Card>
-                        }
-                        {
                             this.state.incomingFriendRequests.length != 0 &&
                             <Card
                             title='Incoming Friend Requests'>
@@ -293,6 +276,9 @@ export default class Friends extends Component{
                         }
                         
                     </Card>
+                    <Button
+                        title='press for fun'
+                        onPress={() => this.getAllData()}/>
                     </ScrollView> 
             </View>
             </SafeAreaView>

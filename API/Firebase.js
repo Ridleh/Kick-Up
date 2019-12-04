@@ -31,10 +31,13 @@ export const FBFunctions = {
 			gameName : data.gameName,
       date:  data.date,
       //dateFormatted: data.DateFormatted,
-			location : data.location,
+      //location : data.location,
+      location_lat : data.location_lat,
+			location_long : data.location_long,
       description : data.description, 
       players: data.players,
-      ID: dataReference.toString().slice(-20)
+      ID: dataReference.toString().slice(-20),
+      chatID: data.chatID
       
     })
     console.log("success");
@@ -59,7 +62,8 @@ export const FBFunctions = {
 			participants: data.participants,
 			gameName : data.gameName,
 			date:  data.date,
-			location : data.location,
+			location_lat : data.location_lat,
+		  location_long : data.location_long,
       description : data.description, 
       players: data.players
     });

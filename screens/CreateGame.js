@@ -94,7 +94,7 @@ export default class CreateGame extends Component{
 	}
 
 	//either this or import uuid library 
-	createID(){
+	createChatID(){
 		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
 			var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
 			return v.toString(16);
@@ -132,11 +132,12 @@ export default class CreateGame extends Component{
 			gameName : this.state.gameName,
 			date:  this.state.androidDate.toUTCString(),
 			dateFormatted: this.state.androidDateFormatted,
-			location_lat : this.props.navigation.state.params.loc_lat,
-			location_long : this.props.navigation.state.params.loc_long,
+			location_lat : this.state.location_lat/*this.props.navigation.state.params.loc_lat*/,
+			location_long : this.state.location_long/*this.props.navigation.state.params.loc_long*/,
 			description : this.state.description,
 			players: [{name: this.state.name, ID: this.state.ID }],
-			ID: "null"
+			ID: "null",
+			chatID: this.createChatID()
 			
 		}
 		try{
