@@ -65,7 +65,14 @@ export const FBFunctions = {
     });
     console.log("success");
  },
+  async removeData(data){
+    console.log("calling FB remove")
+    await firebase.database().ref("/Events/" + data.ID).remove();
+    console.log("removed");
+ },
 
+
+ 
  async updateFriendsList(userID, friend){
 
     dataReference =  await firebase.database().ref("/Friends Lists/" + userID).push();
