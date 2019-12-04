@@ -64,15 +64,15 @@ export default class Friends extends Component{
 
     async getPendingFriendRequests(){
         const userID = await this.getUserID()
-        console.log('object?',userID)
+        //console.log('object?',userID)
         const result = await FBFunctions.getPendingFriendRequestsForUser(userID)
         this.setState({pendingFriends : result})
     }
 
     async getIncomingFriendRequests(){
-        const userGmail = await this.getUserGmail()
-        console.log('object?',userGmail)
-        const result = await FBFunctions.getIncomingFriendRequestsForUser(userGmail)
+        const userID = await this.getUserID()
+        //console.log('object?',userGmail)
+        const result = await FBFunctions.getIncomingFriendRequestsForUser(userID)
         console.log(result)
         this.setState({incomingFriendRequests : result})
     }
@@ -96,6 +96,13 @@ export default class Friends extends Component{
         
     }
 
+    createChatID(){
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+			var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+			return v.toString(16);
+		  });
+	}
+
     createFriendRequest = async (friend, FriendsListSearch) => {
         /*
         const currentRequests = this.state.pendingFriends;
@@ -114,15 +121,16 @@ export default class Friends extends Component{
         */
 
         request = {
-            requestFromName : await this.getUserName(),
-            requestFromID : await this.getUserID(), 
-            requestToEmail : friend.gmail,
-            first_name : friend.first_name,
-            last_name : friend.last_name
+           requestFromID: await this.getUserID(),
+           requestFromName: await this.getUserName(),
+           requestToID: friend.id,
+           chatID: this.createChatID()
         } 
 
+        console.log(request)
+
         FBFunctions.createFriendRequest(request)
-        this.getPendingFriendRequests()
+        //this.getPendingFriendRequests()
     }
 
     removeFriendRequest = (request) => {
@@ -145,12 +153,24 @@ export default class Friends extends Component{
 
     async acceptFriendRequest(request){
         const userID = await this.getUserID();
-        console.log(request)
+        //const chatID = this.createChatID()
+        //console.log(request)
+        //this friend will show up on your friend list
         const newFriend = {
-            personsName : request.first_name + " " + request.last_name,
-            personsEmail : request.requestToEmail,
+            friendsName : request.requestFromName,
+            friendsID: request.requestFromID,
+            chatID: request.chatID
         }
         FBFunctions.updateFriendsList(userID,newFriend)
+
+        //you will show up on their friends list
+        const secondFriend = {
+            friendsName : await this.getUserName(),
+            friendsID: await this.getUserID(),
+            //chatID: chatID
+            chatID: request.chatID
+        }
+        FBFunctions.updateFriendsList(request.requestFromID,secondFriend)
         this.removeFriendRequest(request.refID);
 
     }
@@ -207,7 +227,6 @@ export default class Friends extends Component{
                                 />
                             ))
                             }
-                            {this.state.FriendsListSearch.length != 0 && <Input placeholder='Enter an invite message'/>}
                         </Card>
                     </View>
                 </Overlay>
@@ -236,7 +255,7 @@ export default class Friends extends Component{
                                 {this.state.incomingFriendRequests.map((item,i) => (
                                     <ListItem
                                     key={i}
-                                    title={item.first_name + " " + item.last_name}
+                                    title={item.requestFromName}
                                     //leftIcon={{ name: item.icon }}
                                     bottomDivider
                                     leftIcon= {<Icon
@@ -258,7 +277,7 @@ export default class Friends extends Component{
                                 this.state.FriendsList.map((item,i) => (
                                     <ListItem
                                     key={i}
-                                    title={item.personsName}
+                                    title={item.friendsName}
                                     //leftIcon={{ name: item.icon }}
                                     bottomDivider
                                     leftIcon= {<Icon
@@ -266,7 +285,7 @@ export default class Friends extends Component{
                                     
                                     name='person' />}
                                     rightIcon= {<Icon
-                                        onPress={() => this.props.navigation.navigate('chat')}
+                                        onPress={() => this.props.navigation.navigate('chat', {friend: item})}
                                     
                                     name='chat' />}
                                     />

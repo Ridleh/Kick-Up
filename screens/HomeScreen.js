@@ -62,6 +62,7 @@ export default class HomeScreen extends Component{
   friendsGames = []
 
   async componentDidMount(){
+    FBFunctions.init()
     console.log("called")
     this.getPhotoUrl()
     this.getGames()
