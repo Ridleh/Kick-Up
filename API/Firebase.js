@@ -41,7 +41,7 @@ export const FBFunctions = {
  },
 
  async updateData(data){
-   firebase.firestore().collection().doc()
+   //firebase.firestore().collection().doc()
   console.log("calling FB update")
     await firebase.database().ref("/Events/" + data.ID).update({ 
 
