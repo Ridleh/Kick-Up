@@ -19,7 +19,7 @@ export const FBFunctions = {
     //AsyncStorage.getItem('userID')
     //this.observeAuth();
   },
- 
+
   async storeData(data){
     console.log("calling FB push")
     dataReference = await firebase.database().ref("/Events/").push();
@@ -66,6 +66,7 @@ export const FBFunctions = {
     console.log("success");
  },
 
+<<<<<<< HEAD
 
  async removeData(data){
   console.log("calling FB remove")
@@ -75,6 +76,8 @@ export const FBFunctions = {
  },
 
 
+=======
+>>>>>>> ecd691aa16e0d0c4ea87a8f801845689f2f9f4d0
  async updateFriendsList(userID, friend){
 
     dataReference =  await firebase.database().ref("/Friends Lists/" + userID).push();
@@ -92,6 +95,9 @@ export const FBFunctions = {
     })
  },
 
+<<<<<<< HEAD
+>>>>>>> ecd691aa16e0d0c4ea87a8f801845689f2f9f4d0
+=======
 >>>>>>> ecd691aa16e0d0c4ea87a8f801845689f2f9f4d0
   getData(){
     var events = [];
