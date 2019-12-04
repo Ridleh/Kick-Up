@@ -21,6 +21,7 @@ const screenStack = createStackNavigator({
     Login: LoginScreen,
     Profile: ProfilePageScreen,
     Maps: MapScreen
+
 });
 
 export default screenStack

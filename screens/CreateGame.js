@@ -62,7 +62,8 @@ export default class CreateGame extends Component{
 			  startDate: this.state.androidDate,
 			  endDate: this.state.androidDate,
 			  allDay: false,
-			  location: this.state.location,
+			  location_lat : this.props.navigation.state.params.loc_lat,
+			  location_long : this.props.navigation.state.params.loc_long,
 			  timeZone: "GMT-5",
 			  notes: this.state.description	  
 		  }
@@ -87,7 +88,8 @@ export default class CreateGame extends Component{
 			+ this.state.participants + '\n'
 			+ this.state.gameName + '\n'
 			+ this.state.date + '\n'
-			+ this.state.location + '\n'
+			+ this.props.navigation.state.params.loc_lat + '\n'
+			+ this.props.navigation.state.params.loc_long + '\n'
 			+ this.state.description + '\n')
 	}
 
@@ -130,7 +132,8 @@ export default class CreateGame extends Component{
 			gameName : this.state.gameName,
 			date:  this.state.androidDate.toUTCString(),
 			dateFormatted: this.state.androidDateFormatted,
-			location : this.state.location,
+			location_lat : this.props.navigation.state.params.loc_lat,
+			location_long : this.props.navigation.state.params.loc_long,
 			description : this.state.description,
 			players: [{name: this.state.name, ID: this.state.ID }],
 			ID: "null"
@@ -167,7 +170,8 @@ export default class CreateGame extends Component{
 		showConfirmationScreen: false,
 		gameName: "blank",
 		date: "blank",
-		location: "blank",
+		location_lat: "blank",
+		location_long: "blank",
 		description: "blank",
 		name: " ",
 		ID: " ",
@@ -190,19 +194,7 @@ export default class CreateGame extends Component{
 				<Header
 					containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
 					statusBarProps={{ barStyle: 'light-content' }}
-					centerComponent={{ text: 'Create A Game', style: { color: '#fff' , fontSize: 20} }}
-					rightComponent={
-						<Avatar
-						onPress={() => {
-						  console.log("touched registered")
-						  this.props.navigation.navigate('Profile')
-						}}
-				  rounded
-				  source={{ 
-					uri: this.getPhotoUrl()
-				  }}
-				/>
-					  }	
+					centerComponent={{ text: 'Create A Game', style: { color: '#fff' , fontSize: 20} }}	
     			/>
 				<ScrollView>
 				<Card title={"Please complete this form"}

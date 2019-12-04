@@ -39,8 +39,10 @@ const list = [
 
 export default class HomeScreen extends Component{
 
-  constructor(){
-    super()
+  constructor(props) {
+      super(props);
+      this.state = {photo: 'https://icon-library.net/images/default-profile-icon/default-profile-icon-16.jpg', };
+      this.getPhotoUrl();
     //this.getUserInfo()
     //this.getGames()
   }
@@ -51,6 +53,7 @@ export default class HomeScreen extends Component{
     showEventsNearUser : true,
     showEventsFriendsIn : true,
     refreshing : false,
+    photoUrl: '',
   };
 
   userID = " "
@@ -59,7 +62,9 @@ export default class HomeScreen extends Component{
   friendsGames = []
 
   async componentDidMount(){
+    FBFunctions.init()
     console.log("called")
+    this.getPhotoUrl()
     this.getGames()
   }
 
@@ -67,7 +72,6 @@ export default class HomeScreen extends Component{
     this.participatingGames = []
     this.allGames = await FBFunctions.getData()
     this.userID = JSON.parse( await AsyncStorage.getItem("userID"));
-    console.log()
     for(game of this.allGames){
       for(player of game.players){
         if(player.ID === this.userID){
@@ -82,25 +86,29 @@ export default class HomeScreen extends Component{
     console.log(this.participatingGames.length)
   }
  
-  getPhotoUrl(){
+  getPhotoUrl = async () => {
     try {
-      AsyncStorage.getItem('photoUrl').then((keyValue) => {
-        return JSON.parse(keyValue);
-      });
-    } catch (error) {
-      Alert.alert("Something went wrong: " + error)
+        const photoUrl = await AsyncStorage.getItem('photoUrl');
+        const photo = JSON.parse(photoUrl)
+        this.setState({photo: photo});
     }
-  }
+    catch (error) {
+        // Manage error handling
+    }
+  } 
 
   onRefresh(){
     
     //FBFunctions.getData()
-    this.getGames()
+    this.getPhotoUrl();
+    this.getGames();
     this.setState();
+
     //this.setState({refreshing : false});
   }
   
   render(){
+    const photo = this.state.photo
   return( 
 
     <SafeAreaView style = {{flex: 1}}>
@@ -117,7 +125,7 @@ export default class HomeScreen extends Component{
         }}
   rounded
   source={{ 
-    uri: this.getPhotoUrl()
+    uri: photo
   }}
 />
       }
