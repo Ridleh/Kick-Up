@@ -19,7 +19,7 @@ export const FBFunctions = {
     //AsyncStorage.getItem('userID')
     //this.observeAuth();
   },
-
+ 
   async storeData(data){
     console.log("calling FB push")
     dataReference = await firebase.database().ref("/Events/").push();
