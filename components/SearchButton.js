@@ -20,10 +20,12 @@ export const SearchButton = function(props) {
       <GooglePlacesAutocomplete
         placeholder = 'Where?'
         placeholderTextColor = '#333'
+        minLength = {1}
 
 
-        onPress = {(data, details = null) => {
-          props.notifyChange(details.geometry.location);
+        onPress = {(data, details) => {
+          props.RegionChange(details.geometry.location);
+          props.AddressSearch(data.structured_formatting.main_text, details.formatted_address);
         }}
         query = {{
           key: 'AIzaSyD5rugAfJaNW4dDCMKiO-aeO1-5fqlLhXc',

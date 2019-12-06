@@ -64,6 +64,8 @@ export default class CreateGame extends Component{
 			  allDay: false,
 			  location_lat : this.props.navigation.state.params.loc_lat,
 			  location_long : this.props.navigation.state.params.loc_long,
+			  location_name : this.props.navigation.state.params.loc_name,
+			  location_address: this.props.navigation.state.params.loc_addr,
 			  timeZone: "GMT-5",
 			  notes: this.state.description	  
 		  }
@@ -90,6 +92,8 @@ export default class CreateGame extends Component{
 			+ this.state.date + '\n'
 			+ this.props.navigation.state.params.loc_lat + '\n'
 			+ this.props.navigation.state.params.loc_long + '\n'
+			+ this.props.navigation.state.params.loc_name + '\n'
+			+ this.props.navigation.state.params.loc_addr + '\n'
 			+ this.state.description + '\n')
 	}
 
@@ -134,6 +138,8 @@ export default class CreateGame extends Component{
 			dateFormatted: this.state.androidDateFormatted,
 			location_lat : this.props.navigation.state.params.loc_lat,
 			location_long : this.props.navigation.state.params.loc_long,
+			location_name : this.props.navigation.state.params.loc_name,
+			location_address: this.props.navigation.state.params.loc_addr,
 			description : this.state.description,
 			players: [{name: this.state.name, ID: this.state.ID }],
 			ID: "null"
@@ -172,6 +178,8 @@ export default class CreateGame extends Component{
 		date: "blank",
 		location_lat: "blank",
 		location_long: "blank",
+		location_name: "blank",
+		location_addr: "blank",
 		description: "blank",
 		name: " ",
 		ID: " ",
