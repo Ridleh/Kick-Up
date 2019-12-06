@@ -113,7 +113,17 @@ export default class Profile extends Component{
       statusBarProps={{ barStyle: 'light-content' }}
       leftComponent={{ icon: 'menu', color: '#fff' }}
       centerComponent={{ text: 'Profile', style: { color: '#fff' , fontSize: 20} }}
-      rightComponent={{ icon: 'home', color: '#fff' }}
+      rightComponent={<Icon
+
+        onPress={() => {
+          this.props.navigation.navigate('Home')
+        }}
+          
+          name="home"
+          size={30}
+          color="white"
+        />
+	}
     />
 		        <View style={styles.header}></View>
             <Image style={styles.avatar} source={{uri: photo}} />
