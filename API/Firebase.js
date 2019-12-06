@@ -36,7 +36,9 @@ export const FBFunctions = {
       //location : data.location,
       location_lat : data.location_lat,
       location_long : data.location_long,
-      location : data.location,
+      location_name : data.location_name,
+      location_address : data.location_address,
+      //location : data.location,
       description : data.description, 
       players: data.players,
       ID: dataReference.toString().slice(-20),
@@ -66,9 +68,11 @@ export const FBFunctions = {
       gameName : data.gameName,
       createdBy: data.createdBy,
       date:  data.date,
-      location : data.location,
+      //location : data.location,
 			location_lat : data.location_lat,
 		  location_long : data.location_long,
+      location_name : data.location_name,
+      location_address : data.location_address,
       description : data.description, 
       players: data.players
     });

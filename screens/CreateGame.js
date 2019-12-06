@@ -185,7 +185,7 @@ export default class CreateGame extends Component{
 		showConfirmationScreen: false,
 		gameName: "blank",
 		date: "blank",
-		location : 'blank',
+		//location : 'blank',
 		location_lat: "blank",
 		location_long: "blank",
 		location_name: "blank",
