@@ -3,7 +3,7 @@ import {FBFunctions} from '../API/Firebase'
 import { Share, AsyncStorage, Alert, SafeAreaView, StyleSheet, View, Text,TextInput, TouchableOpacity, ScrollView, Button } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
-import { Card, ListItem, Icon } from 'react-native-elements';
+//import { Card, ListItem, Icon } from 'react-native-elements';
 import {
   AdMobBanner
 } from 'expo-ads-admob';
@@ -251,21 +251,7 @@ export default class JoinGame extends Component {
 		  testDeviceID="EMULATOR"
 		  servePersonalizedAds
 		  onDidFailToReceiveAdWithError={this.bannerError} />
-  	<View style={styles.joinform}>
-  		<Text style={styles.header}> Join {this.state.name} </Text>
-  		<Text style={styles.text_important}> 10/23/2019, 4:00pm </Text>
-  		<Text style={styles.text}> Created by: {this.state.userName} </Text>
-		<Text style={styles.text}> Description: {this.state.description}</Text>
-  		<Text style={styles.text}> Location: {this.state.location_name} </Text>
-  		<Text style={styles.text}> Number of Players: {this.determinePlayerSize()} </Text>
-	  		<Card title="Players In This Event">
-  				{this.state.playersList.map((item, i) => (
-    			<ListItem
-      key={i}
-      title={item}
-      bottomDivider
-      chevron
-    />
+  	
       <View style={styles.joinform}>
 		  	{this.state.showEditGameButton && 
 		  		<Button
@@ -326,7 +312,7 @@ export default class JoinGame extends Component {
       	<Text style={styles.text_important}> 10/23/2019, 4:00pm </Text>
       	<Text style={styles.text}> Created by: {this.state.createdBy} </Text>
 		<Text style={styles.text}> Description: {this.state.description}</Text>
-      	<Text style={styles.text}> Location: {this.state.location} </Text>
+      	<Text style={styles.text}> Location: {this.state.location_name} </Text>
       	<Text style={styles.text}> Number of Players: {this.determinePlayerSize()} </Text>
 		{ this.state.showLeaveGameButton &&
 		<Button

@@ -162,7 +162,7 @@ export default class Maps extends React.Component {
                 this.props.navigation.navigate('CreateGame', {
                  loc_lat : this.state.region.latitude,
                  loc_long : this.state.region.longitude,
-                 loc_addr: this.state.address,
+                 loc_address: this.state.address,
                  loc_name: this.state.name,
                })
 

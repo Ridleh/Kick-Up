@@ -65,7 +65,7 @@ export default class CreateGame extends Component{
 			  location_lat : this.props.navigation.state.params.loc_lat,
 			  location_long : this.props.navigation.state.params.loc_long,
 			  location_name : this.props.navigation.state.params.loc_name,
-			  location_address: this.props.navigation.state.params.loc_addr,
+			  location_address: this.props.navigation.state.params.loc_address,
 			  timeZone: "GMT-5",
 			  notes: this.state.description	  
 		  }
@@ -93,7 +93,7 @@ export default class CreateGame extends Component{
 			+ this.props.navigation.state.params.loc_lat + '\n'
 			+ this.props.navigation.state.params.loc_long + '\n'
 			+ this.props.navigation.state.params.loc_name + '\n'
-			+ this.props.navigation.state.params.loc_addr + '\n'
+			+ this.props.navigation.state.params.loc_address + '\n'
 			+ this.state.description + '\n')
 	}
 
@@ -141,7 +141,7 @@ export default class CreateGame extends Component{
 			location_lat : this.props.navigation.state.params.loc_lat,
 			location_long : this.props.navigation.state.params.loc_long,
 			location_name : this.props.navigation.state.params.loc_name,
-			location_address: this.props.navigation.state.params.loc_addr,
+			location_address: this.props.navigation.state.params.loc_address,
 //=======
 			//location: this.state.location,
 			//location_lat : this.state.location_lat/*this.props.navigation.state.params.loc_lat*/,
@@ -189,7 +189,7 @@ export default class CreateGame extends Component{
 		location_lat: "blank",
 		location_long: "blank",
 		location_name: "blank",
-		location_addr: "blank",
+		location_address: "blank",
 		description: "blank",
 		name: " ",
 		ID: " ",
