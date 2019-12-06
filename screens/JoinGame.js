@@ -86,15 +86,16 @@ export default class JoinGame extends Component {
 
 		var event = {
 			sport: this.state.sport,
-			participants: + this.state.participants,
-			gameName : this.state.name,
-			date:  this.state.date,
-			location : this.state.location,
+			participants: this.state.participants,
+			  gameName : this.state.name,
+			  createdBy: this.state.createdBy,
+			  date:  this.state.date,
+			  location : this.state.location,
 			location_lat : this.state.location_lat,
-			location_long : this.state.location_long,
-			description : this.state.description,
-			players : this.state.players,
-			ID : this.state.ID
+			  location_long : this.state.location_long,
+			  description : this.state.description, 
+			  players: this.state.players,
+			  ID : this.state.ID
 		}
 		if( JSON.parse( JSON.stringify(event)) ){
 			await FBFunctions.updateData(event)
@@ -110,13 +111,16 @@ export default class JoinGame extends Component {
 		var event = {
 			sport: this.state.sport,
 			participants: this.state.participants,
-			gameName : this.state.name,
-			date:  this.state.date,
-			location : this.state.location,
-			description : this.state.description,
-			players : this.state.players,
-			ID : this.state.ID}
-
+			  gameName : this.state.name,
+			  createdBy: this.state.createdBy,
+			  date:  this.state.date,
+			  location : this.state.location,
+			location_lat : this.state.location_lat,
+			  location_long : this.state.location_long,
+			  description : this.state.description, 
+			  players: this.state.players,
+			  ID : this.state.ID
+		}
 		if(this.state.players.length == 1){
 			await FBFunctions.removeData(event)
 			Alert.alert("Event Deleted",
@@ -141,12 +145,15 @@ export default class JoinGame extends Component {
 			var event = {
 				sport: this.state.sport,
 				participants: this.state.participants,
-				gameName : this.state.name,
-				date:  this.state.date,
-				location : this.state.location,
-				description : this.state.description,
-				players : this.state.players,
-				ID : this.state.ID
+      			gameName : this.state.name,
+      			createdBy: this.state.createdBy,
+      			date:  this.state.date,
+      			location : this.state.location,
+				location_lat : this.state.location_lat,
+		  		location_long : this.state.location_long,
+      			description : this.state.description, 
+				  players: this.state.players,
+				  ID : this.state.ID
 			}
 			if( JSON.parse( JSON.stringify(event)) ){
 				await FBFunctions.updateData(event)
@@ -208,7 +215,8 @@ export default class JoinGame extends Component {
 				location_lat : this.state.location_lat,
 		  		location_long : this.state.location_long,
       			description : this.state.description, 
-      			players: this.state.players,ID : this.state.ID
+				  players: this.state.players,
+				  ID : this.state.ID
 			}
 			FBFunctions.updateData(event)
 			Alert.alert('Event has been successfully edited')

@@ -130,7 +130,6 @@ export default class CreateGame extends Component{
 			sport: this.state.sport,
 			participants: + this.state.participants,
 			createdBy: userName,
-			
 			gameName : this.state.gameName,
 			date:  this.state.androidDate.toUTCString(),
 			dateFormatted: this.state.androidDateFormatted,
