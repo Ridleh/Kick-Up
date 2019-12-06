@@ -298,7 +298,7 @@ export default class JoinGame extends Component {
 						underlineColorAndroid='transparent'
 						multiline
 						onEndEditing={(text) => {
-							this.setState({location : text.nativeEvent.text})
+							this.setState({location_name : text.nativeEvent.text})
 						}}
 					/>
 					<Divider/>
