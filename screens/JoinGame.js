@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import {FBFunctions} from '../API/Firebase'
 import { Share, AsyncStorage, Alert, SafeAreaView, StyleSheet, View, Text,TextInput, TouchableOpacity, ScrollView, Button } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
+
+//import { Card, ListItem, Icon } from 'react-native-elements';
+import {
+  AdMobBanner
+} from 'expo-ads-admob';
 import { Card, ListItem, Icon, Overlay, Divider } from 'react-native-elements';
+//>>>>>>> 8e7e1957a02ba9f641301e05b75eed6c7e544a2f
 
 export default class JoinGame extends Component {
 
@@ -15,9 +21,10 @@ export default class JoinGame extends Component {
 		date : this.gameInfo.date,
 		description : this.gameInfo.description,
 		name : this.gameInfo.gameName,
-		location: this.gameInfo.location,
 		location_lat : this.gameInfo.location_lat,
 		location_long : this.gameInfo.location_long,
+		location_name : this.gameInfo.location_name,
+		location_address : this.gameInfo.location_address,
 		participants : this.gameInfo.participants,
 		sport : this.gameInfo.sport,
 		players : this.gameInfo.players,
@@ -86,15 +93,17 @@ export default class JoinGame extends Component {
 
 		var event = {
 			sport: this.state.sport,
-			participants: + this.state.participants,
-			gameName : this.state.name,
-			date:  this.state.date,
-			location : this.state.location,
-			location_lat : this.state.location_lat,
-			location_long : this.state.location_long,
-			description : this.state.description,
-			players : this.state.players,
-			ID : this.state.ID
+			participants: this.state.participants,
+			  gameName : this.state.name,
+			  createdBy: this.state.createdBy,
+			  date:  this.state.date,
+			  location_lat : this.state.location_lat,
+			  location_long : this.state.location_long,
+			  location_name : this.state.location_name,
+			  location_address: this.state.location_address,
+			  description : this.state.description, 
+			  players: this.state.players,
+			  ID : this.state.ID
 		}
 		if( JSON.parse( JSON.stringify(event)) ){
 			await FBFunctions.updateData(event)
@@ -110,13 +119,17 @@ export default class JoinGame extends Component {
 		var event = {
 			sport: this.state.sport,
 			participants: this.state.participants,
-			gameName : this.state.name,
-			date:  this.state.date,
-			location : this.state.location,
-			description : this.state.description,
-			players : this.state.players,
-			ID : this.state.ID}
-
+			  gameName : this.state.name,
+			  createdBy: this.state.createdBy,
+			  date:  this.state.date,
+			  location_lat : this.state.location_lat,
+			  location_long : this.state.location_long,
+			  location_name : this.state.location_name,
+			  location_address: this.state.location_address,
+			  description : this.state.description, 
+			  players: this.state.players,
+			  ID : this.state.ID
+		}
 		if(this.state.players.length == 1){
 			await FBFunctions.removeData(event)
 			Alert.alert("Event Deleted",
@@ -141,12 +154,16 @@ export default class JoinGame extends Component {
 			var event = {
 				sport: this.state.sport,
 				participants: this.state.participants,
-				gameName : this.state.name,
-				date:  this.state.date,
-				location : this.state.location,
-				description : this.state.description,
-				players : this.state.players,
-				ID : this.state.ID
+      			gameName : this.state.name,
+      			createdBy: this.state.createdBy,
+      			date:  this.state.date,
+				location_lat : this.state.location_lat,
+		  		location_long : this.state.location_long,
+			  	location_name : this.state.location_name,
+			  	location_address: this.state.location_address,
+      			description : this.state.description, 
+				  players: this.state.players,
+				  ID : this.state.ID
 			}
 			if( JSON.parse( JSON.stringify(event)) ){
 				await FBFunctions.updateData(event)
@@ -204,11 +221,13 @@ export default class JoinGame extends Component {
       			gameName : this.state.name,
       			createdBy: this.state.createdBy,
       			date:  this.state.date,
-      			location : this.state.location,
 				location_lat : this.state.location_lat,
 		  		location_long : this.state.location_long,
+				location_name : this.state.location_name,
+				location_address: this.state.location_address,
       			description : this.state.description, 
-      			players: this.state.players,ID : this.state.ID
+				  players: this.state.players,
+				  ID : this.state.ID
 			}
 			FBFunctions.updateData(event)
 			Alert.alert('Event has been successfully edited')
@@ -225,13 +244,18 @@ export default class JoinGame extends Component {
     	//<ImageBackground source={} style={{width: '100%', height: '100%'}}>
 		<SafeAreaView style = {{flex: 1}}>
 			<ScrollView style = {{flex: 1}}>
+
+		
+  	
       <View style={styles.joinform}>
+      		
 		  	{this.state.showEditGameButton && 
 		  		<Button
 			  	title='edit game'
 			  	onPress={() => this.showEditGameScreen()}
 				/>
 			}
+
 			<Overlay
 				isVisible ={this.state.showEditGameOverlay}
 				onBackdropPress={() => this.setState({showEditGameOverlay : false})} 
@@ -239,6 +263,8 @@ export default class JoinGame extends Component {
 				<Card
 				title='Edit Game'
 				>
+					
+
 					<TextInput 
 						style = {styles.textInput} 
 						placeholder="Game Name"
@@ -271,7 +297,18 @@ export default class JoinGame extends Component {
 						underlineColorAndroid='transparent'
 						multiline
 						onEndEditing={(text) => {
-							this.setState({location : text.nativeEvent.text})
+							this.setState({location_name : text.nativeEvent.text})
+						}}
+					/>
+					<TextInput 
+						style = {styles.textInput} 
+						placeholder="Address"
+						placeholderTextColor={'#bfbfbf'}
+						placeholderStyle={styles.placeholderStyle}
+						underlineColorAndroid='transparent'
+						multiline
+						onEndEditing={(text) => {
+							this.setState({location_address : text.nativeEvent.text})
 						}}
 					/>
 					<Divider/>
@@ -281,11 +318,18 @@ export default class JoinGame extends Component {
 					/>
 				</Card>
 			</Overlay>
+		<AdMobBanner
+		  				bannerSize="fullBanner"
+		  				adUnitID="ca-app-pub-4386529393896712/1309515346"
+		  				testDeviceID="EMULATOR"
+		  				servePersonalizedAds
+		  				onDidFailToReceiveAdWithError={this.bannerError} />
       	<Text style={styles.header}>{this.state.name} </Text>
       	<Text style={styles.text_important}> 10/23/2019, 4:00pm </Text>
       	<Text style={styles.text}> Created by: {this.state.createdBy} </Text>
 		<Text style={styles.text}> Description: {this.state.description}</Text>
-      	<Text style={styles.text}> Location: {this.state.location} </Text>
+      	<Text style={styles.text}> Location: {this.state.location_name} </Text>
+      	<Text style={styles.text}> Address: {"\n"} {this.state.location_address} </Text>
       	<Text style={styles.text}> Number of Players: {this.determinePlayerSize()} </Text>
 		{ this.state.showLeaveGameButton &&
 		<Button
@@ -362,14 +406,16 @@ const styles = StyleSheet.create({
 	text: {
 		//alightSelf: 'stretch',
 		alignSelf:'center',
+		textAlign: 'center',
 		height: 40,
-		marginBottom: 30,
+		marginBottom: 20,
 		color: '#000000',
 		borderBottomColor: '#f8f8f8',
 		borderBottomWidth: 1,
 	},
 	textInput: {
 		height: 40,
+		alignSelf: 'center',
 		borderWidth: 1,
 		borderColor: 'black',
 		paddingLeft: 20,
@@ -422,6 +468,7 @@ const styles = StyleSheet.create({
 	},
 	placeholderStyle: {
         fontSize: 14,
+        alignSelf:'center',
         color: '#000',
     },
 });
