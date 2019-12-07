@@ -190,13 +190,13 @@ export default class Friends extends Component{
 					statusBarProps={{ barStyle: 'light-content' }}
                     leftComponent={{ icon: 'menu', color: '#fff', onPress: () => this.props.navigation.dispatch(DrawerActions.toggleDrawer()) }}
 					centerComponent={{ text: 'Friends', style: { color: '#fff' , fontSize: 20} }}
-    			    rightComponent={<Icon                       
+    			    rightComponent={<Ionicons 
+                        name="md-person-add"
                         onPress={() => {
                           this.setState({showSearchFriends : true})
-                        }}                          
-                        name="add"
-                        size={30}
-                        color="white"
+                        }}
+                        size={30} 
+                        color = 'white'     
                         />
                     }
                 />
