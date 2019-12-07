@@ -1,7 +1,22 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator, DrawerActions } from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator, DrawerActions, DrawerItems } from 'react-navigation';
 import {Icon, Header} from 'react-native-elements'
+import {
+  Image,
+  Button,
+  Platform,
+  ScrollView,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableHighlight,
+  View,
+  SafeAreaView,
+  Dimensions,
+  Alert,
+  AsyncStorage
+} from 'react-native';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
@@ -201,6 +216,26 @@ FriendsScreenStack.navigationOptions ={
 
 FriendsScreenStack.path = '';
 
+const drawer_nav = (props) => {
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ height: 275, backgroundColor: '#ffffff', opacity: 0.8 }}>
+        <View style={{height: 250, backgroundColor: '#ffffff', alignItems: 'center', justifyContent: 'center' }}>
+          <Image source={require('../assets/kickup.png')} style={{height: 185, width: 190, borderRadius: 50 }} />
+        </View>
+        <View style={{height: 50, backgroundColor: 'Green', alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{height : 75, fontSize: 20, fontWeight: 'bold'}} >Kick-Up Soccer</Text>
+        </View>
+      </View>
+      <ScrollView>
+        <DrawerItems {...props} />
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+
+
 const Menu = createDrawerNavigator({
     'Home' : {
       screen: HomeStack,
@@ -239,7 +274,8 @@ const Menu = createDrawerNavigator({
     } 
   },
   {
-    drawerWidth: 230,
+    contentComponent: drawer_nav,
+    drawerWidth: 250,
     drawerPosition: 'left',
     initialRouteName: 'Home',
   }
