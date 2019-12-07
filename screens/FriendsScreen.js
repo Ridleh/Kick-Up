@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import {FBFunctions} from '../API/Firebase';
-import { Dimensions, AsyncStorage, View, Text, SafeAreaView, ScrollView } from 'react-native';
+import { Dimensions, AsyncStorage, View, Text, SafeAreaView, ScrollView, RefreshControl } from 'react-native';
 import {Card, Header, Avatar, Button, Icon, Overlay, SearchBar, ListItem, Input} from 'react-native-elements'
 import { tsThisType } from '@babel/types';
-
+import {DrawerActions } from 'react-navigation';
 let devicewWidth = Dimensions.get('window').width;
 
 export default class Friends extends Component{
+
+
 
   constructor() {
     super()
@@ -18,6 +20,7 @@ export default class Friends extends Component{
         pendingFriends : [],
         showSearchFriends: false,
         incomingFriendRequests: [],
+
         search: ' '
     }
 
@@ -185,6 +188,7 @@ export default class Friends extends Component{
                 <Header
 					containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
 					statusBarProps={{ barStyle: 'light-content' }}
+                    leftComponent={{ icon: 'menu', color: '#fff', onPress: () => this.props.navigation.dispatch(DrawerActions.toggleDrawer()) }}
 					centerComponent={{ text: 'Friends', style: { color: '#fff' , fontSize: 20} }}
     			    rightComponent={<Icon                       
                         onPress={() => {
@@ -270,9 +274,6 @@ export default class Friends extends Component{
                         }
                         
                     </Card>
-                    <Button
-                        title='press for fun'
-                        onPress={() => this.getAllData()}/>
                     </ScrollView> 
             </View>
             </SafeAreaView>

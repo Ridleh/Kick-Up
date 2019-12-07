@@ -2,10 +2,13 @@ import * as WebBrowser from 'expo-web-browser';
 import {FBFunctions} from '../API/Firebase';
 import { firebaseConfig } from '../config';
 import * as firebase from 'firebase';
+import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator, DrawerActions } from 'react-navigation';
+
 
 import React, { Component } from 'react';
 import {
   Image,
+  Button,
   Platform,
   ScrollView,
   RefreshControl,
@@ -20,7 +23,7 @@ import {
   AsyncStorage
 } from 'react-native';
 import Constants from 'expo-constants';
-import { Avatar, Header, ListItem, Card, Button, Icon } from 'react-native-elements';
+import { Avatar, Header, ListItem, Card, Icon } from 'react-native-elements';
 import { fetchUpdateAsync } from 'expo/build/Updates/Updates';
 //import { watchFile } from 'fs';
 
@@ -38,6 +41,17 @@ const list = [
 ];
 
 export default class HomeScreen extends Component{
+  static navigationOptions = {
+      drawerLabel: 'Home',
+      drawerIcon: ({ tintColor }) => (
+        <Image
+          source={{uri: photo}}
+          style={[styles.icon, { tintColor: tintColor }]}
+        />
+      ),
+    };
+
+  
 
   constructor(props) {
       super(props);
@@ -102,7 +116,7 @@ export default class HomeScreen extends Component{
     //FBFunctions.getData()
     this.getPhotoUrl();
     this.getGames();
-    this.setState();
+    this.setState({refreshing : false});
 
     //this.setState({refreshing : false});
   }
@@ -112,10 +126,11 @@ export default class HomeScreen extends Component{
   return( 
     
     <SafeAreaView style = {{flex: 1}}>
+    <React.Fragment>
         <Header
       containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
       statusBarProps={{ barStyle: 'light-content' }}
-      leftComponent={{ icon: 'menu', color: '#fff' }}
+      leftComponent={{ icon: 'menu', color: '#fff', onPress: () => this.props.navigation.dispatch(DrawerActions.toggleDrawer()) }}
       centerComponent={{ text: 'Home', style: { color: '#fff' , fontSize: 20} }}
       rightComponent={
         <Avatar
@@ -156,7 +171,8 @@ export default class HomeScreen extends Component{
         ))
     }
     </View>
-    </ScrollView>
+    </ScrollView>   
+     </React.Fragment>
     </SafeAreaView>
 
 
@@ -368,5 +384,9 @@ const styles = StyleSheet.create({
   helpLinkText: {
     fontSize: 14,
     color: '#2e78b7',
+  },
+  icon: {
+    width: 24,
+    height: 24,
   },
 });
