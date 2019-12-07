@@ -80,7 +80,9 @@ export default class HomeScreen extends Component{
     console.log("called")
     this.getPhotoUrl()
     this.getGames()
+
   }
+
 
   async getGames(){
     this.participatingGames = []
@@ -153,7 +155,7 @@ export default class HomeScreen extends Component{
         }
     />}>
       <View style = {{flex:1}}>
-      {
+      { 
         this.allGames.map((item, i) => (
         <TouchableHighlight
           onPress={() => {
@@ -161,8 +163,14 @@ export default class HomeScreen extends Component{
             this.props.navigation.navigate('JoinGame', {gameName: item})
           }}>
         <ListItem
+          style={{}}
           key={i}
           title={item.gameName}
+          
+          subtitle=
+            {
+              item.sport + "\n" + item.players.length + "/" + ((item.participants+1)*5) + " players"
+            }
           leftIcon={{ name: item.icon }}
           bottomDivider
           chevron

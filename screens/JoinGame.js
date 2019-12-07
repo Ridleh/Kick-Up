@@ -60,7 +60,9 @@ export default class JoinGame extends Component {
 		userID: " ",
 		userName: " ",
 		showEditGameButton: false,
-		showEditGameOverlay : false
+		showEditGameOverlay : false,
+		totalPlayers : 0
+
 	}
 
 	async isUserInGame(){
