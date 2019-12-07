@@ -2,6 +2,8 @@ import * as WebBrowser from 'expo-web-browser';
 import {FBFunctions} from '../API/Firebase';
 import { firebaseConfig } from '../config';
 import * as firebase from 'firebase';
+import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator, DrawerActions } from 'react-navigation';
+
 
 import React, { Component } from 'react';
 import {
@@ -39,6 +41,15 @@ const list = [
 ];
 
 export default class HomeScreen extends Component{
+  static navigationOptions = {
+      drawerLabel: 'Home',
+      drawerIcon: ({ tintColor }) => (
+        <Image
+          source={{uri: photo}}
+          style={[styles.icon, { tintColor: tintColor }]}
+        />
+      ),
+    };
 
   
 
@@ -115,10 +126,11 @@ export default class HomeScreen extends Component{
   return( 
 
     <SafeAreaView style = {{flex: 1}}>
+    <React.Fragment>
         <Header
       containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
       statusBarProps={{ barStyle: 'light-content' }}
-      leftComponent={{ icon: 'menu', color: '#fff' }}
+      leftComponent={{ icon: 'menu', color: '#fff', onPress: () => this.props.navigation.dispatch(DrawerActions.toggleDrawer()) }}
       centerComponent={{ text: 'Home', style: { color: '#fff' , fontSize: 20} }}
       rightComponent={
         <Avatar
@@ -140,15 +152,9 @@ export default class HomeScreen extends Component{
           this.onRefresh()
         }
     />}>
-      <View style = {{flex : 1}}>
-
-    <Card title="Events You're Participating In"
-    onPress={() => {
-      //FBFunctions.getData() 
-      this.setState({showEventsUserIn  : !this.state.showEventsUserIn })
-    }}>
-    { this.state.showEventsUserIn &&
-      this.participatingGames.map((item, i) => (
+      <View style = {{flex:1}}>
+      {
+        this.allGames.map((item, i) => (
         <TouchableHighlight
           onPress={() => {
             //console.log(this.getPhotoUrl())
@@ -162,79 +168,11 @@ export default class HomeScreen extends Component{
           chevron
         />
         </TouchableHighlight>
-      ))
+        ))
     }
-    <Button
-					  title="Expand/Collapse"
-					  type="clear"
-					  onPress={() => {
-						  this.setState({showEventsUserIn  : !this.state.showEventsUserIn })
-					  }}
-					  />
-    </Card>
-
-    <Card title="Events Your Friends Are Participating In">
-    { this.state.showEventsFriendsIn &&
-      this.friendsGames.map((item, i) => (
-        <ListItem
-          key={i}
-          title={item.title}
-          leftIcon={{ name: item.icon }}
-          bottomDivider
-          chevron
-        />
-      ))
-    }
-    <Button
-					  title="Expand/Collapse"
-					  type="clear"
-					  onPress={() => {
-						  this.setState({showEventsFriendsIn  : !this.state.showEventsFriendsIn })
-					  }}
-					  />
-    </Card> 
-
-    <Card title="Events Happening In Your Area"
-    onPress={() => {
-      //FBFunctions.getData() 
-      this.setState({showEventsNearUser  : !this.state.showEventsNearUser })
-    }}>
-    { this.state.showEventsNearUser &&
-      this.allGames.map((item, i) => (
-        <TouchableHighlight
-          onPress={() => {
-            //console.log(this.getPhotoUrl())
-            this.props.navigation.navigate('JoinGame', {gameName: item})
-          }}>
-        <ListItem
-          key={i}
-          title={item.gameName}
-          leftIcon={{ name: item.icon }}
-          bottomDivider
-          chevron
-        />
-        </TouchableHighlight>
-      ))
-    }
-    <Button
-					  title="Expand/Collapse"
-					  type="clear"
-					  onPress={() => {
-						  this.setState({showEventsNearUser  : !this.state.showEventsNearUser })
-					  }}
-					  />
-    </Card>
-
     </View>
-    </ScrollView>
-    <View style={{flex:1}}>
-        <View style={{borderWidth:1,position:'absolute',bottom:0,alignSelf:'flex-end'}}>
-           <Button
-             title="Press"
-             color="#841584"
-             accessibilityLabel="Press"/>
-        </View>
-      </View>
+    </ScrollView>   
+     </React.Fragment>
     </SafeAreaView>
 
 
@@ -446,5 +384,9 @@ const styles = StyleSheet.create({
   helpLinkText: {
     fontSize: 14,
     color: '#2e78b7',
+  },
+  icon: {
+    width: 24,
+    height: 24,
   },
 });

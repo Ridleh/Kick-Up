@@ -14,6 +14,7 @@ import { WebView } from 'react-native-webview';
 import { Input, Header, ListItem, Card, Button, Icon } from 'react-native-elements';
 import * as Google from 'expo-google-app-auth';
 
+import {DrawerActions } from 'react-navigation';
 
 
 export default class Profile extends Component{
@@ -111,7 +112,7 @@ export default class Profile extends Component{
       <Header
       containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
       statusBarProps={{ barStyle: 'light-content' }}
-      leftComponent={{ icon: 'menu', color: '#fff' }}
+      leftComponent={{ icon: 'menu', color: '#fff', onPress: () => this.props.navigation.dispatch(DrawerActions.toggleDrawer()) }}
       centerComponent={{ text: 'Profile', style: { color: '#fff' , fontSize: 20} }}
       rightComponent={<Icon
 

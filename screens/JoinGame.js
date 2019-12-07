@@ -22,7 +22,6 @@ export default class JoinGame extends Component {
 		description : this.gameInfo.description,
 		name : this.gameInfo.gameName,
 		location_lat : this.gameInfo.location_lat,
-		location: this.gameInfo.location,
 		location_long : this.gameInfo.location_long,
 		location_name : this.gameInfo.location_name,
 		location_address : this.gameInfo.location_address,
@@ -37,8 +36,7 @@ export default class JoinGame extends Component {
 		userID: " ",
 		userName: " ",
 		showEditGameButton: false,
-		showEditGameOverlay : false,
-		previousState : ''
+		showEditGameOverlay : false
 	}
 
 	async isUserInGame(){
@@ -99,7 +97,6 @@ export default class JoinGame extends Component {
 			  gameName : this.state.name,
 			  createdBy: this.state.createdBy,
 			  date:  this.state.date,
-			  location: this.gameInfo.location,
 			  location_lat : this.state.location_lat,
 			  location_long : this.state.location_long,
 			  location_name : this.state.location_name,
@@ -125,7 +122,6 @@ export default class JoinGame extends Component {
 			  gameName : this.state.name,
 			  createdBy: this.state.createdBy,
 			  date:  this.state.date,
-			  location: this.gameInfo.location,
 			  location_lat : this.state.location_lat,
 			  location_long : this.state.location_long,
 			  location_name : this.state.location_name,
@@ -160,8 +156,7 @@ export default class JoinGame extends Component {
 				participants: this.state.participants,
       			gameName : this.state.name,
       			createdBy: this.state.createdBy,
-				  date:  this.state.date,
-				  location: this.gameInfo.location,
+      			date:  this.state.date,
 				location_lat : this.state.location_lat,
 		  		location_long : this.state.location_long,
 			  	location_name : this.state.location_name,
@@ -225,8 +220,7 @@ export default class JoinGame extends Component {
 				participants: this.state.participants,
       			gameName : this.state.name,
       			createdBy: this.state.createdBy,
-				  date:  this.state.date,
-				  location: this.gameInfo.location,
+      			date:  this.state.date,
 				location_lat : this.state.location_lat,
 		  		location_long : this.state.location_long,
 				location_name : this.state.location_name,
@@ -245,48 +239,32 @@ export default class JoinGame extends Component {
 		}
 	}
 
-	handleEditScreen(status){
-		if(status === 'open'){
-			this.setState({previousState : this.state})
-		}
-		else{
-			this.setState({
-				name : this.state.previousState.name,
-				description : this.state.previousState.description,
-				location_name : this.state.previousState.location_name,
-				showEditGameOverlay : false
-			})
-		} 
-	}
-
   render() {
     return (
     	//<ImageBackground source={} style={{width: '100%', height: '100%'}}>
 		<SafeAreaView style = {{flex: 1}}>
 			<ScrollView style = {{flex: 1}}>
 
-		<AdMobBanner
-		  bannerSize="fullBanner"
-		  adUnitID="ca-app-pub-4386529393896712/1309515346"
-		  testDeviceID="EMULATOR"
-		  servePersonalizedAds
-		  onDidFailToReceiveAdWithError={this.bannerError} />
+		
   	
       <View style={styles.joinform}>
+      		
 		  	{this.state.showEditGameButton && 
 		  		<Button
 			  	title='edit game'
 			  	onPress={() => this.showEditGameScreen()}
 				/>
 			}
+
 			<Overlay
 				isVisible ={this.state.showEditGameOverlay}
-				onShow={() => this.handleEditScreen('open')}
-				onBackdropPress={() => this.handleEditScreen('close')} 
+				onBackdropPress={() => this.setState({showEditGameOverlay : false})} 
 			>
 				<Card
 				title='Edit Game'
 				>
+					
+
 					<TextInput 
 						style = {styles.textInput} 
 						placeholder="Game Name"
@@ -322,6 +300,17 @@ export default class JoinGame extends Component {
 							this.setState({location_name : text.nativeEvent.text})
 						}}
 					/>
+					<TextInput 
+						style = {styles.textInput} 
+						placeholder="Address"
+						placeholderTextColor={'#bfbfbf'}
+						placeholderStyle={styles.placeholderStyle}
+						underlineColorAndroid='transparent'
+						multiline
+						onEndEditing={(text) => {
+							this.setState({location_address : text.nativeEvent.text})
+						}}
+					/>
 					<Divider/>
 					<Button
 						title='Save Changes'
@@ -329,11 +318,18 @@ export default class JoinGame extends Component {
 					/>
 				</Card>
 			</Overlay>
+		<AdMobBanner
+		  				bannerSize="fullBanner"
+		  				adUnitID="ca-app-pub-4386529393896712/1309515346"
+		  				testDeviceID="EMULATOR"
+		  				servePersonalizedAds
+		  				onDidFailToReceiveAdWithError={this.bannerError} />
       	<Text style={styles.header}>{this.state.name} </Text>
       	<Text style={styles.text_important}> 10/23/2019, 4:00pm </Text>
       	<Text style={styles.text}> Created by: {this.state.createdBy} </Text>
 		<Text style={styles.text}> Description: {this.state.description}</Text>
       	<Text style={styles.text}> Location: {this.state.location_name} </Text>
+      	<Text style={styles.text}> Address: {"\n"} {this.state.location_address} </Text>
       	<Text style={styles.text}> Number of Players: {this.determinePlayerSize()} </Text>
 		{ this.state.showLeaveGameButton &&
 		<Button
@@ -410,14 +406,16 @@ const styles = StyleSheet.create({
 	text: {
 		//alightSelf: 'stretch',
 		alignSelf:'center',
+		textAlign: 'center',
 		height: 40,
-		marginBottom: 30,
+		marginBottom: 20,
 		color: '#000000',
 		borderBottomColor: '#f8f8f8',
 		borderBottomWidth: 1,
 	},
 	textInput: {
 		height: 40,
+		alignSelf: 'center',
 		borderWidth: 1,
 		borderColor: 'black',
 		paddingLeft: 20,
@@ -470,6 +468,7 @@ const styles = StyleSheet.create({
 	},
 	placeholderStyle: {
         fontSize: 14,
+        alignSelf:'center',
         color: '#000',
     },
 });
