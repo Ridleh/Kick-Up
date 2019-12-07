@@ -190,13 +190,13 @@ export default class Friends extends Component{
 					statusBarProps={{ barStyle: 'light-content' }}
                     leftComponent={{ icon: 'menu', color: '#fff', onPress: () => this.props.navigation.dispatch(DrawerActions.toggleDrawer()) }}
 					centerComponent={{ text: 'Friends', style: { color: '#fff' , fontSize: 20} }}
-    			    rightComponent={<Icon                       
+    			    rightComponent={<Ionicons 
+                        name="md-person-add"
                         onPress={() => {
                           this.setState({showSearchFriends : true})
-                        }}                          
-                        name="add"
-                        size={30}
-                        color="white"
+                        }}
+                        size={30} 
+                        color = 'white'     
                         />
                     }
                 />
@@ -206,7 +206,14 @@ export default class Friends extends Component{
                 onBackdropPress={() => this.setState({showSearchFriends : false})} 
                 >
                     <View>
+                        <Header
+                            containerStyle={{ backgroundColor: '#fff'}}
+                            centerComponent={{ text: 'Search New Friends', style: { color: '#4caf50' , fontSize: 20} }}
+                        />
                         <SearchBar
+                        inputStyle={{backgroundColor: 'white'}}
+                        //containerStyle={{backgroundColor: 'white', borderWidth: 1, borderRadius: 5}}
+                        containerStyle={{backgroundColor: 'white', borderWidth: 1, borderRadius: 5}}
                         placeholder='Type here...'
                         onSubmitEditing={(searchValue) => this.findFriends(searchValue.nativeEvent.text)}
                         onChangeText={(value) => this.setState({search : value})}

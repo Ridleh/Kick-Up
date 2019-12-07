@@ -26,8 +26,8 @@ import Constants from 'expo-constants';
 import { Avatar, Header, ListItem, Card, Icon } from 'react-native-elements';
 import { fetchUpdateAsync } from 'expo/build/Updates/Updates';
 //import { watchFile } from 'fs';
+import { Ionicons } from '@expo/vector-icons';
 
-let devicewWidth = Dimensions.get('window').width;
 
 const list = [
   {
@@ -41,15 +41,11 @@ const list = [
 ];
 
 export default class HomeScreen extends Component{
+
   static navigationOptions = {
-      drawerLabel: 'Home',
-      drawerIcon: ({ tintColor }) => (
-        <Image
-          source={{uri: photo}}
-          style={[styles.icon, { tintColor: tintColor }]}
-        />
-      ),
-    };
+          drawerIcon: () => 
+              <Ionicons name="md-home" style={{fontSize: 24}} />
+      }
 
   
 

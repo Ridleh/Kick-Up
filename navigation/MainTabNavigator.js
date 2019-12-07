@@ -18,6 +18,7 @@ import MapScreen from '../screens/MapScreen';
 import FriendsScreen from '../screens/FriendsScreen';
 import ChatScreen from '../screens/ChatScreen';
 import MyGames from '../screens/MyGames';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -201,14 +202,44 @@ FriendsScreenStack.navigationOptions ={
 FriendsScreenStack.path = '';
 
 const Menu = createDrawerNavigator({
-  'Home' : HomeStack,
-  'My Games' : MyGames,
-  'Create a Game' : CreateGameStack,
-  'My Friends' : FriendsScreenStack,
-  'My Profile' : ProfilePageScreen,
+    'Home' : {
+      screen: HomeStack,
+      navigationOptions: {
+        drawerIcon: () => <Ionicons name="md-home" size={30} style={{ width: 24 }} 
+        color="#000" />
+      }
+    },
+    'My Games' : {
+      screen: MyGames,
+      navigationOptions: {
+        drawerIcon: () => <Ionicons name="md-football" size={30} style={{ width: 24 }} 
+        color="#000" />
+      }
+    },
+    'Create a Game' : {
+      screen: CreateGameStack,
+      navigationOptions: {
+        drawerIcon: () => <Ionicons name="md-add-circle" size={30} style={{ width: 24 }} 
+        color="#000" />
+      }
+    },
+    'My Friends' : {
+      screen: FriendsScreenStack,
+      navigationOptions: {
+        drawerIcon: () => <Ionicons name="md-contacts" size={30} style={{ width: 24 }} 
+        color="#000" />
+      }
+    },
+    'My Profile' : {
+      screen: ProfilePageStack,
+      navigationOptions: {
+        drawerIcon: () => <Ionicons name="md-contact" size={30} style={{ width: 24 }} 
+        color="#000" />
+      },
+    } 
   },
   {
-    drawerWidth: 300,
+    drawerWidth: 230,
     drawerPosition: 'left',
     initialRouteName: 'Home',
   }
