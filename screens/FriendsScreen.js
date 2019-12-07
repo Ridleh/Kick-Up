@@ -4,6 +4,7 @@ import { Dimensions, AsyncStorage, View, Text, SafeAreaView, ScrollView, Refresh
 import {Card, Header, Avatar, Button, Icon, Overlay, SearchBar, ListItem, Input} from 'react-native-elements'
 import { tsThisType } from '@babel/types';
 import {DrawerActions } from 'react-navigation';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 let devicewWidth = Dimensions.get('window').width;
 
 export default class Friends extends Component{
