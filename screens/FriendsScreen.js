@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import {FBFunctions} from '../API/Firebase';
-import { Dimensions, AsyncStorage, View, Text, SafeAreaView, ScrollView } from 'react-native';
+import { Dimensions, AsyncStorage, View, Text, SafeAreaView, ScrollView, RefreshControl } from 'react-native';
 import {Card, Header, Avatar, Button, Icon, Overlay, SearchBar, ListItem, Input} from 'react-native-elements'
 import { tsThisType } from '@babel/types';
+
 
 let devicewWidth = Dimensions.get('window').width;
 
 export default class Friends extends Component{
+
+
 
   constructor() {
     super()
@@ -18,6 +21,7 @@ export default class Friends extends Component{
         pendingFriends : [],
         showSearchFriends: false,
         incomingFriendRequests: [],
+
         search: ' '
     }
 
@@ -270,9 +274,6 @@ export default class Friends extends Component{
                         }
                         
                     </Card>
-                    <Button
-                        title='press for fun'
-                        onPress={() => this.getAllData()}/>
                     </ScrollView> 
             </View>
             </SafeAreaView>

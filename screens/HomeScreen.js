@@ -6,6 +6,7 @@ import * as firebase from 'firebase';
 import React, { Component } from 'react';
 import {
   Image,
+  Button,
   Platform,
   ScrollView,
   RefreshControl,
@@ -20,7 +21,7 @@ import {
   AsyncStorage
 } from 'react-native';
 import Constants from 'expo-constants';
-import { Avatar, Header, ListItem, Card, Button, Icon } from 'react-native-elements';
+import { Avatar, Header, ListItem, Card, Icon } from 'react-native-elements';
 import { fetchUpdateAsync } from 'expo/build/Updates/Updates';
 //import { watchFile } from 'fs';
 
@@ -38,6 +39,8 @@ const list = [
 ];
 
 export default class HomeScreen extends Component{
+
+  
 
   constructor(props) {
       super(props);
@@ -102,7 +105,7 @@ export default class HomeScreen extends Component{
     //FBFunctions.getData()
     this.getPhotoUrl();
     this.getGames();
-    this.setState();
+    this.setState({refreshing : false});
 
     //this.setState({refreshing : false});
   }
@@ -224,6 +227,14 @@ export default class HomeScreen extends Component{
 
     </View>
     </ScrollView>
+    <View style={{flex:1}}>
+        <View style={{borderWidth:1,position:'absolute',bottom:0,alignSelf:'flex-end'}}>
+           <Button
+             title="Press"
+             color="#841584"
+             accessibilityLabel="Press"/>
+        </View>
+      </View>
     </SafeAreaView>
 
 
