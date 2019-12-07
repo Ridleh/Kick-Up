@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat'
-import { AsyncStorage, View, Platform, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, AsyncStorage, View, Platform, KeyboardAvoidingView, SafeAreaView } from 'react-native';
 import {FBFunctions} from '../API/Firebase';
+import {Header} from 'react-navigation'
 
 export default class ChatScreen extends Component {
 
@@ -97,16 +98,48 @@ export default class ChatScreen extends Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
+      <KeyboardAvoidingView
+                behavior='padding'
+                style={{ flex: 1 }}
+                keyboardVerticalOffset = {Header.HEIGHT }
+            >
+      <SafeAreaView style = {styles.container}>
+        <View style={styles.inner}>
       <GiftedChat
         messages={this.state.messages}
         onSend={messages => this.onSend(messages)}
         user={this.user}
+        style={{flex:1}}
       />
-      {
-        Platform.OS === 'android' && <KeyboardAvoidingView behavior='padding' />
-      }
       </View>
+      </SafeAreaView>
+      </KeyboardAvoidingView>
     )
   }
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+      flex: 1,
+  },
+  inner: {
+      padding: 24,
+      flex: 1,
+      justifyContent: "flex-end",
+  },
+  header: {
+      fontSize: 36,
+      marginBottom: 48,
+  },
+  input: {
+      height: 40,
+      borderColor: "#000000",
+      borderBottomWidth: 1,
+      marginBottom: 36,
+  },
+  btnContainer: {
+      backgroundColor: "white",
+      marginTop: 12,
+  },
+});
