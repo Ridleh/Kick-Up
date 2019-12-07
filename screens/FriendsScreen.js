@@ -186,23 +186,17 @@ export default class Friends extends Component{
 					containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
 					statusBarProps={{ barStyle: 'light-content' }}
 					centerComponent={{ text: 'Friends', style: { color: '#fff' , fontSize: 20} }}
-    			/>
-                <View>      
-                    <Button
-                    icon={
-                        <Icon
-                        name="person"
-                        size={20}
+    			    rightComponent={<Icon                       
+                        onPress={() => {
+                          this.setState({showSearchFriends : true})
+                        }}                          
+                        name="add"
+                        size={30}
                         color="white"
                         />
                     }
-                    iconLeft
-                    title="  Tap to search for friends"
-                    onPress={() =>
-                            this.setState({showSearchFriends : true})
-                        }
-                    />
-                </View>
+                />
+                
                 <Overlay
                 isVisible={this.state.showSearchFriends}
                 onBackdropPress={() => this.setState({showSearchFriends : false})} 
