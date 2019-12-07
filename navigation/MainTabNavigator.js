@@ -266,7 +266,7 @@ const Menu = createDrawerNavigator({
       }
     },
     'My Profile' : {
-      screen: ProfilePageStack,
+      screen: ProfilePageScreen,
       navigationOptions: {
         drawerIcon: () => <Ionicons name="md-contact" size={30} style={{ width: 24 }} 
         color="#000" />
