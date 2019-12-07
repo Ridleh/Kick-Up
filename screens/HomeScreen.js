@@ -2,6 +2,11 @@ import * as WebBrowser from 'expo-web-browser';
 import {FBFunctions} from '../API/Firebase';
 import { firebaseConfig } from '../config';
 import * as firebase from 'firebase';
+<<<<<<< Updated upstream
+=======
+import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator, DrawerActions, DrawerItems } from 'react-navigation';
+
+>>>>>>> Stashed changes
 
 import React, { Component } from 'react';
 import {
@@ -42,10 +47,20 @@ const list = [
 
 //FBFunctions.getData()
 
+<<<<<<< Updated upstream
 
 
 
 export default class HomeScreen extends Component{
+=======
+  constructor(props) {
+      super(props);
+      this.state = {photo: 'https://icon-library.net/images/default-profile-icon/default-profile-icon-16.jpg', };
+      this.getPhotoUrl();
+    //this.getUserInfo()
+    //this.getGames()
+  }
+>>>>>>> Stashed changes
 
   state = {
     refresh : Date(Date.now()).toString(),
