@@ -18,9 +18,13 @@ import {
   Dimensions,
   Alert
 } from 'react-native';
+
 import Constants from 'expo-constants';
 import { Header, ListItem, Card, Button, Icon } from 'react-native-elements';
 import { fetchUpdateAsync } from 'expo/build/Updates/Updates';
+import { createDrawerNavigator, DrawerItems, createAppContainer } from 'react-navigation';
+import { Icon } from 'native-base';
+
 //import { watchFile } from 'fs';
 
 let devicewWidth = Dimensions.get('window').width;
@@ -59,14 +63,28 @@ export default class HomeScreen extends Component{
   }
   
   render(){
+<<<<<<< Updated upstream
   return(
+=======
+    const photo = this.state.photo
+    static navigationOptions = {
+      drawerIcon: ({ tintColor }) => (
+            <Icon name="home" style={{ fontSize: 24, color: tintColor }} />
+        )
+    }
+  return( 
+>>>>>>> Stashed changes
 
     <SafeAreaView style = {{flex: 1}}>
         <Header
       containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
       statusBarProps={{ barStyle: 'light-content' }}
+<<<<<<< Updated upstream
       leftComponent={{ icon: 'menu', color: '#fff' }}
 <<<<<<< Updated upstream
+=======
+      leftComponent={<Icon name="menu" onPress={() => this.props.navigation.openDrawer()} />}
+>>>>>>> Stashed changes
       centerComponent={{ text: 'Home', style: { color: '#fff' , fontSize: 20} }}
       rightComponent={{ icon: 'home', color: '#fff' }}
 =======
