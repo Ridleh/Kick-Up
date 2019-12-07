@@ -269,20 +269,17 @@ export default class JoinGame extends Component {
 		<SafeAreaView style = {{flex: 1}}>
 			<ScrollView style = {{flex: 1}}>
 
-		<AdMobBanner
-		  bannerSize="fullBanner"
-		  adUnitID="ca-app-pub-4386529393896712/1309515346"
-		  testDeviceID="EMULATOR"
-		  servePersonalizedAds
-		  onDidFailToReceiveAdWithError={this.bannerError} />
+		
   	
       <View style={styles.joinform}>
+      		
 		  	{this.state.showEditGameButton && 
 		  		<Button
 			  	title='edit game'
 			  	onPress={() => this.showEditGameScreen()}
 				/>
 			}
+
 			<Overlay
 				isVisible ={this.state.showEditGameOverlay}
 				onBackdropPress={() => this.setState({showEditGameOverlay : false})} 
@@ -290,6 +287,8 @@ export default class JoinGame extends Component {
 				<Card
 				title='Edit Game'
 				>
+					
+
 					<TextInput 
 						style = {styles.textInput} 
 						placeholder="Game Name"
@@ -343,6 +342,12 @@ export default class JoinGame extends Component {
 					/>
 				</Card>
 			</Overlay>
+		<AdMobBanner
+		  				bannerSize="fullBanner"
+		  				adUnitID="ca-app-pub-4386529393896712/1309515346"
+		  				testDeviceID="EMULATOR"
+		  				servePersonalizedAds
+		  				onDidFailToReceiveAdWithError={this.bannerError} />
       	<Text style={styles.header}>{this.state.name} </Text>
       	<Text style={styles.text_important}> 10/23/2019, 4:00pm </Text>
       	<Text style={styles.text}> Created by: {this.state.createdBy} </Text>
@@ -455,7 +460,7 @@ const styles = StyleSheet.create({
 		alignSelf:'center',
 		textAlign: 'center',
 		height: 40,
-		marginBottom: 30,
+		marginBottom: 20,
 		color: '#000000',
 		borderBottomColor: '#f8f8f8',
 		borderBottomWidth: 1,
@@ -463,6 +468,7 @@ const styles = StyleSheet.create({
 	textInput: {
 		height: 40,
 		textAlign: 'center',
+		alignSelf: 'center',
 		borderWidth: 1,
 		borderColor: 'black',
 		paddingLeft: 20,
@@ -515,6 +521,7 @@ const styles = StyleSheet.create({
 	},
 	placeholderStyle: {
         fontSize: 14,
+        alignSelf:'center',
         color: '#000',
     },
     mapStyle: {

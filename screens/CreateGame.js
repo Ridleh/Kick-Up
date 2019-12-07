@@ -6,6 +6,8 @@ import { tsConstructorType, tsBooleanKeyword } from '@babel/types';
 import {FBFunctions} from '../API/Firebase';
 import * as Calendar from 'expo-calendar'
 import * as Permissions from 'expo-permissions'
+import {DrawerActions } from 'react-navigation';
+
 
 let devicewWidth = Dimensions.get('window').width;
 
@@ -211,6 +213,7 @@ export default class CreateGame extends Component{
 			<View style={styles.viewContainer}>
 				<Header
 					containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
+					leftComponent={{ icon: 'menu', color: '#fff', onPress: () => this.props.navigation.dispatch(DrawerActions.toggleDrawer()) }}
 					statusBarProps={{ barStyle: 'light-content' }}
 					centerComponent={{ text: 'Create A Game', style: { color: '#fff' , fontSize: 20} }}	
     			/>

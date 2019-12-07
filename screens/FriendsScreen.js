@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import {FBFunctions} from '../API/Firebase';
-import { Dimensions, AsyncStorage, View, Text, SafeAreaView, ScrollView } from 'react-native';
+import { Dimensions, AsyncStorage, View, Text, SafeAreaView, ScrollView, RefreshControl } from 'react-native';
 import {Card, Header, Avatar, Button, Icon, Overlay, SearchBar, ListItem, Input} from 'react-native-elements'
 import { tsThisType } from '@babel/types';
-
+import {DrawerActions } from 'react-navigation';
 let devicewWidth = Dimensions.get('window').width;
 
 export default class Friends extends Component{
+
+
 
   constructor() {
     super()
@@ -18,6 +20,7 @@ export default class Friends extends Component{
         pendingFriends : [],
         showSearchFriends: false,
         incomingFriendRequests: [],
+
         search: ' '
     }
 
@@ -105,7 +108,7 @@ export default class Friends extends Component{
 	}
 
     createFriendRequest = async (friend, FriendsListSearch) => {
-        /*
+        
         const currentRequests = this.state.pendingFriends;
         if(currentRequests.indexOf(friend) == -1){
             currentRequests.push(friend)
@@ -119,7 +122,7 @@ export default class Friends extends Component{
             console.log('something went wrong')
         }
         console.log(friend);
-        */
+        
 
         request = {
            requestFromID: await this.getUserID(),
@@ -139,7 +142,7 @@ export default class Friends extends Component{
         this.setState()
         this.getAllData()
 
-        /*
+        
         const pendingList = this.state.pendingFriends
         const index = pendingList.indexOf(friend)
         if(index != -1){
@@ -149,7 +152,7 @@ export default class Friends extends Component{
         else{
             console.log('something went wrong :(')
         }
-        */
+        
     } 
 
     async acceptFriendRequest(request){
@@ -185,24 +188,19 @@ export default class Friends extends Component{
                 <Header
 					containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
 					statusBarProps={{ barStyle: 'light-content' }}
+                    leftComponent={{ icon: 'menu', color: '#fff', onPress: () => this.props.navigation.dispatch(DrawerActions.toggleDrawer()) }}
 					centerComponent={{ text: 'Friends', style: { color: '#fff' , fontSize: 20} }}
-    			/>
-                <View>      
-                    <Button
-                    icon={
-                        <Icon
-                        name="person"
-                        size={20}
+    			    rightComponent={<Icon                       
+                        onPress={() => {
+                          this.setState({showSearchFriends : true})
+                        }}                          
+                        name="add"
+                        size={30}
                         color="white"
                         />
                     }
-                    iconLeft
-                    title="  Tap to search for friends"
-                    onPress={() =>
-                            this.setState({showSearchFriends : true})
-                        }
-                    />
-                </View>
+                />
+                
                 <Overlay
                 isVisible={this.state.showSearchFriends}
                 onBackdropPress={() => this.setState({showSearchFriends : false})} 
@@ -276,9 +274,6 @@ export default class Friends extends Component{
                         }
                         
                     </Card>
-                    <Button
-                        title='press for fun'
-                        onPress={() => this.getAllData()}/>
                     </ScrollView> 
             </View>
             </SafeAreaView>

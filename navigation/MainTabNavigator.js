@@ -1,6 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator, DrawerActions } from 'react-navigation';
+import {Icon, Header} from 'react-native-elements'
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
@@ -16,6 +17,7 @@ import NewProfilePage from '../screens/NewProfilePage';
 import MapScreen from '../screens/MapScreen';
 import FriendsScreen from '../screens/FriendsScreen';
 import ChatScreen from '../screens/ChatScreen';
+import MyGames from '../screens/MyGames';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -198,7 +200,25 @@ FriendsScreenStack.navigationOptions ={
 
 FriendsScreenStack.path = '';
 
+const Menu = createDrawerNavigator({
+  'Home' : HomeStack,
+  'My Games' : MyGames,
+  'Create a Game' : CreateGameStack,
+  'My Friends' : FriendsScreenStack,
+  'My Profile' : ProfilePageScreen,
+  },
+  {
+    drawerWidth: 300,
+    drawerPosition: 'left',
+    initialRouteName: 'Home',
+  }
 
+);
+
+
+Menu.path = '';
+
+export default Menu
 
 
 const tabNavigator = createBottomTabNavigator({
@@ -209,4 +229,6 @@ const tabNavigator = createBottomTabNavigator({
 
 tabNavigator.path = '';
 
-export default tabNavigator;
+// export default tabNavigator;
+
+
