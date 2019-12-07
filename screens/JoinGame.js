@@ -22,6 +22,7 @@ export default class JoinGame extends Component {
 		description : this.gameInfo.description,
 		name : this.gameInfo.gameName,
 		location_lat : this.gameInfo.location_lat,
+		location: this.gameInfo.location,
 		location_long : this.gameInfo.location_long,
 		location_name : this.gameInfo.location_name,
 		location_address : this.gameInfo.location_address,
@@ -36,7 +37,8 @@ export default class JoinGame extends Component {
 		userID: " ",
 		userName: " ",
 		showEditGameButton: false,
-		showEditGameOverlay : false
+		showEditGameOverlay : false,
+		previousState : ''
 	}
 
 	async isUserInGame(){
@@ -97,6 +99,7 @@ export default class JoinGame extends Component {
 			  gameName : this.state.name,
 			  createdBy: this.state.createdBy,
 			  date:  this.state.date,
+			  location: this.gameInfo.location,
 			  location_lat : this.state.location_lat,
 			  location_long : this.state.location_long,
 			  location_name : this.state.location_name,
@@ -122,6 +125,7 @@ export default class JoinGame extends Component {
 			  gameName : this.state.name,
 			  createdBy: this.state.createdBy,
 			  date:  this.state.date,
+			  location: this.gameInfo.location,
 			  location_lat : this.state.location_lat,
 			  location_long : this.state.location_long,
 			  location_name : this.state.location_name,
@@ -156,7 +160,8 @@ export default class JoinGame extends Component {
 				participants: this.state.participants,
       			gameName : this.state.name,
       			createdBy: this.state.createdBy,
-      			date:  this.state.date,
+				  date:  this.state.date,
+				  location: this.gameInfo.location,
 				location_lat : this.state.location_lat,
 		  		location_long : this.state.location_long,
 			  	location_name : this.state.location_name,
@@ -220,7 +225,8 @@ export default class JoinGame extends Component {
 				participants: this.state.participants,
       			gameName : this.state.name,
       			createdBy: this.state.createdBy,
-      			date:  this.state.date,
+				  date:  this.state.date,
+				  location: this.gameInfo.location,
 				location_lat : this.state.location_lat,
 		  		location_long : this.state.location_long,
 				location_name : this.state.location_name,
@@ -237,6 +243,20 @@ export default class JoinGame extends Component {
 			Alert.alert("Something went wrong:", error.message)
 			console.log(error);
 		}
+	}
+
+	handleEditScreen(status){
+		if(status === 'open'){
+			this.setState({previousState : this.state})
+		}
+		else{
+			this.setState({
+				name : this.state.previousState.name,
+				description : this.state.previousState.description,
+				location_name : this.state.previousState.location_name,
+				showEditGameOverlay : false
+			})
+		} 
 	}
 
   render() {
@@ -261,7 +281,8 @@ export default class JoinGame extends Component {
 			}
 			<Overlay
 				isVisible ={this.state.showEditGameOverlay}
-				onBackdropPress={() => this.setState({showEditGameOverlay : false})} 
+				onShow={() => this.handleEditScreen('open')}
+				onBackdropPress={() => this.handleEditScreen('close')} 
 			>
 				<Card
 				title='Edit Game'

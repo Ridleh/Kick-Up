@@ -105,7 +105,7 @@ export default class Friends extends Component{
 	}
 
     createFriendRequest = async (friend, FriendsListSearch) => {
-        /*
+        
         const currentRequests = this.state.pendingFriends;
         if(currentRequests.indexOf(friend) == -1){
             currentRequests.push(friend)
@@ -119,7 +119,7 @@ export default class Friends extends Component{
             console.log('something went wrong')
         }
         console.log(friend);
-        */
+        
 
         request = {
            requestFromID: await this.getUserID(),
@@ -139,7 +139,7 @@ export default class Friends extends Component{
         this.setState()
         this.getAllData()
 
-        /*
+        
         const pendingList = this.state.pendingFriends
         const index = pendingList.indexOf(friend)
         if(index != -1){
@@ -149,7 +149,7 @@ export default class Friends extends Component{
         else{
             console.log('something went wrong :(')
         }
-        */
+        
     } 
 
     async acceptFriendRequest(request){
