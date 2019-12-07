@@ -64,6 +64,8 @@ export default class CreateGame extends Component{
 			  allDay: false,
 			  location_lat : this.props.navigation.state.params.loc_lat,
 			  location_long : this.props.navigation.state.params.loc_long,
+			  location_name : this.props.navigation.state.params.loc_name,
+			  location_address: this.props.navigation.state.params.loc_address,
 			  timeZone: "GMT-5",
 			  notes: this.state.description	  
 		  }
@@ -90,6 +92,8 @@ export default class CreateGame extends Component{
 			+ this.state.date + '\n'
 			+ this.props.navigation.state.params.loc_lat + '\n'
 			+ this.props.navigation.state.params.loc_long + '\n'
+			+ this.props.navigation.state.params.loc_name + '\n'
+			+ this.props.navigation.state.params.loc_address + '\n'
 			+ this.state.description + '\n')
 	}
 
@@ -130,13 +134,19 @@ export default class CreateGame extends Component{
 			sport: this.state.sport,
 			participants: + this.state.participants,
 			createdBy: userName,
-			
 			gameName : this.state.gameName,
 			date:  this.state.androidDate.toUTCString(),
 			dateFormatted: this.state.androidDateFormatted,
-			location: this.state.location,
-			location_lat : this.state.location_lat/*this.props.navigation.state.params.loc_lat*/,
-			location_long : this.state.location_long/*this.props.navigation.state.params.loc_long*/,
+//<<<<<<< HEAD
+			location_lat : this.props.navigation.state.params.loc_lat,
+			location_long : this.props.navigation.state.params.loc_long,
+			location_name : this.props.navigation.state.params.loc_name,
+			location_address: this.props.navigation.state.params.loc_address,
+//=======
+			//location: this.state.location,
+			//location_lat : this.state.location_lat/*this.props.navigation.state.params.loc_lat*/,
+			//location_long : this.state.location_long/*this.props.navigation.state.params.loc_long*/,
+//>>>>>>> //8e7e1957a02ba9f641301e05b75eed6c7e544a2f
 			description : this.state.description,
 			players: [{name: userName, ID: userID }],
 			createdByID: userID,
@@ -175,9 +185,11 @@ export default class CreateGame extends Component{
 		showConfirmationScreen: false,
 		gameName: "blank",
 		date: "blank",
-		location : 'blank',
+		//location : 'blank',
 		location_lat: "blank",
 		location_long: "blank",
+		location_name: "blank",
+		location_address: "blank",
 		description: "blank",
 		name: " ",
 		ID: " ",

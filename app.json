@@ -13,7 +13,9 @@
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyCSOCajuVL4jR_ijBm8elfCWD91bYpeK0k"
-        }
+
+        },
+        "googleMobileAdsAppId": "ca-app-pub-4386529393896712~3886248232"
       }
     },
     "ios": {
