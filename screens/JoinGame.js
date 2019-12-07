@@ -1,14 +1,38 @@
-import React, { Component } from 'react';
+import React,{ Component } from 'react';
 import {FBFunctions} from '../API/Firebase'
-import { Share, AsyncStorage, Alert, SafeAreaView, StyleSheet, View, Text,TextInput, TouchableOpacity, ScrollView, Button } from 'react-native';
+import MapView from 'react-native-maps';
+import markerImage from "../assets/current_location.png";
+import { 
+	Share, 
+	AsyncStorage, 
+	Alert, 
+	SafeAreaView, 
+	StyleSheet, 
+	Dimensions, 
+	View, 
+	Text,
+	TextInput, 
+	TouchableOpacity, 
+	ScrollView, 
+	Button,
+	Image,
+} from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
 //import { Card, ListItem, Icon } from 'react-native-elements';
 import {
   AdMobBanner
 } from 'expo-ads-admob';
-import { Card, ListItem, Icon, Overlay, Divider } from 'react-native-elements';
+import { 
+	Card, 
+	ListItem, 
+	Icon, 
+	Overlay, 
+	Divider 
+} from 'react-native-elements';
 //>>>>>>> 8e7e1957a02ba9f641301e05b75eed6c7e544a2f
+
+const {width, height} = Dimensions.get('window')
 
 export default class JoinGame extends Component {
 
@@ -301,6 +325,17 @@ export default class JoinGame extends Component {
 							this.setState({location_name : text.nativeEvent.text})
 						}}
 					/>
+					<TextInput 
+						style = {styles.textInput} 
+						placeholder="Address"
+						placeholderTextColor={'#bfbfbf'}
+						placeholderStyle={styles.placeholderStyle}
+						underlineColorAndroid='transparent'
+						multiline
+						onEndEditing={(text) => {
+							this.setState({location_address : text.nativeEvent.text})
+						}}
+					/>
 					<Divider/>
 					<Button
 						title='Save Changes'
@@ -313,7 +348,36 @@ export default class JoinGame extends Component {
       	<Text style={styles.text}> Created by: {this.state.createdBy} </Text>
 		<Text style={styles.text}> Description: {this.state.description}</Text>
       	<Text style={styles.text}> Location: {this.state.location_name} </Text>
+      	<Text style={styles.text}> Address: {"\n"} {this.state.location_address} </Text>
       	<Text style={styles.text}> Number of Players: {this.determinePlayerSize()} </Text>
+      	<MapView
+          region={{
+          	latitude: this.gameInfo.location_lat, 
+          	longitude: this.gameInfo.location_long,
+          	latitudeDelta: 0.03,
+    		longitudeDelta: (width / height)*0.03,
+          }}
+          showUserLocation
+          style={styles.mapStyle}>
+          <MapView.Marker
+            coordinate = {{
+				latitude: this.gameInfo.location_lat, 
+          		longitude: this.gameInfo.location_long,
+          		latitudeDelta: 0.03,
+    			longitudeDelta: (width / height)*0.03,
+            }}>
+            <Image source={require('../assets/current_location.png')} style={{height: 35, width:35 }} />
+            
+            <View style = {styles.radius}>
+              <View style = {styles.marker}>
+
+              </View>
+
+            </View>
+          </MapView.Marker>
+          
+
+        </MapView>
 		{ this.state.showLeaveGameButton &&
 		<Button
 			title='open group chat'
@@ -389,6 +453,7 @@ const styles = StyleSheet.create({
 	text: {
 		//alightSelf: 'stretch',
 		alignSelf:'center',
+		textAlign: 'center',
 		height: 40,
 		marginBottom: 30,
 		color: '#000000',
@@ -397,6 +462,7 @@ const styles = StyleSheet.create({
 	},
 	textInput: {
 		height: 40,
+		textAlign: 'center',
 		borderWidth: 1,
 		borderColor: 'black',
 		paddingLeft: 20,
@@ -451,5 +517,13 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#000',
     },
+    mapStyle: {
+    	width: width - 50,
+    	alignSelf: 'center',
+    	height: 250,
+    	padding:20,
+    	marginTop:20,
+    	marginBottom: 20,
+  	},
 });
 
