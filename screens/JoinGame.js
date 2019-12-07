@@ -100,9 +100,11 @@ export default class JoinGame extends Component {
 			await FBFunctions.updateData(event)
 			this.setState({showJoinGameButton : false})	
 			this.setState({showLeaveGameButton : true})
+			FBFunctions.getData() 
 		}
 		else{
 			console.log(" : ( ");
+			FBFunctions.getData() 
 		}
 	}
 	async removePlayerFromGame(){ 
@@ -157,9 +159,11 @@ export default class JoinGame extends Component {
 					[
 						{text: 'OK', onPress: () => this.props.navigation.navigate('Home')}
 					]);
+				FBFunctions.getData() 
 			}
 			else{
 				console.log(" : ( ");
+				FBFunctions.getData() 
 			}
 		}
 	}
@@ -212,11 +216,14 @@ export default class JoinGame extends Component {
 			}
 			FBFunctions.updateData(event)
 			Alert.alert('Event has been successfully edited')
+
 			this.setState({showEditGameOverlay : false})
+			FBFunctions.getData() 
 		}
 		catch(error){
 			Alert.alert("Something went wrong:", error.message)
 			console.log(error);
+			FBFunctions.getData() 
 		}
 	}
 
