@@ -110,7 +110,7 @@ export default class HomeScreen extends Component{
   render(){
     const photo = this.state.photo
   return( 
-
+    
     <SafeAreaView style = {{flex: 1}}>
         <Header
       containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
