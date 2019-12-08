@@ -280,8 +280,8 @@ export default class Friends extends Component{
                                 ))}
                             </Card>
                         }
-                <Card title={"Friends List"}
-					style = {{width:devicewWidth}}>
+                <View 
+                style = {{width:devicewWidth}}>
                         {
                             this.state.FriendsList.length != 0 &&
                                 this.state.FriendsList.map((item,i) => (
@@ -290,10 +290,9 @@ export default class Friends extends Component{
                                     title={item.friendsName}
                                     //leftIcon={{ name: item.icon }}
                                     bottomDivider
-                                    leftIcon= {<Icon
-                                        onPress={() => this.props.navigation.navigate('profile')}
+                                    leftAvatar={{ source: { uri: 'https://icon-library.net/images/default-profile-icon/default-profile-icon-16.jpg'} }}
                                     
-                                    name='person' />}
+                                    
                                     rightIcon= {<Icon
                                         onPress={() => this.props.navigation.navigate('chat', {friend: item})}
                                     
@@ -301,8 +300,7 @@ export default class Friends extends Component{
                                     />
                                 ))
                         }
-                        
-                    </Card>
+                </View>
                     </ScrollView> 
             </View>
             </SafeAreaView>
