@@ -14,7 +14,7 @@ let devicewWidth = Dimensions.get('window').width;
 export default class CreateGame extends Component{
 
 	constructor(){
-		super()
+		super();
 	}
 
 	setDateAndroid = async () => {
@@ -117,6 +117,8 @@ export default class CreateGame extends Component{
 		  Alert.alert("Something went wrong: " + error)
 		}
 	  }
+
+
 
 	async getUserName(){
 		const value = await AsyncStorage.getItem("userName");
@@ -341,8 +343,8 @@ export default class CreateGame extends Component{
 				<Text>Tap To Set Date</Text>
               <TouchableOpacity onPress={() => this.setDateAndroid()}>
                 <View>
-                  <Icon name="calendar" type='font-awesome' size={25} color="rgb(49, 49, 49)" />
-                  <Text style={{ fontSize: 16 }}>
+                  <Icon name="calendar" type='font-awesome' size={150} color="rgb(49, 49, 49)" />
+                  <Text style={{ fontSize: 30 }}>
                     {this.state.androidDateFormatted}
                   </Text>
                 </View>
@@ -350,8 +352,8 @@ export default class CreateGame extends Component{
 			  <Text>Tap To Set Time</Text>
               <TouchableOpacity onPress={() => this.setTimeAndroid()}>
                 <View>
-                  <Icon name="clock-o" type='font-awesome' size={25} color="rgb(49, 49, 49)" />
-                  <Text style={{ fontSize: 16 }}>
+                  <Icon name="clock-o" type='font-awesome' size={150} color="rgb(49, 49, 49)" />
+                  <Text style={{ fontSize: 30 }}>
                     {this.state.chosenAndroidTime}
                   </Text>
                 </View>
@@ -365,6 +367,7 @@ export default class CreateGame extends Component{
 						width="auto"
 						height="auto"
 						
+						
 						onPress={() => 
 		
 							//this.createCalendarEvent()
@@ -376,6 +379,7 @@ export default class CreateGame extends Component{
 					  title="Location"
 					  type="solid"
 					  onPress={() => 
+
 					  		this.props.navigation.navigate('Maps')
 
 					  }
