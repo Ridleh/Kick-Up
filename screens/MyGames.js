@@ -64,8 +64,8 @@ export default class HomeScreen extends Component{
 
   async componentDidMount(){
     FBFunctions.init()
-    this.getPhotoUrl()
-    this.getGames()
+    await this.getPhotoUrl()
+    await this.getGames()
     
 
   }
