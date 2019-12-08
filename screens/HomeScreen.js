@@ -62,12 +62,23 @@ export default class HomeScreen extends Component{
   participatingGames = []
   friendsGames = []
 
-  async componentDidMount(){
+  async componentDidMount() {
     FBFunctions.init()
     await this.getPhotoUrl()
     await this.getGames()
-    
+    this.willFocusSubscription = this.props.navigation.addListener(
+      'willFocus',
+      () => {
+        FBFunctions.init()
+        this.getPhotoUrl()
+        this.getGames()
+        console.log("Refreshed")
+      }
+    );
+  }
 
+  componentWillUnmount() {
+    this.willFocusSubscription.remove();
   }
 
   async componentWillMount(){
