@@ -58,17 +58,17 @@ export default class Settings extends Component{
                 <TouchableOpacity
                   // onPress={() => this.changeStateVar(false)} 
                   style={styles.buttonContainer}>
-                  <Text style={{fontWeight: 'bold'}}>Remove Ads</Text>  
+                  <Text style={{fontWeight: 'bold', color: '#4caf50'}}>Remove Ads</Text>  
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => this.shareApp()}
                   style={styles.buttonContainer}>
-                  <Text style={{fontWeight: 'bold'}}>Share App with Friends</Text>  
+                  <Text style={{fontWeight: 'bold', color: '#4caf50'}}>Share App with Friends</Text>  
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => this.props.navigation.navigate('Auth')}
                   style={styles.buttonContainer}>
-                  <Text style={{fontWeight: 'bold'}}>Sign Out</Text>  
+                  <Text style={{fontWeight: 'bold', color: '#4caf50'}}>Sign Out</Text>  
                 </TouchableOpacity>
               </View>
           </View>
