@@ -17,7 +17,7 @@ const WIDTH = Dimensions.get('window').width;
 
 export const RepositionButton = function(props) {
   //const cb = props.cb ? props.cb : () => console.log('fuck');
-  const bottom = props.bottom ? props.bottom: 70;
+  const bottom = props.bottom ? props.bottom: 20;
 
   return(
     <TouchableOpacity onPress={()=>{
