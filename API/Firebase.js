@@ -114,7 +114,7 @@ export const FBFunctions = {
  },
 
   getData(){
-    console.log(userID)
+    //console.log(userID)
     var events = [];
       firebase.database().ref("/Events").on("value", function(snapshot){
         snapshot.forEach(function(childSnapshot){
