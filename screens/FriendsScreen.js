@@ -36,7 +36,7 @@ export default class Friends extends Component{
       //this.getAllData()
     //}
     async componentDidMount() {
-        this.getAllData()
+        //this.getAllData()
         this.willFocusSubscription = this.props.navigation.addListener(
           'willFocus',
           () => {
@@ -54,12 +54,13 @@ export default class Friends extends Component{
         //const users = await FBFunctions.getFriendQuery('test')
         //console.log('am i sad?', users)
         //this.getPendingFriendRequests()
-        this.getIncomingFriendRequests()
-        this.getFriends()
-        this.setState()
+        await this.getIncomingFriendRequests()
+        await this.getFriends()
+        await this.setState()
     }
 
     async getFriends(){
+        console.log('called')
         const userID = await this.getUserID();
         const freinds = await FBFunctions.getFriends(userID)
         console.log(freinds)
