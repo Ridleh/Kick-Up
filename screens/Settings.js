@@ -12,7 +12,8 @@ import {
   SafeAreaView,
   Dimensions,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  Share
 } from 'react-native';
 import { Avatar, Header, ListItem, Card, Button, Icon } from 'react-native-elements';
 import {DrawerActions } from 'react-navigation';
@@ -20,6 +21,25 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 export default class Settings extends Component{
+      shareApp = async() =>{
+      try{
+        const result = await Share.share({
+          message: `I am having so much fun playing various Sports on the Kick-Up App! Download the Kickup app on the App Store and play with me!`,
+        });
+
+        if(result.action === Share.sharedAction){
+          if(result.activityType){
+            console.log('success')
+          }
+          else{
+            console.log('oh no')
+          }
+        }
+      }
+      catch(error){
+        console.log('something went wrong: ' + error)
+      }
+    }
     render() {
       return(
         <SafeAreaView>
@@ -41,14 +61,14 @@ export default class Settings extends Component{
                   <Text style={{fontWeight: 'bold'}}>Remove Ads</Text>  
                 </TouchableOpacity>
                 <TouchableOpacity
-                  // onPress={() => this.changeStateVar(false)} 
+                  onPress={() => this.shareApp()}
                   style={styles.buttonContainer}>
-                  <Text style={{fontWeight: 'bold'}}>Clear Local Cache</Text>  
+                  <Text style={{fontWeight: 'bold'}}>Share App with Friends</Text>  
                 </TouchableOpacity>
                 <TouchableOpacity
-                  // onPress={() => this.changeStateVar(false)} 
+                  onPress={() => this.props.navigation.navigate('Auth')}
                   style={styles.buttonContainer}>
-                  <Text style={{fontWeight: 'bold'}}>Log Out</Text>  
+                  <Text style={{fontWeight: 'bold'}}>Sign Out</Text>  
                 </TouchableOpacity>
               </View>
           </View>

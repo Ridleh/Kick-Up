@@ -127,7 +127,7 @@ export default class Profile extends Component{
                   <TouchableOpacity
                     onPress={() => this.changeStateVar(false)} 
                     style={styles.buttonContainer}>
-		                <Text>Sign Out</Text>  
+		                <Text style={{fontWeight: 'bold'}} >Sign Out</Text>  
 		              </TouchableOpacity>              
 		            </View> } 
 		        </View>
