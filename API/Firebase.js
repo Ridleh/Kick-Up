@@ -20,6 +20,14 @@ export const FBFunctions = {
     //this.observeAuth();
   },
 
+  get DB(){
+    return firebase.database();
+  },
+
+  async getMyGames(userID){
+    
+  },
+
   async storeData(data){
     console.log("calling FB push")
     dataReference = await firebase.database().ref("/Events/").push();
