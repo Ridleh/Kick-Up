@@ -25,7 +25,7 @@ export default class Friends extends Component{
         search: ' '
     }
 
-    componentDidMount(){
+    //componentDidMount(){
         /*
         const users = await FBFunctions.getFriendQuery('test')
         console.log('am i sad?', users)
@@ -33,7 +33,21 @@ export default class Friends extends Component{
         this.getIncomingFriendRequests()
         this.getFriends()
         */
-       this.getAllData()
+      //this.getAllData()
+    //}
+    async componentDidMount() {
+        this.getAllData()
+        this.willFocusSubscription = this.props.navigation.addListener(
+          'willFocus',
+          () => {
+            this.getAllData()
+            console.log("Refreshed")
+          }
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusSubscription.remove();
     }
 
     async getAllData(){
