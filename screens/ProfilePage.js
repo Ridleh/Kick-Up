@@ -50,7 +50,7 @@ export default class Profile extends Component{
 
   async changeStateVar(status){
     //prop bad idea but im tired
-    await AsyncStorage.clear();
+    //await AsyncStorage.clear();
     //this.props.navigation.navigate("Login")
     this.props.navigation.navigate('Auth')
    //this.setState({loggedIn : status});
