@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as WebBrowser from 'expo-web-browser';
 import {
   Image,
   Platform,
@@ -56,7 +57,11 @@ export default class Settings extends Component{
           <View style={styles.body}>
               <View style={styles.bodyContent}>
                 <TouchableOpacity
-                  // onPress={() => this.changeStateVar(false)} 
+                  onPress={() => 
+                    WebBrowser.openBrowserAsync(
+                      'https://play.google.com/store/apps/details?id=com.mam.trivialdrivesample&hl=en_US'
+                    )
+                  } 
                   style={styles.buttonContainer}>
                   <Text style={{fontWeight: 'bold', color: '#4caf50'}}>Remove Ads</Text>  
                 </TouchableOpacity>

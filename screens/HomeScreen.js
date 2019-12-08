@@ -150,7 +150,7 @@ export default class HomeScreen extends Component{
       containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
       statusBarProps={{ barStyle: 'light-content' }}
       leftComponent={{ icon: 'menu', color: '#fff', onPress: () => this.props.navigation.dispatch(DrawerActions.toggleDrawer()) }}
-      centerComponent={{ text: 'My Games', style: { color: '#fff' , fontSize: 20} }}
+      centerComponent={{ text: 'Home', style: { color: '#fff' , fontSize: 20} }}
       rightComponent={
         <Avatar
         // onPress={() => {
