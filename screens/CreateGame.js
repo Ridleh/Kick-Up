@@ -209,6 +209,7 @@ export default class CreateGame extends Component{
 		  if(status === 'granted'){
 			  //calendarEventID = await Calendar.createEventAsync('9',details)
 			  console.log('permission granted');
+			  this.setState({createCalendarEventOnSubmit : !this.state.createCalendarEventOnSubmit})
 		  }
 		  else{
 			  console.log("permission not granted") 
