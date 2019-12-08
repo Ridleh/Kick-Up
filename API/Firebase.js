@@ -20,6 +20,14 @@ export const FBFunctions = {
     //this.observeAuth();
   },
 
+  get DB(){
+    return firebase.database();
+  },
+
+  async getMyGames(userID){
+    
+  },
+
   async storeData(data){
     console.log("calling FB push")
     dataReference = await firebase.database().ref("/Events/").push();
@@ -34,6 +42,7 @@ export const FBFunctions = {
       createdByID: data.createdByID,
       //dateFormatted: data.DateFormatted,
       //location : data.location,
+      icon : data.icon,
       location_lat : data.location_lat,
       location_long : data.location_long,
       location_name : data.location_name,
@@ -68,6 +77,7 @@ export const FBFunctions = {
       gameName : data.gameName,
       createdBy: data.createdBy,
       date:  data.date,
+      icon: data.icon,
       //location : data.location,
 			location_lat : data.location_lat,
 		  location_long : data.location_long,
@@ -104,6 +114,7 @@ export const FBFunctions = {
  },
 
   getData(){
+    console.log(userID)
     var events = [];
       firebase.database().ref("/Events").on("value", function(snapshot){
         snapshot.forEach(function(childSnapshot){

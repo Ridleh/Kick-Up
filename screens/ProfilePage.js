@@ -114,17 +114,6 @@ export default class Profile extends Component{
       statusBarProps={{ barStyle: 'light-content' }}
       leftComponent={{ icon: 'menu', color: '#fff', onPress: () => this.props.navigation.dispatch(DrawerActions.toggleDrawer()) }}
       centerComponent={{ text: 'Profile', style: { color: '#fff' , fontSize: 20} }}
-      rightComponent={<Icon
-
-        onPress={() => {
-          this.props.navigation.navigate('Home')
-        }}
-          
-          name="home"
-          size={30}
-          color="white"
-        />
-	}
     />
 		        <View style={styles.header}></View>
             <Image style={styles.avatar} source={{uri: photo}} />
@@ -222,12 +211,12 @@ const styles = StyleSheet.create({
     fontWeight:'600',
   },
   body:{
-    marginTop:40,
+    marginTop:0,
   },
   bodyContent: {
     flex: 1,
     alignItems: 'center',
-    padding:30,
+    padding:20,
   },
   name:{
     fontSize:28,
@@ -246,7 +235,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   buttonContainer: {
-    marginTop:10,
+    marginTop:60,
     height:45,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -254,7 +243,9 @@ const styles = StyleSheet.create({
     marginBottom:20,
     width:250,
     borderRadius:30,
-    backgroundColor: "#00BFFF",
+    borderWidth:1,
+    borderColor: '#000',
+    backgroundColor: "#fff",
   },
   viewContainer: {
     flex: 1,

@@ -2,6 +2,7 @@ import React,{ Component } from 'react';
 import {FBFunctions} from '../API/Firebase'
 import MapView from 'react-native-maps';
 import markerImage from "../assets/current_location.png";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { 
 	Share, 
 	AsyncStorage, 
@@ -63,7 +64,9 @@ export default class JoinGame extends Component {
 		userID: " ",
 		userName: " ",
 		showEditGameButton: false,
-		showEditGameOverlay : false
+		showEditGameOverlay : false,
+		totalPlayers : 0
+
 	}
 
 	async isUserInGame(){
@@ -363,7 +366,7 @@ export default class JoinGame extends Component {
 		  				servePersonalizedAds
 		  				onDidFailToReceiveAdWithError={this.bannerError} />
       	<Text style={styles.header}>{this.state.name} </Text>
-      	<Text style={styles.text_important}> 10/23/2019, 4:00pm </Text>
+      	<Text style={styles.text_important}> {this.state.date} </Text>
       	<Text style={styles.text}> Created by: {this.state.createdBy} </Text>
 		<Text style={styles.text}> Description: {this.state.description}</Text>
       	<Text style={styles.text}> Location: {this.state.location_name} </Text>

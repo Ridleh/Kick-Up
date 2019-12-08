@@ -4,7 +4,6 @@ import { firebaseConfig } from '../config';
 import * as firebase from 'firebase';
 import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator, DrawerActions } from 'react-navigation';
 
-
 import React, { Component } from 'react';
 import {
   Image,
@@ -26,8 +25,8 @@ import Constants from 'expo-constants';
 import { Avatar, Header, ListItem, Card, Icon } from 'react-native-elements';
 import { fetchUpdateAsync } from 'expo/build/Updates/Updates';
 //import { watchFile } from 'fs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-let devicewWidth = Dimensions.get('window').width;
 
 const list = [
   {
@@ -41,15 +40,11 @@ const list = [
 ];
 
 export default class HomeScreen extends Component{
+
   static navigationOptions = {
-      drawerLabel: 'Home',
-      drawerIcon: ({ tintColor }) => (
-        <Image
-          source={{uri: photo}}
-          style={[styles.icon, { tintColor: tintColor }]}
-        />
-      ),
-    };
+          drawerIcon: () => 
+              <Ionicons name="md-home" style={{fontSize: 24}} />
+      }
 
   
 
@@ -77,10 +72,11 @@ export default class HomeScreen extends Component{
 
   async componentDidMount(){
     FBFunctions.init()
-    console.log("called")
     this.getPhotoUrl()
     this.getGames()
+
   }
+
 
   async getGames(){
     this.participatingGames = []
@@ -124,7 +120,7 @@ export default class HomeScreen extends Component{
   render(){
     const photo = this.state.photo
   return( 
-
+    
     <SafeAreaView style = {{flex: 1}}>
     <React.Fragment>
         <Header
@@ -134,10 +130,10 @@ export default class HomeScreen extends Component{
       centerComponent={{ text: 'Home', style: { color: '#fff' , fontSize: 20} }}
       rightComponent={
         <Avatar
-        onPress={() => {
-          console.log("touched registered")
-          this.props.navigation.navigate('Profile')
-        }}
+        // onPress={() => {
+        //   console.log("touched registered")
+        //   this.props.navigation.navigate('Profile')
+        // }}
   rounded
   source={{ 
     uri: photo
@@ -153,7 +149,8 @@ export default class HomeScreen extends Component{
         }
     />}>
       <View style = {{flex:1}}>
-      {
+
+      { 
         this.allGames.map((item, i) => (
         <TouchableHighlight
           onPress={() => {
@@ -161,9 +158,20 @@ export default class HomeScreen extends Component{
             this.props.navigation.navigate('JoinGame', {gameName: item})
           }}>
         <ListItem
+
           key={i}
           title={item.gameName}
-          leftIcon={{ name: item.icon }}
+          
+          subtitle=
+            {
+              item.sport + "\n" + item.date + "\n" + item.players.length + "/" + ((item.participants+1)*5) + " players"
+            }
+
+          leftIcon={<Ionicons 
+                        name= {item.icon}
+                        size={30}
+                        />} 
+
           bottomDivider
           chevron
         />
