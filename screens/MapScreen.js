@@ -4,6 +4,8 @@ import {Header, Button } from 'react-native-elements';
 import { AppRegistry, StyleSheet, Text, View, Dimensions, Image } from 'react-native';
 import Geocoder from 'react-native-geocoding'; 
 
+import {DrawerActions } from 'react-navigation';
+
 import { SearchButton } from '../components/SearchButton';
 import { RepositionButton } from '../components/RepositionButton';
 
@@ -152,7 +154,12 @@ export default class Maps extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        
+        <Header
+          containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
+          statusBarProps={{ barStyle: 'light-content' }}
+          leftComponent={{ icon: 'menu', color: '#fff', onPress: () => this.props.navigation.dispatch(DrawerActions.toggleDrawer()) }}
+          centerComponent={{ text: 'Set Game Location', style: { color: '#fff' , fontSize: 20} }} />
+
         
         
         <MapView
@@ -205,9 +212,9 @@ export default class Maps extends React.Component {
   }
 }
 
-////Maps.navigationOptions = {
-  //header: null
-//};
+Maps.navigationOptions = {
+  header: null
+};
 
 
 const styles = StyleSheet.create({
@@ -215,6 +222,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  header:{
+    backgroundColor: "#4caf50",
+    height:200,
   },
   mapStyle: {
     flex: 1,
