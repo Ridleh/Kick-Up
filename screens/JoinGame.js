@@ -2,6 +2,7 @@ import React,{ Component } from 'react';
 import {FBFunctions} from '../API/Firebase'
 import MapView from 'react-native-maps';
 import markerImage from "../assets/current_location.png";
+import {DrawerActions } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { 
 	Share, 
@@ -32,7 +33,8 @@ import {
 	ListItem, 
 	Icon, 
 	Overlay, 
-	Divider 
+	Divider,
+	Header
 } from 'react-native-elements';
 //>>>>>>> 8e7e1957a02ba9f641301e05b75eed6c7e544a2f
 
@@ -289,6 +291,11 @@ export default class JoinGame extends Component {
     return (
     	//<ImageBackground source={} style={{width: '100%', height: '100%'}}>
 		<SafeAreaView style = {{flex: 1}}>
+			 <Header
+          		containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
+	          	statusBarProps={{ barStyle: 'light-content' }}
+	          	leftComponent={{ icon: 'menu', color: '#fff', onPress: () => this.props.navigation.dispatch(DrawerActions.toggleDrawer()) }}
+	          	centerComponent={{ text: 'Game Information', style: { color: '#fff' , fontSize: 20} }} />
 			<ScrollView style = {{flex: 1}}>
 
 		
@@ -370,7 +377,7 @@ export default class JoinGame extends Component {
 		  				testDeviceID="EMULATOR"
 		  				servePersonalizedAds
 		  				onDidFailToReceiveAdWithError={this.bannerError} />
-      	<Text style={styles.header}>{this.state.name} </Text>
+      	<Text style={styles.heading}>{this.state.name} </Text>
       	<Text style={styles.text_important}> {this.state.date} </Text>
       	<Text style={styles.text}> Created by: {this.state.createdBy} </Text>
 		<Text style={styles.text}> Description: {this.state.description}</Text>
@@ -458,12 +465,20 @@ export default class JoinGame extends Component {
   }
 }
 
+JoinGame.navigationOptions = {
+  header: null
+};
+
 const styles = StyleSheet.create({
 	joinform: {
 		alignSelf: 'stretch',
 		backgroundColor: '#fff',
 	},
-	header: {
+	header:{
+    	backgroundColor: "#4caf50",
+    	height:200,
+  	},
+	heading: {
 		flex: 1,
 		fontSize: 30,
 		fontFamily: 'Roboto', //useless
