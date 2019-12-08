@@ -5,6 +5,7 @@ import { AppRegistry, StyleSheet, Text, View, Dimensions, Image } from 'react-na
 import Geocoder from 'react-native-geocoding'; 
 
 import { SearchButton } from '../components/SearchButton';
+import { RepositionButton } from '../components/RepositionButton';
 
 import markerImage from "../assets/current_location.png";
 
@@ -23,6 +24,12 @@ export default class Maps extends React.Component {
 
     this.state = {
       region: {
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0,
+      },
+      initialRegion: {
         latitude: 0,
         longitude: 0,
         latitudeDelta: 0,
@@ -75,6 +82,7 @@ export default class Maps extends React.Component {
       }).catch(error => console.warn(error));
 
       this.setState({region: initialRegion})
+      this.setState({initialRegion: initialRegion})
       this.setState({markerPosition: initialRegion})
     }, (error) => alert(JSON.stringify(error)),
     {enableHighAccuracy: true, timeout: 20000, maximumAge: 20000})
@@ -126,13 +134,32 @@ export default class Maps extends React.Component {
     });
   }
 
+  centerMap() {
+
+      console.log("center");
+      console.log(this.state.initialRegion.latitude);
+      console.log(this.state.region.latitude);
+      this.setState({
+        region: {
+          latitude: this.state.initialRegion.latitude,
+          longitude: this.state.initialRegion.longitude,
+          latitudeDelta: this.state.initialRegion.latitudeDelta,
+          longitudeDelta: this.state.initialRegion.longitudeDelta,
+      }
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
+        
+        
+        
         <MapView
           region={this.state.region}
           //onRegionChange = {(reg) => this.props.onMapRegionChange(reg)}
           showUserLocation
+          //ref = {(map) => {this.map = map}}
           style={styles.mapStyle}>
           <MapView.Marker
             coordinate = {this.state.region}>
@@ -147,16 +174,12 @@ export default class Maps extends React.Component {
           </MapView.Marker>
 
 
+
           
         </MapView>
-
-        <SearchButton 
-          RegionChange = {(loc) => this.getCoordsFromName(loc)}
-          AddressSearch = {(nam,addr) => this.getAddressDetails(nam,addr)}
-        />
         <Button
-            title="->"
-            type="solid"
+            title="Enter"
+            type = "solid"
             onPress={() => {
 
                 this.props.navigation.navigate('CreateGame', {
@@ -167,7 +190,16 @@ export default class Maps extends React.Component {
                })
 
             }}
-          />
+            style = {styles.button}/>
+
+
+        <RepositionButton cb = {() => { this.centerMap()}} />
+        <SearchButton 
+          RegionChange = {(loc) => this.getCoordsFromName(loc)}
+          AddressSearch = {(nam,addr) => this.getAddressDetails(nam,addr)}
+        />
+        
+        
       </View>
     );
   }
@@ -183,18 +215,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   mapStyle: {
+    flex: 1,
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height - 129,
+    zIndex: -1,
   },
   button: {
-    alignSelf:'stretch',
-    alignItems:'center',
-    padding:20,
-    backgroundColor:'#4caf50',
-    marginTop:30,
+    flex: 1,
+    flexDirection:'row',
+    position:'absolute',
+    bottom:10,
+    alignSelf: "flex-end",
+    justifyContent: "space-between",
+    backgroundColor: "transparent",
+    borderWidth: 0.5,
+    borderRadius: 20
   },
 });

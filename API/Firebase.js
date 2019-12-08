@@ -20,6 +20,14 @@ export const FBFunctions = {
     //this.observeAuth();
   },
 
+  get DB(){
+    return firebase.database();
+  },
+
+  async getMyGames(userID){
+    
+  },
+
   async storeData(data){
     console.log("calling FB push")
     dataReference = await firebase.database().ref("/Events/").push();
@@ -106,6 +114,7 @@ export const FBFunctions = {
  },
 
   getData(){
+    //console.log(userID)
     var events = [];
       firebase.database().ref("/Events").on("value", function(snapshot){
         snapshot.forEach(function(childSnapshot){

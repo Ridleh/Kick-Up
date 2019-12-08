@@ -50,7 +50,7 @@ export default class Profile extends Component{
 
   async changeStateVar(status){
     //prop bad idea but im tired
-    await AsyncStorage.clear();
+    //await AsyncStorage.clear();
     //this.props.navigation.navigate("Login")
     this.props.navigation.navigate('Auth')
    //this.setState({loggedIn : status});
@@ -127,7 +127,7 @@ export default class Profile extends Component{
                   <TouchableOpacity
                     onPress={() => this.changeStateVar(false)} 
                     style={styles.buttonContainer}>
-		                <Text>Sign Out</Text>  
+		                <Text style={{fontWeight: 'bold'}} >Sign Out</Text>  
 		              </TouchableOpacity>              
 		            </View> } 
 		        </View>
