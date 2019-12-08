@@ -58,6 +58,11 @@ export default class Settings extends Component{
   }
 }
 
+Settings.navigationOptions = {
+  header: null
+};
+
+
 const styles = StyleSheet.create({
   header:{
     backgroundColor: "#4caf50",
@@ -113,7 +118,7 @@ const styles = StyleSheet.create({
     width:250,
     borderRadius:30,
     borderWidth:1,
-    borderColor: '#000',
+    borderColor: '#4caf50',
     backgroundColor: "#fff",
   },
   viewContainer: {
