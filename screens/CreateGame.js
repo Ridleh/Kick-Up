@@ -169,7 +169,7 @@ export default class CreateGame extends Component{
 		Alert.alert("Event Created",
 					`The event ${this.state.gameName} has been successfully created`,
 					[
-						{text: 'OK', onPress: () => this.props.navigation.navigate('Home')}
+						{text: 'OK', onPress: () => console.log("Game Created")}
 					]);
 	}
 	catch(error){
