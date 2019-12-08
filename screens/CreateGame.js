@@ -134,6 +134,22 @@ export default class CreateGame extends Component{
 	async submitEvent(){
 		var userID = await this.getUserID()
 		var userName = await this.getUserName()
+		if (this.state.sport == "Football" ){
+			this.state.icon = "md-american-football"
+			console.log("kevinfootball");
+		} else if (this.state.sport == "Frisbee") {
+			this.state.icon = "md-disc"
+			console.log("kevinfrisbee");
+		} else if (this.state.sport == "Basketball") {
+			this.state.icon = "md-basketball"
+			console.log("kevinbasketball");
+		} else if (this.state.sport == "Soccer") {
+			this.state.icon = "md-football"
+			console.log("kevinsoccer");
+		} else {
+			this.state.icon = "md-help-circle"
+			console.log("kevinelse");
+		}
 		var event = {
 			sport: this.state.sport,
 			participants: + this.state.participants,
@@ -170,17 +186,7 @@ export default class CreateGame extends Component{
 		if(this.state.createCalendarEventOnSubmit){
 			await this.createCalendarEvent()
 		}
-		if (this.state.sport == "Football" ){
-			this.state.icon = "md-american-football"
-			console.log("kevinblah2");
-		} else if (this.state.sport == "Frisbee") {
-			this.state.icon = "disc"
-		} else if (this.state.sport == "Basketball") {
-			this.state.icon = "basketball"
-		} else {
-			this.state.icon = "help-circle"
-			console.log("kevinblah");
-		}
+		
 		this.printEvent();
 		Alert.alert("Event Created",
 					`The event ${this.state.gameName} has been successfully created`,
@@ -209,7 +215,7 @@ export default class CreateGame extends Component{
 		location_name: "blank",
 		location_address: "blank",
 		description: "blank",
-		icon: "md-football",
+		icon: "md-disc",
 		name: " ",
 		ID: " ",
 		showOverlay: false,

@@ -114,6 +114,7 @@ export default class HomeScreen extends Component{
     this.getGames();
     this.setState({refreshing : false});
 
+
     //this.setState({refreshing : false});
   }
   

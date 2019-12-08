@@ -47,7 +47,6 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
     Profile: ProfilePageScreen,
-    Settings: Settings,
     Details: DetailsScreen,
     JoinGame: JoinGameScreen
   },
