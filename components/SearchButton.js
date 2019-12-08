@@ -49,6 +49,7 @@ export const SearchButton = function(props) {
             flex: 1,
             backgroundColor: 'transparent',
             height: 54,
+            marginTop: 100,
             marginHorizontal: 20,
             borderTopWidth: 0,
             borderBottomWidth: 0
