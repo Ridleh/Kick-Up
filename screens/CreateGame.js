@@ -157,7 +157,7 @@ export default class CreateGame extends Component{
 			participants: + this.state.participants,
 			createdBy: userName,
 			gameName : this.state.gameName,
-			date:  this.state.androidDate.toUTCString(),
+			date:  this.state.androidDateFormatted + ' ' + this.state.chosenAndroidTime,
 			dateFormatted: this.state.androidDateFormatted,
 			icon : this.state.icon,
 //<<<<<<< HEAD
@@ -202,6 +202,23 @@ export default class CreateGame extends Component{
 	}
 		//FBFunctions.storeData(event)
 		//console.log("done")
+	}
+
+	async getUserPermission(){
+		  //console.log(calendarList)
+		  const {status, permissions}  = await Permissions.askAsync(Permissions.CALENDAR)
+		  try{
+		  if(status === 'granted'){
+			  //calendarEventID = await Calendar.createEventAsync('9',details)
+			  console.log('permission granted');
+		  }
+		  else{
+			  console.log("permission not granted") 
+		  }
+		}
+		catch(error){
+			console.log("somethin went wrong: " + error)
+		}
 	}
 
 	state = {
@@ -380,8 +397,9 @@ export default class CreateGame extends Component{
 					/>
 					<Divider/>
 					<CheckBox
-						onPress={() => 
-						this.setState({createCalendarEventOnSubmit : !this.state.createCalendarEventOnSubmit})
+						onPress={() =>
+							this.getUserPermission() 
+						//this.setState({createCalendarEventOnSubmit : !this.state.createCalendarEventOnSubmit})
 						}
 						center
 						title='Create Calendar Event'

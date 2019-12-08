@@ -26,61 +26,71 @@ import { Avatar, Header, ListItem, Card, Icon } from 'react-native-elements';
 import { fetchUpdateAsync } from 'expo/build/Updates/Updates';
 //import { watchFile } from 'fs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+//import { SSL_OP_EPHEMERAL_RSA } from 'constants';
 
 
-const list = [
-  {
-    title: 'Ultimate Frizbee In Clairmont Field',
-    icon: 'av-timer'
-  },
-  {
-    title: 'Swim Team Meet',
-    icon: 'flight-takeoff'
-  },
-];
+
 
 export default class HomeScreen extends Component{
+
+    constructor(props){
+        super(props)
+        this.state = {
+            refresh : Date(Date.now()).toString(),
+            showEventsUserIn : true,
+            showEventsNearUser : true,
+            showEventsFriendsIn : true,
+            refreshing : false,
+            photoUrl: '',
+            games : [],
+            photo: 'https://icon-library.net/images/default-profile-icon/default-profile-icon-16.jpg'
+          };
+      this.getPhotoUrl();
+    }
 
   static navigationOptions = {
           drawerIcon: () => 
               <Ionicons name="md-home" style={{fontSize: 24}} />
       }
 
+
+
   
-
-  constructor(props) {
-      super(props);
-      this.state = {photo: 'https://icon-library.net/images/default-profile-icon/default-profile-icon-16.jpg', };
-      this.getPhotoUrl();
-    //this.getUserInfo()
-    //this.getGames()
-  }
-
-  state = {
-    refresh : Date(Date.now()).toString(),
-    showEventsUserIn : true,
-    showEventsNearUser : true,
-    showEventsFriendsIn : true,
-    refreshing : false,
-    photoUrl: '',
-  };
 
   userID = " "
   allGames = []
   participatingGames = []
   friendsGames = []
 
-  async componentDidMount(){
+  async componentDidMount() {
     FBFunctions.init()
-    this.getPhotoUrl()
-    this.getGames()
+    await this.getPhotoUrl()
+    await this.getGames()
+    this.willFocusSubscription = this.props.navigation.addListener(
+      'willFocus',
+      () => {
+        FBFunctions.init()
+        this.getPhotoUrl()
+        this.getGames()
+        console.log("Refreshed")
+      }
+    );
+  }
 
+  componentWillUnmount() {
+    this.willFocusSubscription.remove();
+  }
+
+  async componentWillMount(){
+    FBFunctions.init()
+    await this.getPhotoUrl()
+    await this.getGames()
   }
 
 
   async getGames(){
     this.participatingGames = []
-    this.allGames = await FBFunctions.getData()
+    this.allGames = await FBFunctions.getData().reverse()
     this.userID = JSON.parse( await AsyncStorage.getItem("userID"));
     for(game of this.allGames){
       for(player of game.players){
@@ -93,7 +103,18 @@ export default class HomeScreen extends Component{
         }
       } 
     }
+    this.participatingGames.reverse()
+    this.setState({
+        games : this.participatingGames
+    })
+    console.log(this.state.games.length)
     console.log(this.participatingGames.length)
+    //await this.sleep(5000)
+  }
+
+
+  sleep(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
  
   getPhotoUrl = async () => {
@@ -119,6 +140,7 @@ export default class HomeScreen extends Component{
   }
   
   render(){
+      this.sleep(4000)
     const photo = this.state.photo
   return( 
     
@@ -128,7 +150,7 @@ export default class HomeScreen extends Component{
       containerStyle={{ backgroundColor: '#4caf50'}} //THIS CHANGES THE HEADER COLOR
       statusBarProps={{ barStyle: 'light-content' }}
       leftComponent={{ icon: 'menu', color: '#fff', onPress: () => this.props.navigation.dispatch(DrawerActions.toggleDrawer()) }}
-      centerComponent={{ text: 'Home', style: { color: '#fff' , fontSize: 20} }}
+      centerComponent={{ text: 'My Games', style: { color: '#fff' , fontSize: 20} }}
       rightComponent={
         <Avatar
         // onPress={() => {
