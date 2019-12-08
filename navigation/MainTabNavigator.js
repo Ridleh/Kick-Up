@@ -247,7 +247,7 @@ const Menu = createDrawerNavigator({
       }
     },
     'Create A Game' : {
-      screen: CreateGameScreen,
+      screen: CreateGameStack,
       navigationOptions: {
         drawerIcon: () => <Ionicons name="md-add-circle" size={30} style={{ width: 24 }} 
         color= '#4caf50' />
