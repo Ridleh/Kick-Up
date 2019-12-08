@@ -7,6 +7,7 @@ import AppNavigator from './navigation/AppNavigator';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as firebase from 'firebase';
 import { firebaseConfig } from './config';
+
 firebase.initializeApp(firebaseConfig)
 console.disableYellowBox = true;
 

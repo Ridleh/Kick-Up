@@ -72,7 +72,6 @@ export default class HomeScreen extends Component{
 
   async componentDidMount(){
     FBFunctions.init()
-    console.log("called")
     this.getPhotoUrl()
     this.getGames()
 
@@ -131,10 +130,10 @@ export default class HomeScreen extends Component{
       centerComponent={{ text: 'Home', style: { color: '#fff' , fontSize: 20} }}
       rightComponent={
         <Avatar
-        onPress={() => {
-          console.log("touched registered")
-          this.props.navigation.navigate('Profile')
-        }}
+        // onPress={() => {
+        //   console.log("touched registered")
+        //   this.props.navigation.navigate('Profile')
+        // }}
   rounded
   source={{ 
     uri: photo
