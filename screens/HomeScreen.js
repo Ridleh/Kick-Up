@@ -4,7 +4,6 @@ import { firebaseConfig } from '../config';
 import * as firebase from 'firebase';
 import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator, DrawerActions } from 'react-navigation';
 
-
 import React, { Component } from 'react';
 import {
   Image,
@@ -26,7 +25,7 @@ import Constants from 'expo-constants';
 import { Avatar, Header, ListItem, Card, Icon } from 'react-native-elements';
 import { fetchUpdateAsync } from 'expo/build/Updates/Updates';
 //import { watchFile } from 'fs';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 const list = [
@@ -73,7 +72,6 @@ export default class HomeScreen extends Component{
 
   async componentDidMount(){
     FBFunctions.init()
-    console.log("called")
     this.getPhotoUrl()
     this.getGames()
 
@@ -132,10 +130,10 @@ export default class HomeScreen extends Component{
       centerComponent={{ text: 'Home', style: { color: '#fff' , fontSize: 20} }}
       rightComponent={
         <Avatar
-        onPress={() => {
-          console.log("touched registered")
-          this.props.navigation.navigate('Profile')
-        }}
+        // onPress={() => {
+        //   console.log("touched registered")
+        //   this.props.navigation.navigate('Profile')
+        // }}
   rounded
   source={{ 
     uri: photo
@@ -151,6 +149,7 @@ export default class HomeScreen extends Component{
         }
     />}>
       <View style = {{flex:1}}>
+
       { 
         this.allGames.map((item, i) => (
         <TouchableHighlight
@@ -159,15 +158,20 @@ export default class HomeScreen extends Component{
             this.props.navigation.navigate('JoinGame', {gameName: item})
           }}>
         <ListItem
-          style={{}}
+
           key={i}
           title={item.gameName}
           
           subtitle=
             {
-              item.sport + "\n" + item.players.length + "/" + ((item.participants+1)*5) + " players"
+              item.sport + "\n" + item.date + "\n" + item.players.length + "/" + ((item.participants+1)*5) + " players"
             }
-          leftIcon={{ name: item.icon }}
+
+          leftIcon={<Ionicons 
+                        name= {item.icon}
+                        size={30}
+                        />} 
+
           bottomDivider
           chevron
         />

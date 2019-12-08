@@ -92,6 +92,7 @@ export default class CreateGame extends Component{
 			+ this.state.participants + '\n'
 			+ this.state.gameName + '\n'
 			+ this.state.date + '\n'
+			+ this.state.icon + '\n'
 			+ this.props.navigation.state.params.loc_lat + '\n'
 			+ this.props.navigation.state.params.loc_long + '\n'
 			+ this.props.navigation.state.params.loc_name + '\n'
@@ -129,6 +130,7 @@ export default class CreateGame extends Component{
 		return JSON.parse(value)
 	}
 
+
 	async submitEvent(){
 		var userID = await this.getUserID()
 		var userName = await this.getUserName()
@@ -139,12 +141,14 @@ export default class CreateGame extends Component{
 			gameName : this.state.gameName,
 			date:  this.state.androidDate.toUTCString(),
 			dateFormatted: this.state.androidDateFormatted,
+			icon : this.state.icon,
 //<<<<<<< HEAD
 			location_lat : this.props.navigation.state.params.loc_lat,
 			location_long : this.props.navigation.state.params.loc_long,
 			location_name : this.props.navigation.state.params.loc_name,
 			location_address: this.props.navigation.state.params.loc_address,
-//=======
+
+//=======	
 			//location: this.state.location,
 			//location_lat : this.state.location_lat/*this.props.navigation.state.params.loc_lat*/,
 			//location_long : this.state.location_long/*this.props.navigation.state.params.loc_long*/,
@@ -166,10 +170,22 @@ export default class CreateGame extends Component{
 		if(this.state.createCalendarEventOnSubmit){
 			await this.createCalendarEvent()
 		}
+		if (this.state.sport == "Football" ){
+			this.state.icon = "md-american-football"
+			console.log("kevinblah2");
+		} else if (this.state.sport == "Frisbee") {
+			this.state.icon = "disc"
+		} else if (this.state.sport == "Basketball") {
+			this.state.icon = "basketball"
+		} else {
+			this.state.icon = "help-circle"
+			console.log("kevinblah");
+		}
+		this.printEvent();
 		Alert.alert("Event Created",
 					`The event ${this.state.gameName} has been successfully created`,
 					[
-						{text: 'OK', onPress: () => this.props.navigation.navigate('Home')}
+						{text: 'OK', onPress: () => console.log("Game Created")}
 					]);
 	}
 	catch(error){
@@ -193,6 +209,7 @@ export default class CreateGame extends Component{
 		location_name: "blank",
 		location_address: "blank",
 		description: "blank",
+		icon: "md-football",
 		name: " ",
 		ID: " ",
 		showOverlay: false,
@@ -235,7 +252,7 @@ export default class CreateGame extends Component{
 						<Picker.Item label="Soccer" value="Soccer" />
 						<Picker.Item label="Football" value="Football" />
 						<Picker.Item label="Frisbee" value="Frisbee" />
-						<Picker.Item label="Golf" value="Golf" />
+						<Picker.Item label="Basketball" value="Basketball" />
 						<Picker.Item label="Other" value="Other" />
 						
 						</Picker>

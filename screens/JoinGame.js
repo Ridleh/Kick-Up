@@ -2,6 +2,7 @@ import React,{ Component } from 'react';
 import {FBFunctions} from '../API/Firebase'
 import MapView from 'react-native-maps';
 import markerImage from "../assets/current_location.png";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { 
 	Share, 
 	AsyncStorage, 
