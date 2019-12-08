@@ -19,6 +19,9 @@ import {
 } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
+
+import { RepositionButton } from '../components/RepositionButton2';
+
 //import { Card, ListItem, Icon } from 'react-native-elements';
 import {
   AdMobBanner
@@ -205,6 +208,17 @@ export default class JoinGame extends Component {
 		}
 	}
 
+	centerMap() {
+
+      this.setState({
+        region: {
+          latitude: this.gameInfo.location_lat, 
+          longitude: this.gameInfo.location_long,
+          latitudeDelta: 0.03,
+    	  longitudeDelta: (width / height)*0.03,
+      	}});
+  	}
+
 	shareGame = async() =>{
 		try{
 			const result = await Share.share({
@@ -383,6 +397,7 @@ export default class JoinGame extends Component {
           
 
         </MapView>
+        <RepositionButton cb = {() => { this.centerMap()}} />
 		{ this.state.showLeaveGameButton &&
 		<Button
 			title='open group chat'
