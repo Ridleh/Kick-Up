@@ -202,6 +202,23 @@ export default class CreateGame extends Component{
 		//console.log("done")
 	}
 
+	async getUserPermission(){
+		  //console.log(calendarList)
+		  const {status, permissions}  = await Permissions.askAsync(Permissions.CALENDAR)
+		  try{
+		  if(status === 'granted'){
+			  //calendarEventID = await Calendar.createEventAsync('9',details)
+			  console.log('permission granted');
+		  }
+		  else{
+			  console.log("permission not granted") 
+		  }
+		}
+		catch(error){
+			console.log("somethin went wrong: " + error)
+		}
+	}
+
 	state = {
 		sport : "Select a sport",
 		participants: "Select number of participants",
@@ -376,8 +393,9 @@ export default class CreateGame extends Component{
 					/>
 					<Divider/>
 					<CheckBox
-						onPress={() => 
-						this.setState({createCalendarEventOnSubmit : !this.state.createCalendarEventOnSubmit})
+						onPress={() =>
+							this.getUserPermission() 
+						//this.setState({createCalendarEventOnSubmit : !this.state.createCalendarEventOnSubmit})
 						}
 						center
 						title='Create Calendar Event'
