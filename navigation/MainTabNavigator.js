@@ -47,6 +47,7 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
     Profile: ProfilePageScreen,
+    Settings: Settings,
     Details: DetailsScreen,
     JoinGame: JoinGameScreen
   },
@@ -260,17 +261,17 @@ const Menu = createDrawerNavigator({
         color='#4caf50' />
       }
     },
-    'My Profile' : {
-      screen: ProfilePageScreen,
-      navigationOptions: {
-        drawerIcon: () => <Ionicons name="md-contact" size={30} style={{ width: 24 }} 
-        color='#4caf50' />
-      }
-    },
     'My Friends' : {
       screen: FriendsScreenStack,
       navigationOptions: {
         drawerIcon: () => <Ionicons name="md-contacts" size={30} style={{ width: 24 }} 
+        color='#4caf50' />
+      }
+    },
+    'My Profile' : {
+      screen: ProfilePageScreen,
+      navigationOptions: {
+        drawerIcon: () => <Ionicons name="md-contact" size={30} style={{ width: 24 }} 
         color='#4caf50' />
       }
     },
