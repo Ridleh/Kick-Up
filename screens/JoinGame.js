@@ -502,14 +502,12 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 	},
 	textInput: {
-		height: 40,
-		textAlign: 'center',
-		alignSelf: 'center',
-		borderWidth: 1,
-		borderColor: 'black',
+		height: 60,
+
+		fontSize: 15,
 		paddingLeft: 20,
 		margin: 10,
-		borderRadius: 20,
+
 		//underlineColorAndroid: 'transparent'
 	  },
 	text_important: {
