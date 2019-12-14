@@ -2,7 +2,10 @@ import * as WebBrowser from 'expo-web-browser';
 import {FBFunctions} from '../API/Firebase';
 import { firebaseConfig } from '../config';
 import * as firebase from 'firebase';
-import { createStackNavigator, createBottomTabNavigator, createDrawerNavigator, DrawerActions } from 'react-navigation';
+import { createStackNavigator, 
+  createBottomTabNavigator, 
+  createDrawerNavigator, 
+  DrawerActions } from 'react-navigation';
 
 import React, { Component } from 'react';
 import {
@@ -19,10 +22,11 @@ import {
   SafeAreaView,
   Dimensions,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  ActivityIndicator
 } from 'react-native';
 import Constants from 'expo-constants';
-import { Avatar, Header, ListItem, Card, Icon } from 'react-native-elements';
+import { Avatar, Header, ListItem, Card, Icon, ButtonGroup } from 'react-native-elements';
 import { fetchUpdateAsync } from 'expo/build/Updates/Updates';
 //import { watchFile } from 'fs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -32,20 +36,24 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 export default class HomeScreen extends Component{
-
+ 
     constructor(props){
         super(props)
         this.state = {
             refresh : Date(Date.now()).toString(),
+            test : true,
             showEventsUserIn : true,
             showEventsNearUser : true,
             showEventsFriendsIn : true,
             refreshing : false,
             photoUrl: '',
             games : [],
+            selectedIndex: 0,
             photo: 'https://icon-library.net/images/default-profile-icon/default-profile-icon-16.jpg'
           };
-      this.getPhotoUrl();
+      //this.getPhotoUrl();
+      //this.setState({games : FBFunctions.getData()})
+      console.log('constuctor')
     }
 
   static navigationOptions = {
@@ -63,29 +71,27 @@ export default class HomeScreen extends Component{
   friendsGames = []
 
   async componentDidMount() {
-    FBFunctions.init()
-    await this.getPhotoUrl()
-    await this.getGames()
-    this.willFocusSubscription = this.props.navigation.addListener(
-      'willFocus',
-      () => {
-        FBFunctions.init()
-        this.getPhotoUrl()
-        this.getGames()
-        console.log("Refreshed")
-      }
-    );
+    var events = []
+    var profilepic = '' 
+    AsyncStorage.getItem('photoUrl', (err, result) => {
+      profilepic = JSON.parse(result)
+    })
+    console.log('componentDidMount')
+    firebase.database().ref("/Events/").once("value").then((snap) => {
+      snap.forEach(function(childSnapshot){
+        events.push(childSnapshot.val())
+      })
+      console.log(events.length)
+      this.setState({
+        games : events,
+        photo : profilepic
+      })
+    })
   }
 
   componentWillUnmount() {
-    this.willFocusSubscription.remove();
   }
 
-  async componentWillMount(){
-    FBFunctions.init()
-    await this.getPhotoUrl()
-    await this.getGames()
-  }
 
 
   async getGames(){
@@ -105,7 +111,7 @@ export default class HomeScreen extends Component{
     }
     this.participatingGames.reverse()
     this.setState({
-        games : this.participatingGames
+        games : this.allGames
     })
     console.log(this.state.games.length)
     console.log(this.participatingGames.length)
@@ -138,10 +144,38 @@ export default class HomeScreen extends Component{
 
     //this.setState({refreshing : false});
   }
+
+  updateIndex(selectedIndex){
+    if(selectedIndex === 0){
+      this.setState({
+        selectedIndex,
+        games : this.allGames
+      })
+    }
+    else if(selectedIndex === 1){
+      this.setState({
+        selectedIndex,
+        games : this.participatingGames
+      })
+    }
+    else{
+      this.setState({
+        selectedIndex,
+        games : 'undefined'
+      })
+    }
+
+    //this.setState({selectedIndex})
+  }
+
+  component1 = () => <Text>All Games</Text>
+  component2 = () => <Text>My Games</Text>
+  component3 = () => <Text>Loading Screen</Text>
   
   render(){
       this.sleep(4000)
     const photo = this.state.photo
+    const buttons = [{ element: this.component1 }, { element: this.component2 }, { element: this.component3 }]
   return( 
     
     <SafeAreaView style = {{flex: 1}}>
@@ -164,6 +198,24 @@ export default class HomeScreen extends Component{
 />
       }
     />
+    <ButtonGroup
+      onPress={(index) => this.updateIndex(index)}
+      selectedIndex = {this.state.selectedIndex}
+      buttons={buttons}
+      />
+    {
+      this.state.games === 'undefined' &&
+      <View style={{
+        flex: 1,
+        justifyContent : "center",
+        flexDirection : 'row',
+        justifyContent : 'space-around',
+        padding : 10
+      }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    }
+    {this.state.games !== 'undefined' &&
     <ScrollView style = {styles.ScrollView}
     refreshControl={
       <RefreshControl refreshing={this.state.refreshing}
@@ -174,7 +226,7 @@ export default class HomeScreen extends Component{
       <View style = {{flex:1}}>
 
       { 
-        this.allGames.map((item, i) => (
+        this.state.games.map((item, i) => (
         <TouchableHighlight
           onPress={() => {
             //console.log(this.getPhotoUrl())
@@ -203,8 +255,10 @@ export default class HomeScreen extends Component{
     }
     </View>
     </ScrollView>   
+  }
      </React.Fragment>
     </SafeAreaView>
+  
 
 
   )
